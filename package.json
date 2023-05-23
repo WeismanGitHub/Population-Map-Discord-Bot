@@ -15,7 +15,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "push": "git push -u origin main",
+    "app": "nodemon dist/server/index.js"
   },
   "eslintConfig": {
     "extends": [
