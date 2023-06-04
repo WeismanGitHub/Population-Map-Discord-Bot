@@ -1,8 +1,8 @@
 import { CustomError, NotFoundError } from './errors';
 import { CustomClient } from './custom-client';
 import { GatewayIntentBits } from 'discord.js';
-import { v1Router } from './api/v1/routers/';
-import { Config } from '../config'
+import v1Router from './api/v1/routers';
+import { Config } from './config'
 require('express-async-errors')
 import { resolve } from 'path'
 import express, {
