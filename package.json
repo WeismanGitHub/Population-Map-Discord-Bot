@@ -1,5 +1,5 @@
 {
-  "name": "folder",
+  "name": "server-population-map-bot",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
