@@ -1,7 +1,7 @@
 import { errorEmbed } from './utils/embeds';
 import { readdirSync, statSync } from 'fs';
 import { CustomError } from './errors';
-import { Config } from '../config';
+import config from './config';
 import { join } from 'path';
 import {
     Client,
@@ -37,12 +37,11 @@ export class CustomClient extends Client {
     constructor(clientOptions: ClientOptions) {
         super(clientOptions);
 
-        this.token = Config.discordToken
+        this.token = config.discordToken
         this.commands = new Collection()
         
         this.login(this.token)
         .then(async () => {
-            this.setPresence(Config.activityType, Config.activityName)
             this.loadEventListeners()
             this.loadCommands()
         })

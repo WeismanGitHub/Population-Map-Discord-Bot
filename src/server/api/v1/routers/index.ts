@@ -1,5 +1,5 @@
 import { TooManyRequestsError } from '../../../errors';
-import { Config } from '../../../config';
+import config from '../../../config';
 import rateLimit from 'express-rate-limit';
 import fetchMetadata from 'fetch-metadata';
 import express, { Router } from 'express';
@@ -12,23 +12,14 @@ import cors from 'cors'
 const v1Router: Router = Router();
 
 const limiter = rateLimit({
-    windowMs: Config.limiterWindowMs,
-	max: Config.limiterMax,
+    windowMs: config.limiterWindowMs,
+	max: config.limiterMax,
 	standardHeaders: true,
 	legacyHeaders: false,
-	handler: (req, res, next, options) => { throw new TooManyRequestsError(Config.limiterMessage) }
+	handler: (req, res, next, options) => { throw new TooManyRequestsError(config.limiterMessage) }
 })
 
-v1Router.use(helmet({
-	contentSecurityPolicy: {
-		directives: {
-			...helmet.contentSecurityPolicy.getDefaultDirectives(),
-			"img-src": ["'self'"],
-			'media-src': ["'self'"],
-			"default-src": ["'self'"]
-		},
-	}
-}))
+v1Router.use(helmet())
 
 v1Router.use(fetchMetadata({
 	allowedFetchSites: ['same-origin', 'same-site', 'none'],
@@ -43,7 +34,7 @@ v1Router.use(fetchMetadata({
 
 v1Router.use(limiter)
 v1Router.use(compression())
-v1Router.use(cors({ origin: [`http://localhost:${Config.appPort}`] }))
+v1Router.use(cors({ origin: [`http://localhost:${config.appPort}`] }))
 v1Router.use(express.urlencoded({ extended: true }))
 v1Router.use(express.json())
 v1Router.use(cookieParser())
