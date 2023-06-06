@@ -3,7 +3,6 @@ import config from '../../../config';
 import rateLimit from 'express-rate-limit';
 import fetchMetadata from 'fetch-metadata';
 import express, { Router } from 'express';
-import cookieParser from 'cookie-parser';
 import compression from 'compression'
 require('express-async-errors')
 import helmet from 'helmet'
@@ -37,6 +36,5 @@ v1Router.use(compression())
 v1Router.use(cors({ origin: [`http://localhost:${config.appPort}`] }))
 v1Router.use(express.urlencoded({ extended: true }))
 v1Router.use(express.json())
-v1Router.use(cookieParser())
 
 export default v1Router
