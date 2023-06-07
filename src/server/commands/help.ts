@@ -16,7 +16,7 @@ export default {
 	async execute(interaction: CommandInteraction): Promise<void> {
 		const embed: EmbedBuilder = new EmbedBuilder()
 		.setColor('#FF7B00') // orange
-		.setDescription("Generate a population map based off of server member's self reported locations.")
+		.setDescription("Generate a population density map based off of server member's self reported locations.")
 		.addFields({ name: 'Contact the Creator:', value: `<@${config.mainAccountID}>` })
 		.setImage('../../../population-map-example.png')
 	
