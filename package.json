@@ -13,11 +13,13 @@
     "plotly.js": "^2.24.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.12.0",
     "react-scripts": "5.0.1"
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build-client": "react-app-rewired build",
+    "build-server": "tsc",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "push": "git push -u origin main",
@@ -48,6 +50,8 @@
     "@types/express": "^4.17.17",
     "@types/node": "^20.2.5",
     "@types/plotly.js": "^2.12.18",
+    "@types/react": "^18.2.8",
+    "@types/react-dom": "^18.2.4",
     "react-app-rewired": "^2.2.1",
     "typescript": "^4.9.5"
   }
