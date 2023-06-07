@@ -18,8 +18,8 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build-client": "react-app-rewired build",
-    "build-server": "tsc",
+    "build": "tsc & react-app-rewired build",
+    "tsc": "tsc",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "push": "git push -u origin main",
