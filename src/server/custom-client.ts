@@ -88,7 +88,7 @@ export class CustomClient extends Client {
     }
 
     private async loadEventListeners() {
-        const eventsPaths = getPaths(join(__dirname, 'event-listeners')).filter(file => file.endsWith('.js'))
+        const eventsPaths = getPaths(join(__dirname, 'events')).filter(file => file.endsWith('.js'))
 
         for (const eventPath of eventsPaths) {
             const event = require(eventPath);
