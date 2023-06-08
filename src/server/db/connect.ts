@@ -16,4 +16,6 @@ export default async function() {
     } catch (error) {
         throw new InternalServerError('Could not connect to database.')
     }
+
+    return sequelize
 }
