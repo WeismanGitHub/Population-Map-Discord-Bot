@@ -1,0 +1,6 @@
+{
+    "ignore": [
+        "src/server/*"
+    ],
+    "delay": "1000"
+}
