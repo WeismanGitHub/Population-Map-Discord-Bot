@@ -1,9 +1,10 @@
-import { CustomError, NotFoundError } from './errors';
+import { CustomError, InternalServerError, NotFoundError } from './errors';
 import { CustomClient } from './custom-client';
 import { GatewayIntentBits } from 'discord.js';
 import v1Router from './api/v1/routers';
-import config from './config'
+import sequelize from './db/sequelize'
 require('express-async-errors')
+import config from './config'
 import { resolve } from 'path'
 import express, {
 	Application,
@@ -41,3 +42,9 @@ app.use((err: Error | CustomError, req: Request, res: Response, next: NextFuncti
 })
 
 app.listen(config.appPort, (): void => console.log(`listening on port ${config.appPort}...`));
+
+try {
+	sequelize.authenticate().then(() => console.log('connected to database...'))
+} catch (error) {
+	throw new InternalServerError('Could not connect to database.')
+}
