@@ -8,7 +8,14 @@ import Home from './home';
 
 const router = createBrowserRouter([
     { path: '/', element: <Home/> },
-    { path: '/guilds(/:guildID)', element: <Guilds/> },
+    {
+        path: '/guilds',
+        element: <Guilds/>,
+        children: [{
+            path: '/guilds/:guildID',
+            element: <Guilds/>
+        }]
+    },
 ]);
 
 createRoot(document.getElementById("root")!).render(<RouterProvider router={router}/>);
