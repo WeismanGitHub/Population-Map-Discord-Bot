@@ -46,8 +46,6 @@ export class CustomClient extends Client {
             this.loadEventListeners()
             this.loadCommands()
         })
-
-        console.log(this.countries[1])
     }
 
     public countries = Object.entries(iso3166.data).map(data => {
