@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, CommandInteraction } from 'discord.js'
+import User from '../db/models/user'
 
 export default {
 	data: new SlashCommandBuilder()
@@ -19,5 +20,8 @@ export default {
         )
 	,
 	async execute(interaction: CommandInteraction): Promise<void> {
+        const user = await User.create({ discordID: interaction.user.id })
+        console.log(user)
+        interaction.reply('sdfs')
 	}
 }
