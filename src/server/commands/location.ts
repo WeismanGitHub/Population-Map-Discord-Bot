@@ -14,17 +14,21 @@ export default {
 		.setDescription("Set your country and optionally your subdivision/state/region.")
 	,
 	async execute(interaction: CommandInteraction): Promise<void> {
-        const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(new StringSelectMenuBuilder()
-        .setCustomId(`test`)
-			.setPlaceholder('Make a selection!')
-			.addOptions(
-                // @ts-ignore
-                interaction.client.countries.slice(0, 25).map(country => 
-                    new StringSelectMenuOptionBuilder()
-                        .setLabel(country.name)
-                        .setValue(country.name)
+        const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+            new StringSelectMenuBuilder()
+                .setCustomId(JSON.stringify({
+                    type: 'location-country',
+                    data: {}
+                }))
+                .setPlaceholder('Select your country!')
+                .addOptions(
+                    // @ts-ignore
+                    interaction.client.countries.slice(0, 25).map(country => 
+                        new StringSelectMenuOptionBuilder()
+                            .setLabel(country.name)
+                            .setValue(country.name)
+                    )
                 )
-            )
         )
 
         const buttonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -37,7 +41,7 @@ export default {
                 .setLabel('⏩')
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(JSON.stringify({
-                    type: 'location',
+                    type: 'location-page',
                     data: { page: 1 }
                 }))
         )
