@@ -51,7 +51,7 @@ export class CustomClient extends Client {
     public countries = Object.entries(iso3166.data).map(data => {
         const sortedSub = Object.entries(data[1].sub).map(sub => sub[1].name).sort((a, b) => a < b ? -1 : 1)
 
-        return { name: data[1].name, sub: sortedSub }
+        return { name: data[1].name, sub: sortedSub, code: data[0] }
     }).sort((a, b) => a.name < b.name ? -1 : 1)
     
     public async loadCommands() {
