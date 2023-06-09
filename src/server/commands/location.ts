@@ -26,7 +26,7 @@ export default {
                     interaction.client.countries.slice(0, 25).map(country => 
                         new StringSelectMenuOptionBuilder()
                             .setLabel(country.name)
-                            .setValue(country.name)
+                            .setValue(country.code)
                     )
                 )
         )
