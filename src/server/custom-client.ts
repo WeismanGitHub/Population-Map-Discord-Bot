@@ -1,6 +1,7 @@
 import { errorEmbed } from './utils/embeds';
 import { readdirSync, statSync } from 'fs';
 import { CustomError } from './errors';
+import iso3166 from 'iso-3166-2'
 import config from './config';
 import { join } from 'path';
 import {
@@ -45,7 +46,15 @@ export class CustomClient extends Client {
             this.loadEventListeners()
             this.loadCommands()
         })
+
+        console.log(this.countries[1])
     }
+
+    public countries = Object.entries(iso3166.data).map(data => {
+        const sortedSub = Object.entries(data[1].sub).map(sub => sub[1].name).sort((a, b) => a < b ? -1 : 1)
+
+        return { name: data[1].name, sub: sortedSub }
+    }).sort((a, b) => a.name < b.name ? -1 : 1)
     
     public async loadCommands() {
         const commandsPaths: string[] = getPaths(join(__dirname, 'commands')).filter(file => file.endsWith('.js'))
