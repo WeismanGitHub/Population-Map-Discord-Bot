@@ -12,6 +12,7 @@ User.init({
         primaryKey: true,
     },
     countryCode: {
+        // Maybe make this an enum of all country codes in the future?
         type: DataTypes.STRING,
         allowNull: true,
         defaultValue: null,
