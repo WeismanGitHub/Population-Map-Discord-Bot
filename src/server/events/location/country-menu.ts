@@ -26,7 +26,7 @@ export default {
 
         const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
-            .setLabel('Subdivisions')
+            .setLabel('subdivisions')
             .setStyle(ButtonStyle.Primary)
             .setCustomId(JSON.stringify({
                 type: 'location-subdivision',
