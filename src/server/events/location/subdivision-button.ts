@@ -29,7 +29,7 @@ export default {
         const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId(JSON.stringify({
-                    type: 'location-country',
+                    type: 'location-subdivision',
                     data: {}
                 }))
                 .setPlaceholder('Select your subdivision!')
