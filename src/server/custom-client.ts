@@ -57,7 +57,7 @@ export class CustomClient extends Client {
         return { name: data[1].name, sub: sortedSub, code: data[0] }
     }).sort((a, b) => a.name.localeCompare(b.name))
     
-    public async loadCommands() {
+    private async loadCommands() {
         const commandsPaths: string[] = getPaths(join(__dirname, 'commands')).filter(file => file.endsWith('.js'))
         const commands = [];
 
