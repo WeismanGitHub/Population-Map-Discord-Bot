@@ -19,7 +19,7 @@ export default {
         const { type, data }: CustomID<{ page: number }> = JSON.parse(interaction.customId)
         const { page } = data
 
-        if (type !== 'location-page') {
+        if (type !== 'location-country-page') {
             return
         }
 
@@ -46,7 +46,7 @@ export default {
                 .setStyle(ButtonStyle.Primary)
                 .setDisabled(page <= 0)
                 .setCustomId(JSON.stringify({
-                    type: 'location-page',
+                    type: 'location-country-page',
                     data: { page: page - 1 }
                 })),
             new ButtonBuilder()
@@ -55,7 +55,7 @@ export default {
                 // @ts-ignore
                 .setDisabled((page + 1) * 25 >= interaction.client.countries.length)
                 .setCustomId(JSON.stringify({
-                    type: 'location-page',
+                    type: 'location-country-page',
                     data: { page: page + 1 }
                 }))
         )
