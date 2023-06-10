@@ -26,7 +26,7 @@ export default {
 
         const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
-            .setLabel('Choose your subdivison (state, region, prefecture, etc).')
+            .setLabel('Choose your subdivison?')
             .setStyle(ButtonStyle.Primary)
             .setCustomId(JSON.stringify({
                 type: 'location-subdivision',
