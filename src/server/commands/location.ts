@@ -41,7 +41,7 @@ export default {
                 .setLabel('⏩')
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(JSON.stringify({
-                    type: 'location-page',
+                    type: 'location-country-page',
                     data: { page: 1 }
                 }))
         )
