@@ -48,7 +48,7 @@ export class CustomClient extends Client {
         })
     }
 
-    public countries = Object.entries(iso3166.data).map(data => {
+    private _countries = Object.entries(iso3166.data).map(data => {
         const sortedSub = Object.entries(data[1].sub).map(sub => {
             return { code: sub[0], ...sub[1] }
         }).sort((a, b) => a.name.localeCompare(b.name))
@@ -56,6 +56,10 @@ export class CustomClient extends Client {
 
         return { name: data[1].name, sub: sortedSub, code: data[0] }
     }).sort((a, b) => a.name.localeCompare(b.name))
+
+    get countries() {
+        return this._countries
+    }
     
     private async loadCommands() {
         const commandsPaths: string[] = getPaths(join(__dirname, 'commands')).filter(file => file.endsWith('.js'))
