@@ -1,3 +1,5 @@
+import { InternalServerError } from "../../errors"
+import { CustomClient } from "../../custom-client"
 import {
     ActionRowBuilder,
     ButtonBuilder,
@@ -17,14 +19,18 @@ export default {
         }
 
         const { type, data }: CustomID<{ countryCode: string }> = JSON.parse(interaction.customId)
+        const client = interaction.client as CustomClient
         const { countryCode } = data
 
         if (type !== 'location-subdivision') {
             return
         }
 
-        // @ts-ignore
-        const country = interaction.client.countries.find((country) => country.code === countryCode)
+        const country = client.countries.find((country) => country.code === countryCode)
+
+        if (!country) {
+            throw new InternalServerError('Could not get country.')
+        }
 
         const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
@@ -34,7 +40,6 @@ export default {
                 }))
                 .setPlaceholder('Select your subdivision!')
                 .addOptions(
-                    // @ts-ignore
                     country.sub.slice(0, 25).map(subdivision => 
                         new StringSelectMenuOptionBuilder()
                             .setLabel(subdivision.name)

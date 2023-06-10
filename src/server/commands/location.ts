@@ -1,3 +1,4 @@
+import { CustomClient } from '../custom-client'
 import {
     SlashCommandBuilder,
     CommandInteraction,
@@ -14,6 +15,8 @@ export default {
 		.setDescription("Set your country and optionally your subdivision (state, region, prefecture, etc).")
 	,
 	async execute(interaction: CommandInteraction): Promise<void> {
+        const client = interaction.client as CustomClient
+
         const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId(JSON.stringify({
@@ -22,8 +25,7 @@ export default {
                 }))
                 .setPlaceholder('Select your country!')
                 .addOptions(
-                    // @ts-ignore
-                    interaction.client.countries.slice(0, 25).map(country => 
+                    client.countries.slice(0, 25).map(country => 
                         new StringSelectMenuOptionBuilder()
                             .setLabel(country.name)
                             .setValue(country.code)
