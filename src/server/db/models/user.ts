@@ -17,6 +17,12 @@ User.init({
         allowNull: true,
         defaultValue: null,
     },
+    subdivisionCode: {
+        // Maybe make this an enum of all subdivision codes in the future?
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: null,
+    },
 }, {
     sequelize: sequelize,
     modelName: 'User',
