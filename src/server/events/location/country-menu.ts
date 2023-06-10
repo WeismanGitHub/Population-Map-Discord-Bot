@@ -26,7 +26,7 @@ export default {
 
         const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
-            .setLabel('Choose your subdivison?')
+            .setLabel('Subdivisions')
             .setStyle(ButtonStyle.Primary)
             .setCustomId(JSON.stringify({
                 type: 'location-subdivision',
@@ -35,7 +35,7 @@ export default {
         )
 
         interaction.update({
-            embeds: [infoEmbed('Make sure to choose your settings with `/settings`!')],
+            embeds: [infoEmbed('Make sure to choose your settings with `/settings`!', 'You can also optionally choose your subdivision (state, region, prefecture, etc).')],
             components: [row]
         })
     }
