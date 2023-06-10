@@ -54,7 +54,7 @@ export default {
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(JSON.stringify({
                     type: 'location-subdivision-page',
-                    data: { page: 1 }
+                    data: { page: 1, countryCode }
                 }))
         )
 
