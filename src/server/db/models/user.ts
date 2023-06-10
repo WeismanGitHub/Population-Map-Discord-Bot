@@ -11,6 +11,11 @@ User.init({
         allowNull: false,
         primaryKey: true,
     },
+    countryCode: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: null,
+    },
 }, {
     sequelize: sequelize,
     modelName: 'User',
