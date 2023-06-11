@@ -40,7 +40,7 @@ export default function DiscordAuth() {
 	} else {
 		return <>
 			<a href={process.env.REACT_APP_AUTH_OAUTH_URL + `&state=${btoa(randomString)}`}>
-				Authorize
+				Login
 			</a>
 		</>
 	}
