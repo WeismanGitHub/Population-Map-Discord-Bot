@@ -9,6 +9,7 @@ import helmet from 'helmet'
 import cors from 'cors'
 
 import geojsonRouter from './geojson';
+import authRouter from './auth';
 
 const v1Router: Router = Router();
 
@@ -40,6 +41,6 @@ v1Router.use(express.urlencoded({ extended: true }))
 v1Router.use(express.json())
 
 v1Router.use('/geojson', geojsonRouter)
-
+v1Router.use('/auth', authRouter)
 
 export default v1Router
