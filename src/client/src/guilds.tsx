@@ -4,6 +4,7 @@ import React from 'react'
 
 export default function Guilds() {
     const { guildID } = useParams()
+    let geojson: any;
 
     return (<>
         <Plot
@@ -22,14 +23,16 @@ export default function Guilds() {
                     colorbar: {
                         title: 'Users',
                         thickness: 2,
-                    }
+                    },
+                    lon: geojson,
+                    lat: geojson,
                 },
             ]}
             layout={{
                 title: `Population Density of ${guildID}`,
-                geo: { scope: 'usa', showlakes: false },
+                // geo: { scope: 'usa', showlakes: false },
                 height: 500,
-                width: 1000
+                width: 1000,
             }}
         />
     </>)
