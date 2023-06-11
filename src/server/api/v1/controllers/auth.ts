@@ -18,12 +18,12 @@ async function discordLogin(req: Request, res: Response): Promise<void> {
     try {
         const token: string = (await oauth.tokenRequest({
             clientId: config.botID,
-            clientSecret: config.discordClientSecret,
+            clientSecret: config.botSecret,
         
             code: code,
             scope: 'identify guilds',
             grantType: "authorization_code",
-            redirectUri: config.loginRedirectURI,
+            redirectUri: config.redirectURI,
         })).access_token
 
         userID = (await oauth.getUser(token)).id
