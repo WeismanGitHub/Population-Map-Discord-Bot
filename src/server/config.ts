@@ -19,7 +19,7 @@ interface Configuration {
 const config: Configuration = {
     // Discord
     discordToken: process.env.DISCORD_TOKEN!,
-    botID: process.env.DISCORD_BOT_ID!,
+    botID: process.env.BOT_ID!,
     mainAccountID: process.env.MAIN_ACCOUNT_ID!,
     inviteURL: process.env.INVITE_URL!,
 

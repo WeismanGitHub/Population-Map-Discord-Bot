@@ -1,12 +1,14 @@
 import { TooManyRequestsError } from '../../../errors';
-import config from '../../../config';
 import rateLimit from 'express-rate-limit';
 import fetchMetadata from 'fetch-metadata';
 import express, { Router } from 'express';
 import compression from 'compression'
+import config from '../../../config'
 require('express-async-errors')
 import helmet from 'helmet'
 import cors from 'cors'
+
+import geojsonRouter from './geojson';
 
 const v1Router: Router = Router();
 
@@ -36,5 +38,8 @@ v1Router.use(compression())
 v1Router.use(cors({ origin: [`http://localhost:${config.appPort}`] }))
 v1Router.use(express.urlencoded({ extended: true }))
 v1Router.use(express.json())
+
+v1Router.use('/geojson', geojsonRouter)
+
 
 export default v1Router
