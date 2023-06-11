@@ -1,5 +1,5 @@
 import { infoEmbed } from "../../utils/embeds";
-import User from "../../db/models/user";
+import { User } from "../../db/models/";
 import {
     ActionRowBuilder,
     ButtonBuilder,
