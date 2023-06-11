@@ -41,5 +41,4 @@ v1Router.use(express.json())
 
 v1Router.use('/geojson', geojsonRouter)
 
-
 export default v1Router
