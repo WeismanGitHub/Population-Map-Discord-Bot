@@ -1,8 +1,5 @@
+import { discordLogin, logout } from '../controllers/auth'
 import { Router } from 'express';
-import {
-    discordLogin,
-    logout,
-} from '../controllers/auth'
 
 const authRouter: Router = Router();
 
