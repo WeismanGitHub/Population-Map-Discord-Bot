@@ -32,7 +32,7 @@ const config: Configuration = {
     
     // Other
     buyMeACoffeeURL: process.env.BUY_ME_A_COFFEE_URL!,
-    githubURL: process.env.GITHUB_URL!,
+    githubURL: 'https://github.com/WeismanGitHub/Population-Density-Map-Discord-Bot',
     appPort: 5001,
 }
 

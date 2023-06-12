@@ -35,7 +35,7 @@ export default {
         )
 
         interaction.update({
-            embeds: [infoEmbed('Make sure to choose your settings with `/settings`!', 'You can also optionally choose your subdivision (state, region, prefecture, etc).')],
+            embeds: [infoEmbed('Make sure to choose your settings with `/user-settings`!', 'You can also optionally choose your subdivision (state, region, prefecture, etc).')],
             components: [row]
         })
     }
