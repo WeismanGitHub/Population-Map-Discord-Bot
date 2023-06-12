@@ -14,7 +14,15 @@ Guild.init({
     visibility: {
         type: DataTypes.ENUM('public', 'member-restricted', 'map-role-restricted', 'admin-role-restricted', 'invisibile'),
         defaultValue: 'member-restricted'
-    }
+    },
+    mapRole: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    adminRole: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
 }, {
     sequelize: sequelize,
     modelName: 'Guild',
