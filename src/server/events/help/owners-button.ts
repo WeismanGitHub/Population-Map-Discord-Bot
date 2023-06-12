@@ -1,7 +1,5 @@
 import { Events, StringSelectMenuInteraction } from "discord.js"
-import { InternalServerError } from "../../errors";
 import { infoEmbed } from "../../utils/embeds";
-import { User } from "../../db/models";
 
 export default {
 	name: Events.InteractionCreate,
@@ -12,5 +10,10 @@ export default {
         const { type }: CustomID<{}> = JSON.parse(interaction.customId)
 
         if (type !== 'help-owners') return
+
+        interaction.reply({
+            embeds: [infoEmbed('owners information')],
+            ephemeral: true
+        })
     }
 }
