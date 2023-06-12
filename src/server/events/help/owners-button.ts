@@ -1,11 +1,11 @@
-import { Events, StringSelectMenuInteraction } from "discord.js"
+import { Events, ButtonInteraction } from "discord.js"
 import { infoEmbed } from "../../utils/embeds";
 
 export default {
 	name: Events.InteractionCreate,
 	once: false,
-    execute: async (interaction: StringSelectMenuInteraction) => {
-        if (!interaction.isStringSelectMenu()) return;
+    execute: async (interaction: ButtonInteraction) => {
+        if (!interaction.isButton()) return;
 
         const { type }: CustomID<{}> = JSON.parse(interaction.customId)
 
