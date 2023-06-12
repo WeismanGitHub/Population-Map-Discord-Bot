@@ -1,8 +1,6 @@
+import { SlashCommandBuilder, CommandInteraction } from 'discord.js'
+import { infoEmbed } from '../utils/embeds'
 import { Guild } from '../db/models'
-import {
-    SlashCommandBuilder,
-    CommandInteraction,
-} from 'discord.js'
 
 export default {
 	data: new SlashCommandBuilder()
@@ -38,18 +36,17 @@ export default {
         )
 	,
 	async execute(interaction: CommandInteraction): Promise<void> {
-        Guild
+        const guild = await Guild.findOne({ where: { ID: interaction.guildId } })
+        
+        if (!guild && interaction.user.id !== interaction.guild?.ownerId) {
+            interaction.reply({
+                ephemeral: true,
+                embeds: [infoEmbed("The server owner still needs to use `/server-settings`.")]
+            })
+        } else if (interaction.user.id === interaction.guild?.ownerId) {
+            Guild.create({
+                ID: interaction.guildId,
+            })
+        }
 	}
 }
-// .addChoices(
-//     { name: 'Overwhelmingly Positive', value: 'Overwhelmingly Positive'},
-//     { name: 'Very Positive', value: 'Very Positive'},
-//     { name: 'Positive', value: 'Positive'},
-//     { name: 'Mostly Positive', value: 'Mostly Positive'},
-//     { name: 'Mixed', value: 'Mixed'},
-//     { name: 'Mostly Negative', value: 'Mostly Negative'},
-//     { name: 'Negative', value: 'Negative'},
-//     { name: 'Very Negative', value: 'Very Negative'},
-//     { name: 'Overwhelmingly Negative', value: 'Overwhelmingly Negative'},
-//     { name: 'No User Reviews', value: 'No user reviews'},
-// )
