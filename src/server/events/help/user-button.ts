@@ -9,7 +9,7 @@ export default {
 
         const { type }: CustomID<{}> = JSON.parse(interaction.customId)
 
-        if (type !== 'help-user') return
+        if (type !== 'help-users') return
 
         interaction.reply({
             embeds: [infoEmbed('users information')],
