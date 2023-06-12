@@ -21,7 +21,7 @@ export default {
 
         interaction.reply({
             embeds: [infoEmbed(null,
-            `# Server Owner Docs\n${serverOwnerDocs}\n## Server Roles\n${serverRoles}\n## Map Visibility\n${mapVisibility}\n## Defaults\n${defaults}
+            `# Server Owner Docs\n${serverOwnerDocs}\n### Server Roles\n${serverRoles}\n### Map Visibility\n${mapVisibility}\n### Defaults\n${defaults}
             `)],
             ephemeral: true
         })
