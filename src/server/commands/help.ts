@@ -36,11 +36,17 @@ export default {
 		.addComponents([
 			new ButtonBuilder()
 			.setLabel('User Docs')
-			.setCustomId('help-users')
+			.setCustomId(JSON.stringify({
+				type: 'help-users',
+				data: {}
+			}))
 			.setStyle(ButtonStyle.Primary),
 			new ButtonBuilder()
 			.setLabel('Server Owner Docs')
-			.setCustomId('help-owners')
+			.setCustomId(JSON.stringify({
+				type: 'help-owners',
+				data: {}
+			}))
 			.setStyle(ButtonStyle.Primary),
 		])
 
