@@ -1,3 +1,4 @@
+import { InternalServerError } from "../../errors";
 import { infoEmbed } from "../../utils/embeds";
 import { User } from "../../db/models/";
 import {
@@ -7,7 +8,6 @@ import {
     Events,
     StringSelectMenuInteraction
 } from "discord.js"
-import { InternalServerError } from "../../errors";
 
 export default {
 	name: Events.InteractionCreate,
