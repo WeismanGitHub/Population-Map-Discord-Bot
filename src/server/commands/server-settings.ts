@@ -15,7 +15,15 @@ export default {
         )
         .addRoleOption(option => option
             .setName('map-role')
-            .setDescription("Server members with the map role can view the server map if `visibility` is set to `map-role`.")
+            .setDescription("Server members with the map role can view the server map if visibility is set to map-role.")
+        )
+        .addStringOption(option => option
+            .setName('remove-role')
+            .setDescription("Remove the admin or map role. Does not delete the role from your server.")
+            .addChoices(
+                { name: 'admin-role', value: 'admin-role' },
+                { name: 'map-role', value: 'map-role' },
+            )
         )
         .addStringOption(option => option
             .setName('visibility')
