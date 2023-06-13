@@ -1,6 +1,13 @@
-import { SlashCommandBuilder, CommandInteraction } from 'discord.js'
+import { SlashCommandBuilder, ChatInputCommandInteraction, GuildMemberManager } from 'discord.js'
+import { InternalServerError } from '../errors'
 import { infoEmbed } from '../utils/embeds'
 import { Guild } from '../db/models'
+
+interface GuildSettings {
+    visibility?: 'public' | 'member-restricted' | 'map-role-restricted' | 'admin-role-restricted' | 'invisibile'
+    mapRoleID?: string | null
+    adminRoleID?: string | null
+}
 
 export default {
 	data: new SlashCommandBuilder()
@@ -35,18 +42,69 @@ export default {
             )
         )
 	,
-	async execute(interaction: CommandInteraction): Promise<void> {
-        const guild = await Guild.findOne({ where: { ID: interaction.guildId } })
-        
-        if (!guild && interaction.user.id !== interaction.guild?.ownerId) {
-            interaction.reply({
-                ephemeral: true,
-                embeds: [infoEmbed("The server owner still needs to use `/server-settings`.")]
-            })
-        } else if (interaction.user.id === interaction.guild?.ownerId) {
-            Guild.create({
+	async execute(interaction: ChatInputCommandInteraction) {
+        if (!interaction.inGuild()) return 
+
+        const visibilityChoice = interaction.options.getString('visibility') as GuildSettings['visibility'] | null
+        const removeRoleChoice = interaction.options.getString('remove-role')
+        const adminRoleChoice = interaction.options.getRole('admin-role')
+        const mapRoleChoice = interaction.options.getRole('map-role')
+        const settings: GuildSettings = {}
+
+        if (visibilityChoice) {
+            settings.visibility = visibilityChoice
+        }
+
+        if (adminRoleChoice && removeRoleChoice !== 'admin-role') {
+            settings.adminRoleID = adminRoleChoice.id
+        }
+
+        if (mapRoleChoice && removeRoleChoice !== 'map-role') {
+            settings.mapRoleID = mapRoleChoice.id
+        }
+
+        if (interaction.user.id === interaction.guild?.ownerId) {
+            const guild = (await Guild.upsert({
                 ID: interaction.guildId,
+                ...settings
+            }).catch(err => { throw new InternalServerError('Could not save server settings.') }))[0]
+
+            return interaction.reply({
+                ephemeral: true,
+                embeds: [infoEmbed('Server Settings',
+                    `\`visibility\`: \`${guild.visibility}\`\n
+                    \`admin-role\`: <r:${guild.adminRoleID}>\n
+                    \`map-role\`: ${guild.mapRoleID ? `<r:${guild.mapRoleID}>` : null}`
+                )]
             })
         }
+
+        let guild = await Guild.findOne({ where: { ID: interaction.guildId } })
+
+        if (!guild) {
+            return interaction.reply({
+                ephemeral: true,
+                embeds: [infoEmbed("The server owner still needs to set up with `/server-settings`.")]
+            })
+        }
+
+        const roles = (interaction.member.roles as unknown as GuildMemberManager).cache
+        const userIsAdmin = guild.adminRoleID ? roles.has(guild.adminRoleID) : false
+
+        if (userIsAdmin) {
+            guild = (await Guild.upsert({
+                ID: interaction.guildId,
+                ...settings
+            }).catch(err => { throw new InternalServerError('Could not save server settings.') }))[0]
+        }
+
+        return interaction.reply({
+            ephemeral: true,
+            embeds: [infoEmbed('Server Settings',
+                `\`visibility\`: \`${guild.visibility}\`\n
+                \`admin-role\`:<r:${guild.adminRoleID}>\n
+                \`map-role\`: <r:${guild.mapRoleID}>`
+            )]
+        })
 	}
 }
