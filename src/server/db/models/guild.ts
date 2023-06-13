@@ -3,6 +3,9 @@ import sequelize from "../sequelize";
 
 class Guild extends Model {
     declare ID: string
+    declare visibility: 'public' | 'member-restricted' | 'map-role-restricted' | 'admin-role-restricted' | 'invisibile'
+    declare mapRole: string | null
+    declare adminRole: string | null
 }
 
 Guild.init({
