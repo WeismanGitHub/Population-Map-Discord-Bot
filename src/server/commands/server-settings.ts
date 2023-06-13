@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction, GuildMemberManager } from 'discord.js'
-import { InternalServerError } from '../errors'
+import { BadRequestError, InternalServerError } from '../errors'
 import { infoEmbed } from '../utils/embeds'
 import { Guild } from '../db/models'
 
@@ -95,7 +95,15 @@ export default {
         const roles = (interaction.member.roles as unknown as GuildMemberManager).cache
         const userIsAdmin = guild.adminRoleID ? roles.has(guild.adminRoleID) : false
 
+        if (!userIsAdmin && Object.keys(settings).length) {
+            throw new BadRequestError('Only admins and the owner can change server settings.')
+        }
+
         if (userIsAdmin && Object.keys(settings).length) {
+            if (settings.adminRoleID) {
+                throw new BadRequestError('Admins cannot edit the admin role.')
+            }
+
             guild.update(settings).catch(err => {
                 throw new InternalServerError('Could not save server settings.')
             })
