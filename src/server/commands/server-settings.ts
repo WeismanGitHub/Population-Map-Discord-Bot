@@ -104,7 +104,7 @@ export default {
                 throw new BadRequestError('Admins cannot edit the admin role.')
             }
 
-            guild.update(settings).catch(err => {
+            await guild.update(settings).catch(err => {
                 throw new InternalServerError('Could not save server settings.')
             })
         }
