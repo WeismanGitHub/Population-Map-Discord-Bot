@@ -43,7 +43,7 @@ export default {
         )
 	,
 	async execute(interaction: ChatInputCommandInteraction) {
-        if (!interaction.inGuild()) return 
+        if (!interaction.inGuild()) return
 
         const visibilityChoice = interaction.options.getString('visibility') as GuildSettings['visibility'] | null
         const removeRoleChoice = interaction.options.getString('remove-role')
@@ -67,46 +67,43 @@ export default {
             settings[removeRoleChoice as 'adminRoleID' | 'mapRoleID'] = null
         }
 
-        if (interaction.user.id === interaction.guild?.ownerId && Object.keys(settings).length) {
-            const guild = (await Guild.upsert({
-                ID: interaction.guildId,
-                ...settings
-            }).catch(err => { throw new InternalServerError('Could not save server settings.') }))[0]
-
-            return interaction.reply({
-                ephemeral: true,
-                embeds: [infoEmbed('Server Settings',
-                    `\`visibility\`: \`${guild.visibility}\`\n
-                    \`admin-role\`: ${guild.adminRoleID ? `<@&${guild.adminRoleID}>` : null}\n
-                    \`map-role\`: ${guild.mapRoleID ? `<@&${guild.mapRoleID}>` : null}`
-                )]
-            })
-        }
-
         let guild = await Guild.findOne({ where: { ID: interaction.guildId } })
+        const thereAreChanges = Boolean(Object.keys(settings).length)
 
-        if (!guild) {
+        if (interaction.user.id === interaction.guild?.ownerId && thereAreChanges) {
+            if (!guild) {
+                guild = await Guild.create({
+                    ID: interaction.guildId,
+                    ...settings
+                }).catch(err => { throw new InternalServerError('Could not save server settings.') })
+            } else {
+                await guild.update({
+                    ID: interaction.guildId,
+                    ...settings
+                }).catch(err => { throw new InternalServerError('Could not save server settings.') })
+            }
+        } else if (!guild) {
             return interaction.reply({
                 ephemeral: true,
                 embeds: [infoEmbed("The server owner still needs to set up with `/server-settings`.")]
             })
-        }
-
-        const roles = (interaction.member.roles as unknown as GuildMemberManager).cache
-        const userIsAdmin = guild.adminRoleID ? roles.has(guild.adminRoleID) : false
-
-        if (!userIsAdmin && Object.keys(settings).length) {
-            throw new BadRequestError('Only admins and the owner can change server settings.')
-        }
-
-        if (userIsAdmin && Object.keys(settings).length) {
-            if (settings.adminRoleID) {
+        } else {
+            const roles = (interaction.member.roles as unknown as GuildMemberManager).cache
+            const userIsAdmin = guild.adminRoleID ? roles.has(guild.adminRoleID) : false
+            
+            if (!userIsAdmin && thereAreChanges) {
+                throw new BadRequestError('Only admins and the owner can change server settings.')
+            }
+    
+            if (settings.adminRoleID !== undefined) {
                 throw new BadRequestError('Admins cannot edit the admin role.')
             }
 
-            await guild.update(settings).catch(err => {
-                throw new InternalServerError('Could not save server settings.')
-            })
+            if (thereAreChanges) {
+                await guild.update(settings).catch(err => {
+                    throw new InternalServerError('Could not save server settings.')
+                })
+            }
         }
 
         return interaction.reply({
