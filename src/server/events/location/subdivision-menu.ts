@@ -19,7 +19,7 @@ export default {
         .catch(err => { throw new InternalServerError('Could not save your subdivision.') })
 
         interaction.update({
-            embeds: [infoEmbed('Make sure to choose your settings with `/user-settings`!')],
+            embeds: [infoEmbed('Selected a country and subdivision!')],
             components: []
         })
     }

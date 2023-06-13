@@ -3,6 +3,8 @@ import sequelize from "../sequelize";
 
 class User extends Model {
     declare discordID: string
+    declare countryCode: string | null
+    declare subdivisionCode: string | null
 }
 
 User.init({
