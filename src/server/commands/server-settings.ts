@@ -26,8 +26,8 @@ export default {
             .setName('remove-role')
             .setDescription("Remove the admin or map role. Does not delete the role from your server.")
             .addChoices(
-                { name: 'admin-role', value: 'admin-role' },
-                { name: 'map-role', value: 'map-role' },
+                { name: 'admin-role', value: 'adminRoleID' },
+                { name: 'map-role', value: 'mapRoleID' },
             )
         )
         .addStringOption(option => option
@@ -55,15 +55,19 @@ export default {
             settings.visibility = visibilityChoice
         }
 
-        if (adminRoleChoice && removeRoleChoice !== 'admin-role') {
+        if (adminRoleChoice) {
             settings.adminRoleID = adminRoleChoice.id
         }
 
-        if (mapRoleChoice && removeRoleChoice !== 'map-role') {
+        if (mapRoleChoice) {
             settings.mapRoleID = mapRoleChoice.id
         }
 
-        if (interaction.user.id === interaction.guild?.ownerId) {
+        if (removeRoleChoice) {
+            settings[removeRoleChoice as 'adminRoleID' | 'mapRoleID'] = null
+        }
+
+        if (interaction.user.id === interaction.guild?.ownerId && Object.keys(settings).length) {
             const guild = (await Guild.upsert({
                 ID: interaction.guildId,
                 ...settings
@@ -73,8 +77,8 @@ export default {
                 ephemeral: true,
                 embeds: [infoEmbed('Server Settings',
                     `\`visibility\`: \`${guild.visibility}\`\n
-                    \`admin-role\`: <r:${guild.adminRoleID}>\n
-                    \`map-role\`: ${guild.mapRoleID ? `<r:${guild.mapRoleID}>` : null}`
+                    \`admin-role\`: ${guild.adminRoleID ? `<@&${guild.adminRoleID}>` : null}\n
+                    \`map-role\`: ${guild.mapRoleID ? `<@&${guild.mapRoleID}>` : null}`
                 )]
             })
         }
@@ -91,19 +95,18 @@ export default {
         const roles = (interaction.member.roles as unknown as GuildMemberManager).cache
         const userIsAdmin = guild.adminRoleID ? roles.has(guild.adminRoleID) : false
 
-        if (userIsAdmin) {
-            guild = (await Guild.upsert({
-                ID: interaction.guildId,
-                ...settings
-            }).catch(err => { throw new InternalServerError('Could not save server settings.') }))[0]
+        if (userIsAdmin && Object.keys(settings).length) {
+            guild.update(settings).catch(err => {
+                throw new InternalServerError('Could not save server settings.')
+            })
         }
 
         return interaction.reply({
             ephemeral: true,
             embeds: [infoEmbed('Server Settings',
                 `\`visibility\`: \`${guild.visibility}\`\n
-                \`admin-role\`:<r:${guild.adminRoleID}>\n
-                \`map-role\`: <r:${guild.mapRoleID}>`
+                \`admin-role\`: ${guild.adminRoleID ? `<@&${guild.adminRoleID}>` : null}\n
+                \`map-role\`: ${guild.mapRoleID ? `<@&${guild.mapRoleID}>` : null}`
             )]
         })
 	}
