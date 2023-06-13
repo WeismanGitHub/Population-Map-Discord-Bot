@@ -2,7 +2,6 @@ import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js'
 import { infoEmbed } from '../utils/embeds'
 import { User } from '../db/models'
 
-
 export default {
 	data: new SlashCommandBuilder()
 		.setName('user-settings')
