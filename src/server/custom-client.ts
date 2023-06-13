@@ -48,6 +48,8 @@ export class CustomClient extends Client {
         })
     }
 
+    // Maybe make it like a hash table, implement binary search instead of using countries.find().
+    // Might not be worth it tho since its only like 250 countries in total.
     private _countries = Object.entries(iso3166.data).map(data => {
         const sortedSub = Object.entries(data[1].sub).map(sub => {
             return { code: sub[0], ...sub[1] }
