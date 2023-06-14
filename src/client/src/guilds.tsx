@@ -1,53 +1,99 @@
-// @ts-nocheck
+import worldMap from "@highcharts/map-collection/custom/usa-and-canada.geo.json";
+import HighchartsReact from 'highcharts-react-official'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import Plot from 'react-plotly.js';
-import ky from 'ky';
+import Highcharts from "highcharts/highmaps";
+// import ky from 'ky';
 
 export default function Guilds() {
-    const [geojson, setGeojson] = useState(undefined)
+    // const [geojson, setGeojson] = useState({})
     const { guildID } = useParams()
+    guildID
     
     useEffect(() => {
-        (async () => {
-            const res = await ky.get('/api/v1/geojson/countries/US').json()
-            console.log(res)
-            setGeojson(res)
-        })()
+        // (async () => {
+        //     const res = await ky.get('/api/v1/geojson/countries/US').json()
+        //     setGeojson(res)
+        // })()
     }, [])
 
-    if (!geojson) {
-        return <h1>loading map...</h1>
-    } else {
-        return (<>
-            <Plot
-                data={[
-                    {
-                        type: 'choropleth',
-                        locationmode: 'geojson-id',
-                        locations: ['CA', 'OR', 'NY'],
-                        z: [1, 2, 10],
-                        text: ['California', 'Oregon', 'New York'],
-                        colorscale: [
-                            [0, 'rgb(242,240,247)'], [0.2, 'rgb(218,218,235)'],
-                            [0.4, 'rgb(188,189,220)'], [0.6, 'rgb(158,154,200)'],
-                            [0.8, 'rgb(117,107,177)'], [1, 'rgb(84,39,143)']
-                        ],
-                        colorbar: {
-                            title: 'Users',
-                            thickness: 2,
-                        },
-                        lon: geojson,
-                        lat: geojson,
-                    },
-                ]}
-                layout={{
-                    title: `Population Density of ${guildID}`,
-                    // geo: { scope: 'usa', showlakes: false },
-                    height: 500,
-                    width: 1000
-                }}
-            />
-        </>)
-    }
-}
+    const [options] = useState({
+        chart: {
+            map: worldMap
+        },
+        mapNavigation: {
+            enabled: true,
+            buttonOptions: {
+                alignTo: "spacingBox"
+            }
+        },
+        colorAxis: {
+            min: 0
+        },
+        series: [{
+            name: "suidnihsuifds",
+            states: { hover: { color: "#BADA55" } },
+            dataLabels: {
+                enabled: true,
+                format: "{point.name}"
+            },
+            allAreas: true,
+            data: [
+                ["fo", 0],
+                ["um", 1],
+                ["us", 2],
+                ["jp", 3],
+                ["sc", 4],
+                ["in", 5],
+                ["fr", 6],
+                ["fm", 7],
+                ["cn", 8]
+            ]
+        }]
+    });
+
+    return (
+        <HighchartsReact
+        highcharts={Highcharts}
+        constructorType={"mapChart"}
+        options={options}
+        />
+    );
+};
+
+    // const options: Highcharts.Options = {
+    //     chart: {
+    //         map: topolo
+    //     },
+    //     title: {
+    //       text: 'example text'
+    //     },
+    //     // series: [{
+    //     //     // data: [],
+    //     //     keys: ['code_hasc', 'value'],
+    //     //     joinBy: 'code_hasc',
+    //     //     name: 'Random data',
+    //     //     dataLabels: {
+    //     //         enabled: true,
+    //     //         format: '{point.properties.postal}'
+    //     //     }
+    //     // }],
+    //     mapNavigation: {
+    //         enabled: true,
+    //         buttonOptions: {
+    //             verticalAlign: 'bottom'
+    //         }
+    //     },
+    //     colorAxis: {
+    //         tickPixelInterval: 100
+    //     },
+    // }
+
+    // if (!Object.keys(geojson).length) {
+    //     return <h1>loading map...</h1>
+    // } else {
+    //     return (<>
+    //         <div id='container'></div>
+    //     </>)
+    // }
+// }
