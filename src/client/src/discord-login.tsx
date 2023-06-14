@@ -30,7 +30,7 @@ export default function DiscordLogin() {
 			return localStorage.setItem('auth-state', randomString);
 		}
 		
-		ky.post('/api/v1/auth/login')
+		ky.post('/api/v1/auth/login', { json: { code } })
 		.then(res => { setAuthorized(true) })
 		.catch((err) => { errorToast(err.response.data.error || err.message) });
     }, [])
