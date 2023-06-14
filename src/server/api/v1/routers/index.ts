@@ -21,7 +21,6 @@ const limiter = rateLimit({
 })
 
 v1Router.use(helmet())
-
 v1Router.use(fetchMetadata({
 	allowedFetchSites: ['same-origin', 'same-site', 'none'],
 	disallowedNavigationRequests: ['frame', 'iframe'],

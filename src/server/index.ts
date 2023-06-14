@@ -4,8 +4,8 @@ import { GatewayIntentBits } from 'discord.js';
 import v1Router from './api/v1/routers';
 import sequelize from './db/sequelize'
 require('express-async-errors')
-import config from './config'
 import { resolve } from 'path'
+import config from './config'
 import express, {
 	Application,
 	NextFunction,
