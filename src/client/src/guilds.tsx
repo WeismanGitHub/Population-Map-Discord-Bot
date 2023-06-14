@@ -1,25 +1,26 @@
-import worldMap from "@highcharts/map-collection/custom/world.geo.json";
+// import worldMap from "@highcharts/map-collection/custom/world.geo.json";
 import HighchartsReact from 'highcharts-react-official'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import Highcharts from "highcharts/highmaps";
-// import ky from 'ky';
+import ky from 'ky';
 
 export default function Guilds() {
-    // const [geojson, setGeojson] = useState({})
+    const [geojson, setGeojson] = useState({})
     const { guildID } = useParams()
     guildID
     
     useEffect(() => {
-        // (async () => {
-        //     const res = await ky.get('/api/v1/geojson/countries/US').json()
-        //     setGeojson(res)
-        // })()
+        (async () => {
+            const res: Highcharts.GeoJSON = await ky.get('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/germany.geo.json').json()
+
+            setGeojson(res)
+        })()
     }, [])
 
     const [options] = useState({
         chart: {
-            map: worldMap
+            map: geojson
         },
         mapNavigation: {
             enabled: true,
@@ -39,15 +40,22 @@ export default function Guilds() {
             },
             allAreas: true,
             data: [
-                ["fo", 0],
-                ["um", 1],
-                ["us", 2],
-                ["jp", 3],
-                ["sc", 4],
-                ["in", 5],
-                ["fr", 6],
-                ["fm", 7],
-                ["cn", 8]
+                ['DE.SH', 728],
+                ['DE.BE', 710],
+                ['DE.MV', 963],
+                ['DE.HB', 541],
+                ['DE.HH', 622],
+                ['DE.RP', 866],
+                ['DE.SL', 398],
+                ['DE.BY', 785],
+                ['DE.SN', 223],
+                ['DE.ST', 605],
+                ['DE.NW', 237],
+                ['DE.BW', 157],
+                ['DE.HE', 134],
+                ['DE.NI', 136],
+                ['DE.TH', 704],
+                ['DE.', 361]
             ]
         }]
     });
