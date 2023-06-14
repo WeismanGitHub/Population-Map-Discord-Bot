@@ -5,6 +5,7 @@ class User extends Model {
     declare discordID: string
     declare countryCode: string | null
     declare subdivisionCode: string | null
+    declare addLocationOnJoin: boolean
 }
 
 User.init({
@@ -25,6 +26,10 @@ User.init({
         allowNull: true,
         defaultValue: null,
     },
+    addLocationOnJoin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    }
 }, {
     sequelize: sequelize,
     modelName: 'User',
