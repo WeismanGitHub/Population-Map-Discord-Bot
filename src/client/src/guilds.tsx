@@ -1,4 +1,4 @@
-import worldMap from "@highcharts/map-collection/custom/usa-and-canada.geo.json";
+import worldMap from "@highcharts/map-collection/custom/world.geo.json";
 import HighchartsReact from 'highcharts-react-official'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
