@@ -1,8 +1,8 @@
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
-import axios, * as _ from 'axios'
 import { errorToast } from './toasts'
 import React from 'react'
+import ky from 'ky';
 
 function generateRandomString() {
 	let randomString = '';
@@ -15,7 +15,7 @@ function generateRandomString() {
 	return randomString;
 }
 
-export default function DiscordAuth() {
+export default function DiscordLogin() {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [randomString] = useState(generateRandomString())
 	const [authorized, setAuthorized] = useState(false)
@@ -29,8 +29,8 @@ export default function DiscordAuth() {
 		if (!code || !state || localStorage.getItem('auth-state') !== atob(decodeURIComponent(state))) {
 			return localStorage.setItem('auth-state', randomString);
 		}
-
-		axios.post('/api/v1/auth/discord', { code })
+		
+		ky.post('/api/v1/auth/discord')
 		.then(res => { setAuthorized(true) })
 		.catch((err) => { errorToast(err.response.data.error || err.message) });
     }, [])
