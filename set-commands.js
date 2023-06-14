@@ -41,7 +41,7 @@ for (const path of commandsPaths) {
 }
 
 rest.put(
-    Routes.applicationCommands(process.env.DISCORD_BOT_ID),
+    Routes.applicationCommands(process.env.BOT_ID),
     { body: commands },
 ).then(res => {
     console.log(`reloaded ${commands.length} commands...`);

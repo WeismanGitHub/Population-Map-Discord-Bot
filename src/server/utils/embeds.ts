@@ -3,8 +3,9 @@ import { EmbedBuilder } from "discord.js";
 function errorEmbed(description: string | null = null, statusCode: number | null = null): EmbedBuilder {
     return new EmbedBuilder()
         .setTitle("There's been an error!")
-        .setDescription(`${description ?? ''}\nStatus Code: ${statusCode ?? 'Unknown'}`)
+        .setDescription(description)
         .setColor('#FF0000') // Red
+        .setFooter({ text: `Status Code: ${statusCode ?? 'Unknown'}` })
 }
 
 function infoEmbed(title: string | null, description: null | string = null, footer: null | string = null): EmbedBuilder {
