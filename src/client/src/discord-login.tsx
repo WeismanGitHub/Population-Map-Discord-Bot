@@ -39,7 +39,7 @@ export default function DiscordLogin() {
 		navigate('/')
 	} else {
 		return <>
-			<a href={process.env.REACT_APP_AUTH_OAUTH_URL + `&state=${btoa(randomString)}`}>
+			<a href={process.env.REACT_APP_OAUTH_URL + `&state=${btoa(randomString)}`}>
 				Login
 			</a>
 		</>
