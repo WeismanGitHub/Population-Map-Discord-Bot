@@ -6,7 +6,6 @@ import compression from 'compression'
 import config from '../../../config'
 require('express-async-errors')
 import helmet from 'helmet'
-import cors from 'cors'
 
 import geojsonRouter from './geojson';
 import authRouter from './auth';
@@ -36,7 +35,6 @@ v1Router.use(fetchMetadata({
 
 v1Router.use(limiter)
 v1Router.use(compression())
-v1Router.use(cors({ origin: [`http://localhost:${config.appPort}`] }))
 v1Router.use(express.urlencoded({ extended: true }))
 v1Router.use(express.json())
 
