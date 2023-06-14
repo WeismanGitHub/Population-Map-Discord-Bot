@@ -14,6 +14,8 @@ interface Configuration {
     limiterMessage: string
     limiterStandardHeaders: boolean
     limiterLegacyHeaders: boolean
+    botSecret: string
+    redirectURI: string
 }
 
 const config: Configuration = {
@@ -22,6 +24,8 @@ const config: Configuration = {
     botID: process.env.BOT_ID!,
     mainAccountID: process.env.MAIN_ACCOUNT_ID!,
     inviteURL: process.env.INVITE_URL!,
+    botSecret: process.env.BOT_SECRET!,
+    redirectURI: process.env.REDIRECT_URI!,
 
     // Rate Limiter
     limiterWindowMs: 2000,
