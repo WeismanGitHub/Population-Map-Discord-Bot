@@ -22,18 +22,20 @@ async function discordLogin(req: Request, res: Response): Promise<void> {
         scope: 'identify guilds',
         grantType: "authorization_code",
         redirectUri: config.redirectURI,
-    })).access_token
+    }).catch(err => { throw new InternalServerError('Could not get user token') })).access_token
 
     const userID = (await oauth.getUser(token)
-    .catch(err => { throw new InternalServerError('Could not get user data.') })).id
+    .catch(err => { throw new InternalServerError('Could not get user ID.') })).id
 
     const guilds = (await oauth.getUserGuilds(token)
-    .catch(err => { throw new InternalServerError('Could not get user data.') }))
+    .catch(err => { throw new InternalServerError('Could not get user guilds.') }))
 
     const user = await User.findOne({ where: { discordID: userID } })
     .catch(err => { throw new InternalServerError("Error finding user.") })
 
     console.log(userID, guilds, user)
+
+    // figure out what to do with this info later
 
     // const userJWT = jwt.sign(
     //     { _id: userID, role: user.role },
