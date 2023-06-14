@@ -14,7 +14,7 @@ import express, {
 } from 'express';
 
 const client: CustomClient = new CustomClient({
-    intents: [GatewayIntentBits.Guilds],
+    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
 });
 
 const app: Application = express();
