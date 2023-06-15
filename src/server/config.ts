@@ -16,7 +16,7 @@ interface Configuration {
     limiterLegacyHeaders: boolean
     botSecret: string
     redirectURI: string
-    jwtSecret: string
+    sessionSecret: string
 }
 
 const config: Configuration = {
@@ -39,7 +39,7 @@ const config: Configuration = {
     buyMeACoffeeURL: process.env.BUY_ME_A_COFFEE_URL!,
     githubURL: 'https://github.com/WeismanGitHub/Population-Density-Map-Discord-Bot',
     appPort: 5001,
-    jwtSecret: process.env.JWT_SECRET!,
+    sessionSecret: process.env.JWT_SECRET!,
 }
 
 for (const entry of Object.entries(config)) {
