@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import React from 'react';
 // import './css/index.css';
 
-import DiscordLogin from "./discord-login";
+import DiscordOAuth2 from "./discord-oauth2";
 import Guilds from './guilds';
 import Home from './home';
 
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
             element: <Guilds/>
         }]
     },
-    { path: '/auth/login', element: <DiscordLogin/> },
+    { path: '/oauth2', element: <DiscordOAuth2/> },
 ]);
 
 createRoot(document.getElementById("root")!).render(<RouterProvider router={router}/>);

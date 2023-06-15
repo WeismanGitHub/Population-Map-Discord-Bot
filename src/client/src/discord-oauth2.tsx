@@ -15,7 +15,7 @@ function generateRandomString() {
 	return randomString;
 }
 
-export default function DiscordLogin() {
+export default function DiscordOAuth2() {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [randomString] = useState(generateRandomString())
 	const [authorized, setAuthorized] = useState(false)
@@ -30,7 +30,7 @@ export default function DiscordLogin() {
 			return localStorage.setItem('auth-state', randomString);
 		}
 		
-		ky.post('/api/v1/auth/login', { json: { code } })
+		ky.post('/api/v1/auth/discord/oauth2', { json: { code } })
 		.then(res => { setAuthorized(true) })
 		.catch((err) => { errorToast(err.response.data.error || err.message) });
     }, [])
