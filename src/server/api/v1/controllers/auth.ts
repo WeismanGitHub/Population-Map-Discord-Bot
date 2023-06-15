@@ -1,10 +1,8 @@
 import { BadRequestError, InternalServerError } from '../../../errors';
 import { Request, Response } from 'express';
 import DiscordOauth2 from 'discord-oauth2'
-import { User } from '../../../db/models'
 import config from '../../../config';
 require('express-async-errors');
-// import jwt from 'jsonwebtoken';
 
 async function discordOAuth2(req: Request, res: Response): Promise<void> {
     const oauth = new DiscordOauth2();
@@ -27,32 +25,10 @@ async function discordOAuth2(req: Request, res: Response): Promise<void> {
     const userID = (await oauth.getUser(token)
     .catch(err => { throw new InternalServerError('Could not get user ID.') })).id
 
-    const guilds = (await oauth.getUserGuilds(token)
-    .catch(err => { throw new InternalServerError('Could not get user guilds.') }))
+    // save session where id is userID maybe? or maybe that could be considered private and you should use a random id.
+    userID
 
-    const user = await User.findOne({ where: { discordID: userID } })
-    .catch(err => { throw new InternalServerError("Error finding user.") })
-
-    console.log(userID, guilds, user)
-
-    // figure out what to do with this info later
-
-    // const userJWT = jwt.sign(
-    //     { _id: userID, role: user.role },
-    //     config.jwtSecret,
-    //     { expiresIn: '14d' },
-    // )
-
-    // const expiration = new Date(Date.now() + (3600000 * 24 * 14)) // 14 days
-
-	// res.status(200)
-	// .cookie('user', userJWT, {
-	// 	httpOnly: true,
-	// 	secure: true,
-	// 	sameSite: 'strict',
-	// 	expires: expiration
-	// })
-	// .json({ role: user.role }).end()
+	res.status(200).end()
 }
 
 function logout(req: Request, res: Response): void {
