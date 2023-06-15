@@ -6,7 +6,7 @@ import config from '../../../config';
 require('express-async-errors');
 // import jwt from 'jsonwebtoken';
 
-async function discordLogin(req: Request, res: Response): Promise<void> {
+async function discordOAuth2(req: Request, res: Response): Promise<void> {
     const oauth = new DiscordOauth2();
     const { code } = req.body
 
@@ -60,6 +60,6 @@ function logout(req: Request, res: Response): void {
 }
 
 export {
-    discordLogin,
+    discordOAuth2,
     logout,
 }

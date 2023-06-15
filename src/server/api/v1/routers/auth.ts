@@ -1,9 +1,9 @@
-import { discordLogin, logout } from '../controllers/auth'
+import { discordOAuth2, logout } from '../controllers/auth'
 import { Router } from 'express';
 
 const authRouter: Router = Router();
 
 authRouter.post('/logout', logout)
-authRouter.post('/login', discordLogin)
+authRouter.post('/discord/oauth2', discordOAuth2)
 
 export default authRouter
