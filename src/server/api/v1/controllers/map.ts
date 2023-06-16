@@ -29,37 +29,31 @@ async function getGuildMap(req: Request, res: Response): Promise<void> {
         throw new NotFoundError('Server is not in database.')
     }
 
+    const { visibility, adminRoleID, mapRoleID } = guildData
+
     const guilds = await oauth.getUserGuilds(accessToken)
     .catch(err => { throw new InternalServerError('Could not get user guilds.') })
 
-    if (guildData.visibility !== 'public' && !guilds.some((guild) => guild.id === guildID)) {
+    if (visibility !== 'public' && !guilds.some((guild) => guild.id === guildID)) {
         throw new ForbiddenError('You are not in this server.')
     }
 
-    if (guildData.visibility === 'invisibile') {
+    if (visibility === 'invisibile') {
         throw new ForbiddenError('Server map visibility is invisible.')
-    } else if (guildData.visibility === 'admin-role-restricted') {
-        if (!guildData.adminRoleID) {
-            throw new ForbiddenError('Server map visibility is admin role restricted.')
-        }
-
+    } else if (visibility === 'admin-role-restricted') {
         const guild = await client.guilds.fetch(guildID)
 
-        if (!guild.roles.cache.has(guildData.adminRoleID)) {
+        if (!adminRoleID || !guild.roles.cache.has(adminRoleID)) {
             throw new ForbiddenError('Server map visibility is admin role restricted.')
         }
-    } else if (guildData.visibility === 'map-role-restricted') {
-        if (!guildData.mapRoleID) {
-            throw new ForbiddenError('Server map visibility is map role restricted.')
-        }
-
+    } else if (visibility === 'map-role-restricted') {
         const guild = await client.guilds.fetch(guildID)
 
-        if (!guild.roles.cache.has(guildData.mapRoleID)) {
+        if (!mapRoleID || !guild.roles.cache.has(mapRoleID)) {
             throw new ForbiddenError('Server map visibility is map role restricted.')
         }
     }
-    
+
     const guildMapData = await GuildMap.findOne({ where: { ID: guildID } })
 
     res.status(200).json(guildMapData)
