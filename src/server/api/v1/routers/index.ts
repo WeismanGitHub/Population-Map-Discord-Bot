@@ -9,6 +9,7 @@ import helmet from 'helmet'
 
 import geojsonRouter from './geojson';
 import authRouter from './auth';
+import mapRouter from './map';
 
 const v1Router: Router = Router();
 
@@ -37,6 +38,7 @@ v1Router.use(express.urlencoded({ extended: true }))
 v1Router.use(express.json())
 
 v1Router.use('/geojson', geojsonRouter)
+v1Router.use('/geojson', mapRouter)
 v1Router.use('/auth', authRouter)
 
 export default v1Router
