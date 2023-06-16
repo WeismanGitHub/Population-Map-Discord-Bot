@@ -3,7 +3,6 @@ import rateLimit from 'express-rate-limit';
 import fetchMetadata from 'fetch-metadata';
 import express, { Router } from 'express';
 import compression from 'compression'
-import session from 'express-session'
 import config from '../../../config'
 require('express-async-errors')
 import helmet from 'helmet'
@@ -36,12 +35,6 @@ v1Router.use(limiter)
 v1Router.use(compression())
 v1Router.use(express.urlencoded({ extended: true }))
 v1Router.use(express.json())
-v1Router.use(session({
-	secret: config.sessionSecret,
-	resave: false,
-	saveUninitialized: true,
-	cookie: { secure: true, httpOnly: true, sameSite: true }
-  }))
 
 v1Router.use('/geojson', geojsonRouter)
 v1Router.use('/auth', authRouter)
