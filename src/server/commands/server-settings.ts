@@ -70,24 +70,22 @@ export default {
         let guild = await Guild.findOne({ where: { ID: interaction.guildId } })
         const thereAreChanges = Boolean(Object.keys(settings).length)
 
-        if (interaction.user.id === interaction.guild?.ownerId) {
-            if (!guild) {
-                guild = await Guild.create({
-                    ID: interaction.guildId,
-                    ...settings
-                }).catch(err => { throw new InternalServerError('Could not save server data to database.') })
+        if (interaction.user.id === interaction.guild?.ownerId && !guild) {
+            guild = await Guild.create({
+                ID: interaction.guildId,
+                ...settings
+            }).catch(err => { throw new InternalServerError('Could not save server data to database.') })
 
-                await GuildMap.create({ ID: interaction.guildId })
-                .catch(async (err) => {
-                    await Guild.destroy({ where: { ID: interaction.guildId }})
-                    throw new InternalServerError('Could not save server data to database.') 
-                })
-            } else {
-                await guild.update({
-                    ID: interaction.guildId,
-                    ...settings
-                }).catch(err => { throw new InternalServerError('Could not save server settings.') })
-            }
+            await GuildMap.create({ ID: interaction.guildId })
+            .catch(async (err) => {
+                await Guild.destroy({ where: { ID: interaction.guildId }})
+                throw new InternalServerError('Could not save server data to database.') 
+            })
+        } else if (interaction.user.id === interaction.guild?.ownerId && guild) {
+            await guild.update({
+                ID: interaction.guildId,
+                ...settings
+            }).catch(err => { throw new InternalServerError('Could not save server settings.') })
         } else if (!guild) {
             return interaction.reply({
                 ephemeral: true,
