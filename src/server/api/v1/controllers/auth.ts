@@ -12,7 +12,7 @@ async function discordOAuth2(req: Request, res: Response): Promise<void> {
         throw new BadRequestError('Missing Code')
     }
 
-    const token = (await oauth.tokenRequest({
+    const accessToken = (await oauth.tokenRequest({
         clientId: config.botID,
         clientSecret: config.botSecret,
     
@@ -22,11 +22,11 @@ async function discordOAuth2(req: Request, res: Response): Promise<void> {
         redirectUri: config.redirectURI,
     }).catch(err => { throw new InternalServerError('Could not get user token') })).access_token
 
-    const userID = (await oauth.getUser(token)
+    const userID = (await oauth.getUser(accessToken)
     .catch(err => { throw new InternalServerError('Could not get user ID.') })).id
 
-    // save session where id is userID maybe? or maybe that could be considered private and you should use a random id.
-    userID
+    req.session.userID = userID
+    req.session.accessToken = accessToken
 
 	res.status(200).end()
 }
