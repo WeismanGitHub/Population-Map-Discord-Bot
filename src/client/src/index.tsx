@@ -17,7 +17,7 @@ const router = createBrowserRouter([
             element: <Guilds/>
         }]
     },
-    { path: '/oauth2', element: <DiscordOAuth2/> },
+    { path: '/discord/oauth2', element: <DiscordOAuth2/> },
 ]);
 
 createRoot(document.getElementById("root")!).render(<RouterProvider router={router}/>);
