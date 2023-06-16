@@ -4,7 +4,7 @@ import config from '../../../config';
 export default session({
 	secret: config.sessionSecret,
 	resave: false,
-	saveUninitialized: true,
+	saveUninitialized: false,
 	cookie: {
 		secure: true,
 		httpOnly: true,
