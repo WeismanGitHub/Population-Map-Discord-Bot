@@ -5,5 +5,11 @@ export default session({
 	secret: config.sessionSecret,
 	resave: false,
 	saveUninitialized: true,
-	cookie: { secure: true, httpOnly: true, sameSite: true, path: '/' }
+	cookie: {
+		secure: true,
+		httpOnly: true,
+		sameSite: true,
+		path: '/',
+		maxAge: 1000 * 60 * 60 * 24
+	},
 })
