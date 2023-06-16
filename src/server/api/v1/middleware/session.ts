@@ -5,6 +5,7 @@ export default session({
 	secret: config.sessionSecret,
 	resave: false,
 	saveUninitialized: false,
+	name: 'sessionID',
 	cookie: {
 		secure: config.production ? true : false,
 		httpOnly: true,
