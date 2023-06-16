@@ -32,7 +32,11 @@ async function discordOAuth2(req: Request, res: Response): Promise<void> {
 }
 
 function logout(req: Request, res: Response): void {
-	res.status(200).clearCookie('user').end()
+    req.session.destroy((err) => {
+        if (err) throw new InternalServerError('Could not delete session and log you out.')
+
+        res.status(200).end()
+    })
 }
 
 export {
