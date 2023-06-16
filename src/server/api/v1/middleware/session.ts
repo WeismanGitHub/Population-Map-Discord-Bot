@@ -11,6 +11,6 @@ export default session({
 		httpOnly: true,
 		sameSite: true,
 		path: '/',
-		maxAge: 1000 * 60 * 60 * 24
+		maxAge: 1000 * 60 * 60
 	},
 })
