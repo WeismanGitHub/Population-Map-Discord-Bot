@@ -2,6 +2,8 @@ import { CustomError, InternalServerError, NotFoundError } from './errors';
 import { CustomClient } from './custom-client';
 import { GatewayIntentBits } from 'discord.js';
 import v1Router from './api/v1/routers';
+import { createWriteStream } from 'fs'
+import morgan from 'morgan'
 import sequelize from './db/sequelize'
 require('express-async-errors')
 import { resolve } from 'path'
@@ -17,7 +19,19 @@ const client: CustomClient = new CustomClient({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
 });
 
+const stream = createWriteStream(resolve(__dirname, '../../api.log'), { flags: 'a' })
+const logger = morgan(function (tokens, req, res) {
+	return [
+	  tokens.method(req, res),
+	  tokens.url(req, res),
+	  tokens.status(req, res),
+	  tokens.res(req, res, 'content-length'), '-',
+	  tokens['response-time'](req, res), 'ms'
+	].join(' ')
+}, { stream })
+
 const app: Application = express();
+app.use(logger)
 app.set('discordClient', client);
 
 app.use(express.static(resolve(__dirname, '../client/build')))
@@ -32,8 +46,8 @@ app.get('/*', (req: Request, res: Response): void => {
 })
 
 app.use((err: Error | CustomError, req: Request, res: Response, next: NextFunction): void => {
-    console.error(err.message)
-
+	console.error(err.message)
+	
 	if (err instanceof CustomError) {
 		res.status(err.statusCode).json({ error: err.message })
 	} else {
