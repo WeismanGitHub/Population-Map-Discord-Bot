@@ -6,7 +6,7 @@ export default session({
 	resave: false,
 	saveUninitialized: false,
 	cookie: {
-		secure: true,
+		secure: config.production ? true : false,
 		httpOnly: true,
 		sameSite: true,
 		path: '/',
