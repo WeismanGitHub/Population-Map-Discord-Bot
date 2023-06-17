@@ -4,7 +4,7 @@ import sequelize from "../../sequelize";
 class APILog extends Model {
     declare method: string
     declare path: string
-    declare status: number
+    declare statusCode: number
     declare responseTimeMS: number
 }
 
@@ -17,7 +17,7 @@ APILog.init({
         type: DataTypes.STRING,
         allowNull: false,
     },
-    status: {
+    statusCode: {
         type: DataTypes.NUMBER,
         allowNull: false,
     },
