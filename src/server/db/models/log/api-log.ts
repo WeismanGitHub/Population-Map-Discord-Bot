@@ -28,7 +28,8 @@ APILog.init({
 }, {
     sequelize: sequelize,
     modelName: 'User',
-    timestamps: false
+    createdAt: true,
+    updatedAt: false
 });
 
 APILog.sync()
