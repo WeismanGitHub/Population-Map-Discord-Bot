@@ -15,12 +15,16 @@ export default {
 	,
 	async execute(interaction: CommandInteraction): Promise<void> {
 		const embed = 
-			infoEmbed(null, "Generate a population density map based off of server member's self reported locations.")
+			infoEmbed(null, "Generate a population density map based off of server member's self reported locations. Use `/help` in a Discord server to get the link to the server map.")
 			.addFields({ name: 'Contact the Creator:', value: `<@${config.mainAccountID}>` })
 			// .setImage('../../../population-map-example.png')
 	
 		const linksRow = new ActionRowBuilder<ButtonBuilder>()
 		.addComponents([
+			new ButtonBuilder()
+			.setLabel('Website')
+			.setURL(config.websiteURL)
+			.setStyle(ButtonStyle.Link),
 			new ButtonBuilder()
 			.setLabel('Github')
 			.setURL(config.githubURL)
@@ -31,27 +35,36 @@ export default {
 			.setStyle(ButtonStyle.Link),
 		])
 
-		const docsRow = new ActionRowBuilder<ButtonBuilder>()
-		.addComponents([
+		const firstRow = new ActionRowBuilder<ButtonBuilder>()
+		.addComponents(
 			new ButtonBuilder()
 			.setLabel('User Docs')
+			.setStyle(ButtonStyle.Primary)
 			.setCustomId(JSON.stringify({
 				type: 'help-users',
 				data: {}
-			}))
-			.setStyle(ButtonStyle.Primary),
+			})),
 			new ButtonBuilder()
 			.setLabel('Server Owner Docs')
+			.setStyle(ButtonStyle.Primary)
 			.setCustomId(JSON.stringify({
 				type: 'help-owners',
 				data: {}
-			}))
-			.setStyle(ButtonStyle.Primary),
-		])
+			})),
+		)
+
+		if (interaction.guild) {
+			firstRow.addComponents(
+				new ButtonBuilder()
+				.setLabel('Server Map Link')
+				.setStyle(ButtonStyle.Link)
+				.setURL(`${config.websiteURL}/maps/${interaction.guildId}`)
+			)
+		}
 
 		interaction.reply({
 			embeds: [embed],
-			components: [docsRow, linksRow],
+			components: [firstRow, linksRow],
 			ephemeral: true
 		})
 	}
