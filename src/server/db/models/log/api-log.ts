@@ -27,7 +27,7 @@ APILog.init({
     }
 }, {
     sequelize: sequelize,
-    modelName: 'User',
+    modelName: 'APILog',
     createdAt: true,
     updatedAt: false
 });
