@@ -17,7 +17,7 @@ interface Configuration {
     botSecret: string
     redirectURI: string
     sessionSecret: string
-    production: boolean
+    mode: string
     websiteURL: string
 }
 
@@ -42,7 +42,7 @@ const config: Configuration = {
     githubURL: 'https://github.com/WeismanGitHub/Population-Density-Map-Discord-Bot',
     appPort: 5001,
     sessionSecret: process.env.JWT_SECRET!,
-    production: Boolean(Number(process.env.PRODUCTION)), // PRODUCTION is 0 or 1.
+    mode: process.env.MODE!, // mode is "prod" or "dev".
     websiteURL: process.env.WEBSITE_URL! // Example: http://localhost:5001
 }
 
@@ -52,6 +52,10 @@ for (const entry of Object.entries(config)) {
     if (Number.isNaN(value) || value === undefined) {
         throw new InternalServerError(`${key} is missing.`)
     }
+}
+
+if (!['prod', 'dev'].includes(config.mode)) {
+    throw new InternalServerError('Mode property on config is invalid.')
 }
 
 export default config
