@@ -1,7 +1,6 @@
-import config from "../../config";
 import { CustomClient } from "../../custom-client";
 import { InternalServerError } from "../../errors";
-import { infoEmbed } from "../../utils/embeds";
+import config from "../../config";
 import {
     ActionRowBuilder,
     ButtonBuilder,
@@ -32,13 +31,12 @@ export default {
         const row = new ActionRowBuilder<ButtonBuilder>()
 		.addComponents(
             new ButtonBuilder()
-            .setLabel('Server Map Link')
+            .setLabel('Server Map')
             .setStyle(ButtonStyle.Link)
             .setURL(`${config.websiteURL}/maps/${interaction.guildId}?countryCode=${countryCode}`)
 		)
 
         interaction.update({
-            embeds: [infoEmbed(`Server map for ${country.name}:`)],
             components: [row]
         })
     }
