@@ -17,7 +17,7 @@ interface Configuration {
     botSecret: string
     redirectURI: string
     sessionSecret: string
-    mode: string
+    mode: 'prod' | 'dev'
     websiteURL: string
 }
 
@@ -42,7 +42,7 @@ const config: Configuration = {
     githubURL: 'https://github.com/WeismanGitHub/Population-Density-Map-Discord-Bot',
     appPort: 5001,
     sessionSecret: process.env.JWT_SECRET!,
-    mode: process.env.MODE!, // mode is "prod" or "dev".
+    mode: process.env.MODE as 'prod' | 'dev',
     websiteURL: process.env.WEBSITE_URL! // Example: http://localhost:5001
 }
 
