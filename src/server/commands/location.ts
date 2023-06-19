@@ -43,8 +43,8 @@ export default {
                 .setLabel('⏩')
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(JSON.stringify({
-                    type: 'location-country-page',
-                    data: { page: 1 }
+                    type: 'country-page',
+                    data: { page: 1, countrySelectType: 'location-country' }
                 }))
         )
 

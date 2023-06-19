@@ -45,7 +45,7 @@ export default {
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(JSON.stringify({
                     type: 'map-country-page',
-                    data: { page: 1 }
+                    data: { page: 1, countrySelectType: 'map-country' }
                 }))
         )
 
