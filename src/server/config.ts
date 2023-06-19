@@ -16,6 +16,9 @@ interface Configuration {
     limiterLegacyHeaders: boolean
     botSecret: string
     redirectURI: string
+    sessionSecret: string
+    mode: string
+    websiteURL: string
 }
 
 const config: Configuration = {
@@ -38,6 +41,9 @@ const config: Configuration = {
     buyMeACoffeeURL: process.env.BUY_ME_A_COFFEE_URL!,
     githubURL: 'https://github.com/WeismanGitHub/Population-Density-Map-Discord-Bot',
     appPort: 5001,
+    sessionSecret: process.env.JWT_SECRET!,
+    mode: process.env.MODE!, // mode is "prod" or "dev".
+    websiteURL: process.env.WEBSITE_URL! // Example: http://localhost:5001
 }
 
 for (const entry of Object.entries(config)) {
@@ -46,6 +52,10 @@ for (const entry of Object.entries(config)) {
     if (Number.isNaN(value) || value === undefined) {
         throw new InternalServerError(`${key} is missing.`)
     }
+}
+
+if (!['prod', 'dev'].includes(config.mode)) {
+    throw new InternalServerError('Mode must be equal to "prod" or "dev".')
 }
 
 export default config

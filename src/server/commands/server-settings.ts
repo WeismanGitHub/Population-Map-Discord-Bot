@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction, GuildMemberManager } from 'discord.js'
 import { BadRequestError, InternalServerError } from '../errors'
+import { Guild, GuildMap } from '../db/models'
 import { infoEmbed } from '../utils/embeds'
-import { Guild } from '../db/models'
 
 interface GuildSettings {
     visibility?: 'public' | 'member-restricted' | 'map-role-restricted' | 'admin-role-restricted' | 'invisibile'
@@ -70,18 +70,22 @@ export default {
         let guild = await Guild.findOne({ where: { ID: interaction.guildId } })
         const thereAreChanges = Boolean(Object.keys(settings).length)
 
-        if (interaction.user.id === interaction.guild?.ownerId && thereAreChanges) {
-            if (!guild) {
-                guild = await Guild.create({
-                    ID: interaction.guildId,
-                    ...settings
-                }).catch(err => { throw new InternalServerError('Could not save server settings.') })
-            } else {
-                await guild.update({
-                    ID: interaction.guildId,
-                    ...settings
-                }).catch(err => { throw new InternalServerError('Could not save server settings.') })
-            }
+        if (interaction.user.id === interaction.guild?.ownerId && !guild) {
+            guild = await Guild.create({
+                ID: interaction.guildId,
+                ...settings
+            }).catch(err => { throw new InternalServerError('Could not save server data to database.') })
+
+            await GuildMap.create({ ID: interaction.guildId })
+            .catch(async (err) => {
+                await Guild.destroy({ where: { ID: interaction.guildId }})
+                throw new InternalServerError('Could not save server data to database.') 
+            })
+        } else if (interaction.user.id === interaction.guild?.ownerId && guild) {
+            await guild.update({
+                ID: interaction.guildId,
+                ...settings
+            }).catch(err => { throw new InternalServerError('Could not save server settings.') })
         } else if (!guild) {
             return interaction.reply({
                 ephemeral: true,
@@ -110,8 +114,8 @@ export default {
             ephemeral: true,
             embeds: [infoEmbed('Server Settings',
                 `\`visibility\`: \`${guild.visibility}\`\n
-                \`admin-role\`: ${guild.adminRoleID ? `<@&${guild.adminRoleID}>` : null}\n
-                \`map-role\`: ${guild.mapRoleID ? `<@&${guild.mapRoleID}>` : null}`
+                \`admin-role\`: ${guild.adminRoleID ? `<@&${guild.adminRoleID}>` : '`null`'}\n
+                \`map-role\`: ${guild.mapRoleID ? `<@&${guild.mapRoleID}>` : '`null`'}`
             )]
         })
 	}

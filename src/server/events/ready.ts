@@ -4,7 +4,7 @@ import { Events } from 'discord.js'
 export default {
 	name: Events.ClientReady,
 	once: true,
-	execute(client: CustomClient) {
+	async execute(client: CustomClient) {
         console.log('bot is ready...')
 	},
 };

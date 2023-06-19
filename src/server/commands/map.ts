@@ -1,26 +1,27 @@
 import { CustomClient } from '../custom-client'
 import {
-    SlashCommandBuilder,
-    CommandInteraction,
-    StringSelectMenuBuilder,
-    StringSelectMenuOptionBuilder,
-    ActionRowBuilder,
-    ButtonBuilder,
-    ButtonStyle
+	SlashCommandBuilder,
+	CommandInteraction,
+	ActionRowBuilder,
+	StringSelectMenuBuilder,
+	StringSelectMenuOptionBuilder,
+	ButtonBuilder,
+	ButtonStyle,
 } from 'discord.js'
 
 export default {
 	data: new SlashCommandBuilder()
-		.setName('location')
-		.setDescription("Set your country and optionally your subdivision (state, region, prefecture, etc).")
+		.setName('map')
+        .setDMPermission(false)
+		.setDescription("Get a server map for a specific country.")
 	,
 	async execute(interaction: CommandInteraction): Promise<void> {
-        const client = interaction.client as CustomClient
+		const client = interaction.client as CustomClient
 
         const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId(JSON.stringify({
-                    type: 'location-country',
+                    type: 'map-country',
                     data: {}
                 }))
                 .setPlaceholder('Select a country!')
@@ -43,8 +44,8 @@ export default {
                 .setLabel('⏩')
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(JSON.stringify({
-                    type: 'country-page',
-                    data: { page: 1, countrySelectType: 'location-country' }
+                    type: 'map-country-page',
+                    data: { page: 1, countrySelectType: 'map-country' }
                 }))
         )
 

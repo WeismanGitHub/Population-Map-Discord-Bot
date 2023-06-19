@@ -4,8 +4,8 @@ import { GatewayIntentBits } from 'discord.js';
 import v1Router from './api/v1/routers';
 import sequelize from './db/sequelize'
 require('express-async-errors')
-import config from './config'
 import { resolve } from 'path'
+import config from './config'
 import express, {
 	Application,
 	NextFunction,
@@ -32,8 +32,8 @@ app.get('/*', (req: Request, res: Response): void => {
 })
 
 app.use((err: Error | CustomError, req: Request, res: Response, next: NextFunction): void => {
-    console.error(err.message)
-
+	console.error(err.message)
+	
 	if (err instanceof CustomError) {
 		res.status(err.statusCode).json({ error: err.message })
 	} else {

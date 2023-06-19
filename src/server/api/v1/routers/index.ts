@@ -6,10 +6,10 @@ import compression from 'compression'
 import config from '../../../config'
 require('express-async-errors')
 import helmet from 'helmet'
-import cors from 'cors'
 
 import geojsonRouter from './geojson';
 import authRouter from './auth';
+import mapRouter from './map';
 
 const v1Router: Router = Router();
 
@@ -22,7 +22,6 @@ const limiter = rateLimit({
 })
 
 v1Router.use(helmet())
-
 v1Router.use(fetchMetadata({
 	allowedFetchSites: ['same-origin', 'same-site', 'none'],
 	disallowedNavigationRequests: ['frame', 'iframe'],
@@ -33,14 +32,13 @@ v1Router.use(fetchMetadata({
 		res.end()
 	}
 }))
-
 v1Router.use(limiter)
 v1Router.use(compression())
-v1Router.use(cors({ origin: [`http://localhost:${config.appPort}`] }))
 v1Router.use(express.urlencoded({ extended: true }))
 v1Router.use(express.json())
 
 v1Router.use('/geojson', geojsonRouter)
+v1Router.use('/geojson', mapRouter)
 v1Router.use('/auth', authRouter)
 
 export default v1Router
