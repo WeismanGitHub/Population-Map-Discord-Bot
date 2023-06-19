@@ -55,7 +55,7 @@ for (const entry of Object.entries(config)) {
 }
 
 if (!['prod', 'dev'].includes(config.mode)) {
-    throw new InternalServerError('Mode property on config is invalid.')
+    throw new InternalServerError('Mode must be equal to "prod" or "dev".')
 }
 
 export default config
