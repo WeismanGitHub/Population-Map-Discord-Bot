@@ -117,7 +117,7 @@ export class CustomClient extends Client {
             if (event.default.once) {
                 this.once(event.default.name, (...args) => event.default.execute(...args))
             } else {
-                const listener = this.on(event.default.name, (...args) => {
+                this.on(event.default.name, (...args) => {
                     event.default.execute(...args)
                     .catch((err: Error) => {
                         console.error(err.message)
@@ -134,8 +134,6 @@ export class CustomClient extends Client {
                         }
                     })
                 });
-                
-                listener.setMaxListeners(12)
             }
         }
 
