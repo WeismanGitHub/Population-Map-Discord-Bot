@@ -15,7 +15,7 @@ export default {
 	,
 	async execute(interaction: CommandInteraction): Promise<void> {
 		const embed = 
-			infoEmbed(null, "Generate a population density map based off of server member's self reported locations. Use `/help` in a Discord server to get the link to the server map.")
+			infoEmbed(null, "Generate a population density map based off of server member's self reported locations. Use `/help` in a Discord server to get the link to the server map. `/map` can be used to get a map for a specific country. Countries and subdivisions are from [ISO 3166](https://www.iso.org/iso-3166-country-codes.html).")
 			.addFields({ name: 'Contact the Creator:', value: `<@${config.mainAccountID}>` })
 			// .setImage('../../../population-map-example.png')
 	
@@ -56,7 +56,7 @@ export default {
 		if (interaction.guild) {
 			firstRow.addComponents(
 				new ButtonBuilder()
-				.setLabel('Server Map Link')
+				.setLabel('Server Map')
 				.setStyle(ButtonStyle.Link)
 				.setURL(`${config.websiteURL}/maps/${interaction.guildId}`)
 			)

@@ -26,7 +26,7 @@ export default {
             return
         }
 
-        const country = client.countries.find((country) => country.code === countryCode)
+        const country = client.getCountry(countryCode)
 
         if (!country) {
             throw new InternalServerError('Could not get country.')
@@ -56,6 +56,7 @@ export default {
                 .setDisabled(true),
             new ButtonBuilder()
                 .setLabel('⏩')
+                .setDisabled(country.sub.length < 25)
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(JSON.stringify({
                     type: 'location-subdivision-page',

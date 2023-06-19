@@ -48,8 +48,6 @@ export class CustomClient extends Client {
         })
     }
 
-    // Maybe make it like a hash table, implement binary search instead of using countries.find().
-    // Might not be worth it tho since its only like 250 countries in total.
     private _countries = Object.entries(iso3166.data).map(data => {
         const sortedSub = Object.entries(data[1].sub).map(sub => {
             return { code: sub[0], ...sub[1] }
@@ -58,6 +56,13 @@ export class CustomClient extends Client {
 
         return { name: data[1].name, sub: sortedSub, code: data[0] }
     }).sort((a, b) => a.name.localeCompare(b.name))
+
+    
+    // Maybe make it like a hash table, implement binary search instead of using countries.find().
+    // Might not be worth it tho since its only like 250 countries in total.
+    public getCountry(code: string) {
+        return this.countries.find(country => country.code === code) || null
+    }
 
     get countries() {
         return this._countries

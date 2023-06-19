@@ -3,7 +3,7 @@ import sequelize from "../sequelize";
 
 class User extends Model {
     declare discordID: string
-    declare countryCode: string | null
+    declare countryCode: string
     declare subdivisionCode: string | null
     declare addLocationOnJoin: boolean
 }
@@ -17,7 +17,7 @@ User.init({
     countryCode: {
         // Maybe make this an enum of all country codes in the future?
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
         defaultValue: null,
     },
     subdivisionCode: {

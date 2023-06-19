@@ -30,7 +30,7 @@ export default {
             .catch(err => { throw new InternalServerError('Could not save `add-location-on-join` setting.') })
         }
         
-        const country = client.countries.find((country) => country.code === user.countryCode)
+        const country = client.getCountry(user.countryCode)
 
         if (!country) {
             throw new InternalServerError('Could not find country.')
