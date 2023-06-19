@@ -1,20 +1,41 @@
-// @ts-nocheck
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
-import ky from 'ky';
+import React from 'react'
+import * as ChartGeo from "chartjs-chart-geo";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  Tooltip,
+  Title,
+  Legend
+} from "chart.js";
+import Map from "./map";
+
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  ChartGeo.ChoroplethController,
+  ChartGeo.ProjectionScale,
+  ChartGeo.ColorScale,
+  ChartGeo.GeoFeature
+);
 
 export default function Guilds() {
-    const [geojson, setGeojson] = useState({})
-    const { guildID } = useParams()
-    guildID
+    // const [geojson, setGeojson] = useState({})
+    // const { guildID } = useParams()
+    // guildID
+
+    // useEffect(() => {
+    //     (async () => {
+    //         const res: JSON = await ky.get('https://cdn.jsdelivr.net/npm/us-atlas/states-10m.json').json()
+
+    //         setGeojson(res)
+    //     })()
+    // }, [])
     
-    useEffect(() => {
-        (async () => {
-            const res = await ky.get('').json()
-
-            setGeojson(res)
-        })()
-    }, [])
-
-    return <>{geojson}</>
+    return (
+      <div>
+        <Map chosenKey="china" />
+      </div>
+    );
 }
