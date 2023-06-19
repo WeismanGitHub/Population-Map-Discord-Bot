@@ -48,7 +48,7 @@ export default {
                 .setDisabled(page <= 0)
                 .setCustomId(JSON.stringify({
                     type: 'country-page',
-                    data: { page: page - 1 }
+                    data: { page: page - 1, countrySelectType }
                 })),
             new ButtonBuilder()
                 .setLabel('⏩')
@@ -56,7 +56,7 @@ export default {
                 .setDisabled((page + 1) * 25 >= client.countries.length)
                 .setCustomId(JSON.stringify({
                     type: 'country-page',
-                    data: { page: page + 1 }
+                    data: { page: page + 1, countrySelectType }
                 }))
         )
 
