@@ -34,12 +34,28 @@ function getPaths(dir: string): string[] {
     return filePaths
 }
 
+function getOrderedCountries() {
+    return Object.entries(iso3166.data).map(data => {
+        const sortedSub = Object.entries(data[1].sub).map(sub => {
+            return { code: sub[0], ...sub[1] }
+        }).sort((a, b) => a.name.localeCompare(b.name))
+        
+
+        return { name: data[1].name, sub: sortedSub, code: data[0] }
+    }).sort((a, b) => a.name.localeCompare(b.name))
+}
+
+type Countries = ReturnType<typeof getOrderedCountries>
+
 export class CustomClient extends Client {
+    declare public countries: Countries
+
     constructor(clientOptions: ClientOptions) {
         super(clientOptions);
 
         this.token = config.discordToken
         this.commands = new Collection()
+        this.countries = getOrderedCountries()
         
         this.login(this.token)
         .then(async () => {
@@ -48,26 +64,12 @@ export class CustomClient extends Client {
         })
     }
 
-    private _countries = Object.entries(iso3166.data).map(data => {
-        const sortedSub = Object.entries(data[1].sub).map(sub => {
-            return { code: sub[0], ...sub[1] }
-        }).sort((a, b) => a.name.localeCompare(b.name))
-        
-
-        return { name: data[1].name, sub: sortedSub, code: data[0] }
-    }).sort((a, b) => a.name.localeCompare(b.name))
-
-    
-    // Maybe make it like a hash table, implement binary search instead of using countries.find().
+    // implement binary search instead of using countries.find() or like make it more efficient idk. hash map?
     // Might not be worth it tho since its only like 250 countries in total.
     public getCountry(code: string) {
         return this.countries.find(country => country.code === code) || null
     }
 
-    get countries() {
-        return this._countries
-    }
-    
     private async loadCommands() {
         const commandsPaths: string[] = getPaths(join(__dirname, 'commands')).filter(file => file.endsWith('.js'))
         const commands = [];
