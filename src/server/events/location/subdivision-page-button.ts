@@ -27,10 +27,12 @@ export default {
         }
 
         const country = client.getCountry(countryCode)
-
+        
         if (!country) {
             throw new InternalServerError('Could not get country.')
         }
+        
+        const subdivisions = country.sub.slice(page * 25, (page * 25) + 25)
 
         const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
@@ -40,7 +42,7 @@ export default {
                 }))
                 .setPlaceholder('Select your subdivision!')
                 .addOptions(
-                    country.sub.slice(page * 25, (page * 25) + 25).map(subdivision => 
+                    subdivisions.map(subdivision => 
                         new StringSelectMenuOptionBuilder()
                             .setLabel(subdivision.name)
                             .setValue(subdivision.code)
@@ -60,7 +62,7 @@ export default {
             new ButtonBuilder()
                 .setLabel('⏩')
                 .setStyle(ButtonStyle.Primary)
-                .setDisabled((page + 1) * 25 >= country.sub.length)
+                .setDisabled(subdivisions.length < 25)
                 .setCustomId(JSON.stringify({
                     type: 'location-subdivision-page',
                     data: { page: page + 1, countryCode }

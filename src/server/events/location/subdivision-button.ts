@@ -56,6 +56,7 @@ export default {
                 .setDisabled(true),
             new ButtonBuilder()
                 .setLabel('⏩')
+                .setDisabled(country.sub.length < 25)
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(JSON.stringify({
                     type: 'location-subdivision-page',
