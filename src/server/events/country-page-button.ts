@@ -1,4 +1,4 @@
-import { CustomClient } from "../../custom-client"
+import { CustomClient } from "../custom-client"
 import {
     ActionRowBuilder,
     ButtonBuilder,
@@ -17,18 +17,18 @@ export default {
             return
         }
 
-        const { type, data }: CustomID<{ page: number }> = JSON.parse(interaction.customId)
+        const { type, data }: CustomID<{ page: number, countrySelectType: string }> = JSON.parse(interaction.customId)
         const client = interaction.client as CustomClient
-        const { page } = data
+        const { page, countrySelectType } = data
 
-        if (type !== 'map-country-page') {
+        if (type !== 'country-page') {
             return
         }
 
         const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId(JSON.stringify({
-                    type: 'map-country',
+                    type: countrySelectType,
                     data: {}
                 }))
                 .setPlaceholder('Select a country!')
@@ -47,7 +47,7 @@ export default {
                 .setStyle(ButtonStyle.Primary)
                 .setDisabled(page <= 0)
                 .setCustomId(JSON.stringify({
-                    type: 'map-country-page',
+                    type: 'country-page',
                     data: { page: page - 1 }
                 })),
             new ButtonBuilder()
@@ -55,7 +55,7 @@ export default {
                 .setStyle(ButtonStyle.Primary)
                 .setDisabled((page + 1) * 25 >= client.countries.length)
                 .setCustomId(JSON.stringify({
-                    type: 'map-country-page',
+                    type: 'country-page',
                     data: { page: page + 1 }
                 }))
         )
