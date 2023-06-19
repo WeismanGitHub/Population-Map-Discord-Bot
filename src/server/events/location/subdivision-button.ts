@@ -32,8 +32,6 @@ export default {
             throw new InternalServerError('Could not get country.')
         }
 
-        console.log(country)
-
         const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId(JSON.stringify({
