@@ -26,11 +26,13 @@ export default {
             return
         }
 
-        const country = client.countries.find((country) => country.code === countryCode)
+        const country = client.getCountry(countryCode)
 
         if (!country) {
             throw new InternalServerError('Could not get country.')
         }
+
+        console.log(country)
 
         const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
