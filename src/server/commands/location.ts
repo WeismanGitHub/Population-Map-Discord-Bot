@@ -23,7 +23,7 @@ export default {
                     type: 'location-country',
                     data: {}
                 }))
-                .setPlaceholder('Select your country!')
+                .setPlaceholder('Select a country!')
                 .addOptions(
                     client.countries.slice(0, 25).map(country => 
                         new StringSelectMenuOptionBuilder()
