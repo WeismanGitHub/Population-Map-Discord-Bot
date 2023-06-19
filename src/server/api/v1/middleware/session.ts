@@ -7,7 +7,7 @@ export default session({
 	saveUninitialized: false,
 	name: 'sessionID',
 	cookie: {
-		secure: config.production ? true : false,
+		secure: config.mode === 'prod' ? true : false,
 		httpOnly: true,
 		sameSite: true,
 		path: '/',
