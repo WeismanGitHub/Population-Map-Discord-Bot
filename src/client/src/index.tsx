@@ -4,19 +4,12 @@ import React from 'react';
 // import './css/index.css';
 
 import DiscordOAuth2 from "./discord-oauth2";
-import Guilds from './guilds';
+import Guild from './guild';
 import Home from './home';
 
 const router = createBrowserRouter([
     { path: '/', element: <Home/> },
-    {
-        path: '/guilds',
-        element: <Guilds/>,
-        children: [{
-            path: '/guilds/:guildID',
-            element: <Guilds/>
-        }]
-    },
+    { path: '/maps/:guildID', element: <Guild/> },
     { path: '/discord/oauth2', element: <DiscordOAuth2/> },
 ]);
 
