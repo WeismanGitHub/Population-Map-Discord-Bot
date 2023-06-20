@@ -1,5 +1,8 @@
-import React from 'react'
 import * as ChartGeo from "chartjs-chart-geo";
+import { useParams } from "react-router-dom";
+import React, {useState, useEffect } from 'react'
+import Map from "./map"
+import ky from 'ky'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -7,7 +10,6 @@ import {
   Title,
   Legend
 } from "chart.js";
-import Map from "./map";
 
 ChartJS.register(
   Title,
@@ -20,22 +22,26 @@ ChartJS.register(
   ChartGeo.GeoFeature
 );
 
-export default function Guilds() {
-    // const [geojson, setGeojson] = useState({})
-    // const { guildID } = useParams()
-    // guildID
+interface GuildData {
+    topojson: JSON
+    guildMemberCount: number
+}
 
-    // useEffect(() => {
-    //     (async () => {
-    //         const res: JSON = await ky.get('https://cdn.jsdelivr.net/npm/us-atlas/states-10m.json').json()
+export default function Guild() {
+    const [guildMemberCount, setGuildMemberCount] = useState(0)
+    const [topojson, setTopojson] = useState({})
+    const { guildID } = useParams()
 
-    //         setGeojson(res)
-    //     })()
-    // }, [])
+    useEffect(() => {
+        (async () => {
+            const res: GuildData = await ky.get(`/api/v1/guilds/${guildID}`).json()
+
+            setTopojson(res.topojson)
+            setGuildMemberCount(res.guildMemberCount)
+        })()
+    }, [])
     
-    return (
-      <div>
+    return (<div>
         <Map chosenKey="china" />
-      </div>
-    );
+    </div>);
 }
