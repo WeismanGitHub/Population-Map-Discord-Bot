@@ -4,6 +4,6 @@ import { Router } from 'express';
 
 const guildRouter: Router = Router();
 
-guildRouter.get('/guildID', session, getGuildData)
+guildRouter.get('/:guildID', session, getGuildData)
 
 export default guildRouter
