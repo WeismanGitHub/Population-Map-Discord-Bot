@@ -1,7 +1,6 @@
 import React, {useState, useEffect } from 'react'
 import * as ChartGeo from "chartjs-chart-geo";
 import { useParams } from "react-router-dom";
-// import pako from 'pako'
 import Map from "./map"
 import ky from 'ky'
 import {
@@ -32,23 +31,17 @@ export default function Guild() {
     const [guildMemberCount, setGuildMemberCount] = useState(0)
     const [topojson, setTopojson] = useState({})
     const { guildID } = useParams()
+    const urlParams = new URLSearchParams(window.location.search);
+    const countryCode = urlParams.get('countryCode')
 
     useEffect(() => {
         (async () => {
-            const res: GuildData = await ky.get(`/api/v1/guilds/${guildID}`).json()
-            const countryData = await ky.get('/api/v1/geojson/countries/US').json()
-
-            // const data = await countryData.arrayBuffer()
-            // const buffer = pako.ungzip(data, { raw: true })
-
-            // console.log(buffer)
-            
-            // setTopojson(buffer)
+            const guildData: GuildData = await ky.get(`/api/v1/guilds/${guildID}`).json()
+            const mapjson = await ky.get(`https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_${countryCode}_1.json`)
             // @ts-ignore
-            setTopojson(countryData.features)
+            setTopojson(mapjson.features)
             // @ts-ignore
-            console.log(countryData.features)
-            setGuildMemberCount(res.guildMemberCount)
+            setGuildMemberCount(guildData.guildMemberCount)
         })()
     }, [])
 
