@@ -7,7 +7,6 @@ import config from '../../../config'
 require('express-async-errors')
 import helmet from 'helmet'
 
-import geojsonRouter from './geojson';
 import authRouter from './auth';
 import guildRouter from './guild';
 
@@ -37,7 +36,6 @@ v1Router.use(compression())
 v1Router.use(express.urlencoded({ extended: true }))
 v1Router.use(express.json())
 
-v1Router.use('/geojson', geojsonRouter)
 v1Router.use('/guild', guildRouter)
 v1Router.use('/auth', authRouter)
 
