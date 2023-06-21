@@ -1,7 +1,7 @@
 import React, {useState, useEffect } from 'react'
 import * as ChartGeo from "chartjs-chart-geo";
 import { useParams } from "react-router-dom";
-import pako from 'pako'
+// import pako from 'pako'
 import Map from "./map"
 import ky from 'ky'
 import {
@@ -36,15 +36,18 @@ export default function Guild() {
     useEffect(() => {
         (async () => {
             const res: GuildData = await ky.get(`/api/v1/guilds/${guildID}`).json()
-            const countryData = await ky.get('/api/v1/geojson/countries/US')
+            const countryData = await ky.get('/api/v1/geojson/countries/US').json()
 
-            const data = await countryData.arrayBuffer()
-            const buffer = pako.ungzip(data, { raw: true })
+            // const data = await countryData.arrayBuffer()
+            // const buffer = pako.ungzip(data, { raw: true })
 
-            console.log(buffer)
+            // console.log(buffer)
             
-            // setTopojson(res.topojson)
-            setTopojson(buffer)
+            // setTopojson(buffer)
+            // @ts-ignore
+            setTopojson(countryData.features)
+            // @ts-ignore
+            console.log(countryData.features)
             setGuildMemberCount(res.guildMemberCount)
         })()
     }, [])

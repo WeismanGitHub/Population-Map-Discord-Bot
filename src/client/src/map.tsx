@@ -28,7 +28,7 @@ export default function Map(props: { data: JSON[], label: string }) {
             ref={chartRef}
             type="choropleth"
             data={{
-                // labels: props.data.map((d: any) => {}),
+                labels: props.data.map((d: any) => d.properties.VARNAME_1),
                 datasets: [
                     {
                         outline: props.data,
