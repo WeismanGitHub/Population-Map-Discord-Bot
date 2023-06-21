@@ -17,7 +17,6 @@ export default {
 
         if (type !== 'map-country') return
 
-
         const row = new ActionRowBuilder<ButtonBuilder>()
 		.addComponents(
             new ButtonBuilder()
