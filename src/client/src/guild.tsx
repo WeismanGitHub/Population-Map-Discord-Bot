@@ -1,6 +1,7 @@
+import React, {useState, useEffect } from 'react'
 import * as ChartGeo from "chartjs-chart-geo";
 import { useParams } from "react-router-dom";
-import React, {useState, useEffect } from 'react'
+import pako from 'pako'
 import Map from "./map"
 import ky from 'ky'
 import {
@@ -23,7 +24,7 @@ ChartJS.register(
 );
 
 interface GuildData {
-    topojson: JSON
+    topojson: JSON[]
     guildMemberCount: number
 }
 
@@ -35,13 +36,28 @@ export default function Guild() {
     useEffect(() => {
         (async () => {
             const res: GuildData = await ky.get(`/api/v1/guilds/${guildID}`).json()
+            const countryData = await ky.get('/api/v1/geojson/countries/US')
 
-            setTopojson(res.topojson)
+            const data = await countryData.arrayBuffer()
+            const buffer = pako.ungzip(data, { raw: true })
+
+            console.log(buffer)
+            
+            // setTopojson(res.topojson)
+            setTopojson(buffer)
             setGuildMemberCount(res.guildMemberCount)
         })()
     }, [])
-    
-    return (<div>
-        <Map chosenKey="china" />
-    </div>);
+
+    if (!Object.keys(topojson).length) {
+        return (<div>
+            loading...
+        </div>)
+    } else {
+        return (<div>
+            {guildMemberCount}
+            {/* @ts-ignore */}
+            <Map data={topojson} label={'test'}/>
+        </div>);
+    }
 }
