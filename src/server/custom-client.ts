@@ -1,7 +1,7 @@
 import { errorEmbed } from './utils/embeds';
 import { readdirSync, statSync } from 'fs';
 import { CustomError } from './errors';
-import iso3166 from 'iso-3166-2'
+import iso31662 from 'iso-3166-2'
 import config from './config';
 import { join } from 'path';
 import {
@@ -35,7 +35,7 @@ function getPaths(dir: string): string[] {
 }
 
 function getOrderedCountries() {
-    return Object.entries(iso3166.data).map(data => {
+    return Object.entries(iso31662.data).map(data => {
         const sortedSub = Object.entries(data[1].sub).map(sub => {
             return { code: sub[0], ...sub[1] }
         }).sort((a, b) => a.name.localeCompare(b.name))
