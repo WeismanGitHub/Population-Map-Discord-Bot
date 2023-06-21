@@ -1,6 +1,4 @@
-import { InternalServerError } from "../../errors";
 import config from "../../config";
-import { whereAlpha2 } from 'iso-3166-1'
 import {
     ActionRowBuilder,
     ButtonBuilder,
@@ -19,18 +17,13 @@ export default {
 
         if (type !== 'map-country') return
 
-        const countryCode = whereAlpha2(interaction.values[0])?.alpha3
-
-        if (!countryCode) {
-            throw new InternalServerError('Could not find country.')
-        }
 
         const row = new ActionRowBuilder<ButtonBuilder>()
 		.addComponents(
             new ButtonBuilder()
             .setLabel('Server Map')
             .setStyle(ButtonStyle.Link)
-            .setURL(`${config.websiteURL}/maps/${interaction.guildId}?countryCode=${countryCode}`)
+            .setURL(`${config.websiteURL}/maps/${interaction.guildId}?countryCode=${interaction.values[0]}`)
 		)
 
         interaction.update({
