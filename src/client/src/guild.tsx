@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import * as ChartGeo from "chartjs-chart-geo";
 import { useParams } from "react-router-dom";
 import Map from "./map"
@@ -22,38 +22,49 @@ ChartJS.register(
   ChartGeo.GeoFeature
 );
 
-interface GuildData {
-    topojson: JSON[]
+interface GuildRes {
+    geojson: { features: JSON[] } | null
+    locationsData: JSON
+    name: string
     guildMemberCount: number
+    iconURL: string
 }
 
 export default function Guild() {
     const [guildMemberCount, setGuildMemberCount] = useState(0)
-    const [topojson, setTopojson] = useState({})
-    const { guildID } = useParams()
+    const [guildIconURL, setGuildIconURL] = useState('')
+    const [guildName, setGuildName] = useState('')
+    const [geojson, setGeojson] = useState()
+    
     const urlParams = new URLSearchParams(window.location.search);
     const countryCode = urlParams.get('countryCode')
+    const { guildID } = useParams()
 
     useEffect(() => {
         (async () => {
-            const guildData: GuildData = await ky.get(`/api/v1/guilds/${guildID}`).json()
-            const mapjson = await ky.get(`https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_${countryCode}_1.json`)
             // @ts-ignore
-            setTopojson(mapjson.features)
+            const res: GuildRes = await ky.get(`/api/v1/guilds/${guildID}` + countryCode ? `?countryCode=${countryCode}` : '').json()
+            console.log(res)
+
+            setGuildMemberCount(res.guildMemberCount)
+            setGuildIconURL(res.iconURL)
+            console.log(res)
             // @ts-ignore
-            setGuildMemberCount(guildData.guildMemberCount)
+            setGeojson(res.geojson?.features)
+            setGuildName(res.name)
         })()
     }, [])
 
-    if (!Object.keys(topojson).length) {
+    if (!geojson) {
         return (<div>
             loading...
         </div>)
     } else {
         return (<div>
-            {guildMemberCount}
-            {/* @ts-ignore */}
-            <Map data={topojson} label={'test'}/>
+            {guildName} - {guildMemberCount} members
+            <img src={guildIconURL}/>
+
+            <Map geojson={geojson} label={'test'}/>
         </div>);
     }
 }

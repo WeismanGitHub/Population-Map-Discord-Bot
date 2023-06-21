@@ -20,7 +20,7 @@ ChartJS.register(
     ChartGeo.GeoFeature
 );
 
-export default function Map(props: { data: JSON[], label: string }) {
+export default function Map(props: { geojson: JSON[], label: string }) {
     const chartRef = useRef();
 
     return (
@@ -28,12 +28,12 @@ export default function Map(props: { data: JSON[], label: string }) {
             ref={chartRef}
             type="choropleth"
             data={{
-                labels: props.data.map((d: any) => d.properties.VARNAME_1),
+                labels: props.geojson.map((d: any) => d.properties.VARNAME_1),
                 datasets: [
                     {
-                        outline: props.data,
+                        outline: props.geojson,
                         label: props.label,
-                        data: props.data.map((d: any) => ({
+                        data: props.geojson.map((d: any) => ({
                             feature: d,
                             value: Math.random() * 10
                         }))
