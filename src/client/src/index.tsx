@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import React from 'react';
-// import './css/index.css';
+import './styles.css';
 
 import DiscordOAuth2 from "./discord-oauth2";
 import Guild from './guild';
