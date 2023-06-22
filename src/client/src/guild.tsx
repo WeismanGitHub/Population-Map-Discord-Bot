@@ -23,7 +23,7 @@ ChartJS.register(
 );
 
 interface GuildRes {
-    geojson: { features: JSON[] } | null
+    geojson: { features: {}[] } | null
     locationsData: JSON
     name: string
     guildMemberCount: number
@@ -43,12 +43,10 @@ export default function Guild() {
     useEffect(() => {
         (async () => {
             // @ts-ignore
-            const res: GuildRes = await ky.get(`/api/v1/guilds/${guildID}` + countryCode ? `?countryCode=${countryCode}` : '').json()
-            console.log(res)
+            const res: GuildRes = await ky.get(`/api/v1/guilds/${guildID}${countryCode ? `?countryCode=${countryCode}` : ''}`).json()
 
             setGuildMemberCount(res.guildMemberCount)
             setGuildIconURL(res.iconURL)
-            console.log(res)
             // @ts-ignore
             setGeojson(res.geojson?.features)
             setGuildName(res.name)
