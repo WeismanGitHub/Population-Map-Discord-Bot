@@ -35,40 +35,39 @@ interface TopojsonRes {
 }
 
 export default function Guild() {
-    const [loadingDotsAmount, setLoadingDotsAmount] = useState(1)
     const [guildMemberCount, setGuildMemberCount] = useState(0)
     const [guildIconURL, setGuildIconURL] = useState('')
     const [guildName, setGuildName] = useState('')
-    const [topojson, setTopojson] = useState([{}])
+    const [topojson, setTopojson] = useState(null)
     
     const urlParams = new URLSearchParams(window.location.search);
     const countryCode = urlParams.get('countryCode')
     const { guildID } = useParams()
 
     useEffect(() => {
-        (async () => {
-            const [guildRes, topojsonRes] = await Promise.all([
-                ky.get(`/api/v1/guilds/${guildID}`).json(),
-                ky.get(`/api/v1/topojson/${countryCode ?? ''}`).json()
-            ]).catch(err => errorToast(err?.response?.data?.error || err.message)) as [GuildRes, TopojsonRes]
-
+        (Promise.all([
+            ky.get(`/api/v1/guilds/${guildID}`).json(),
+            ky.get(`https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/topojson/${countryCode || 'WORLD'}.json`).json().catch(err => { throw new Error('Could not get country.') })
+        ]) as Promise<unknown> as Promise<[GuildRes, TopojsonRes]>)
+        .then(([guildRes, topojsonRes]) => {
+            if (!topojsonRes?.features) {
+                return errorToast('Invalid country code.')
+            }
+    
             setGuildMemberCount(guildRes.guildMemberCount)
             setGuildIconURL(guildRes.iconURL)
+            // @ts-ignore
             setTopojson(topojsonRes.features)
             setGuildName(guildRes.name)
-        })()
+        }).catch(err => { console.log(err); errorToast(err?.response?.data?.error || err.message) })
     }, [])
 
-    const interval = setInterval(() => {
-        setLoadingDotsAmount(loadingDotsAmount === 3 ? 0 : loadingDotsAmount + 1)
-    }, 500)
 
     if (!topojson) {
-        return (<div className='loading-text'>
-            loading{'.'.repeat(loadingDotsAmount)}
+        return (<div>
+            loading...
         </div>)
     } else {
-        clearInterval(interval)
         return (<div>
             {guildName} - {guildMemberCount} members
             <img src={guildIconURL}/>
