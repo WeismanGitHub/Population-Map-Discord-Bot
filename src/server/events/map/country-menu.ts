@@ -1,3 +1,4 @@
+import { country } from 'iso-3166-2'
 import config from "../../config";
 import {
     ActionRowBuilder,
@@ -17,17 +18,31 @@ export default {
 
         if (type !== 'map-country') return
 
-        const row = new ActionRowBuilder<ButtonBuilder>()
+        const previousMapButtons = interaction.message.components[2].components.slice(0, 4).map(({ data }) => {
+            return new ButtonBuilder()
+                // @ts-ignore
+                .setLabel(data.label)
+                // @ts-ignore
+                .setStyle(data.style)
+                // @ts-ignore
+                .setURL(data.url)
+        })
+
+        const mapButtons = new ActionRowBuilder<ButtonBuilder>()
 		.addComponents(
+            ...previousMapButtons,
             new ButtonBuilder()
-            .setLabel('Server Map')
-            .setStyle(ButtonStyle.Link)
-            .setURL(`${config.websiteURL}/maps/${interaction.guildId}?countryCode=${interaction.values[0]}`)
+                .setLabel(`${country(interaction.values[0])?.name} Map`)
+                .setStyle(ButtonStyle.Link)
+                .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapType=${interaction.values[0]}`)
 		)
 
-        interaction.reply({
-            ephemeral: true,
-            components: [row]
+        interaction.update({
+            components: [
+                interaction.message.components[0],
+                interaction.message.components[1],
+                mapButtons
+            ]
         })
     }
 }
