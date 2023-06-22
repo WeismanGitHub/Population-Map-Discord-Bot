@@ -41,13 +41,13 @@ export default function Guild() {
     const [topojson, setTopojson] = useState(null)
     
     const urlParams = new URLSearchParams(window.location.search);
-    const countryCode = urlParams.get('countryCode')
+    const mapType = urlParams.get('mapType')
     const { guildID } = useParams()
 
     useEffect(() => {
         (Promise.all([
             ky.get(`/api/v1/guilds/${guildID}`).json(),
-            ky.get(`https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/topojson/${countryCode || 'WORLD'}.json`).json().catch(err => { throw new Error('Could not get country.') })
+            ky.get(`https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/topojson/${mapType}.json`).json().catch(err => { throw new Error('Could not get country.') })
         ]) as Promise<unknown> as Promise<[GuildRes, TopojsonRes]>)
         .then(([guildRes, topojsonRes]) => {
             if (!topojsonRes?.features) {
