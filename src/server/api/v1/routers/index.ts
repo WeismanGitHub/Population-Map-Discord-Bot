@@ -7,8 +7,9 @@ import config from '../../../config'
 require('express-async-errors')
 import helmet from 'helmet'
 
-import authRouter from './auth';
+import topojsonRouter from './topojson';
 import guildRouter from './guild';
+import authRouter from './auth';
 
 const v1Router: Router = Router();
 
@@ -31,11 +32,13 @@ v1Router.use(fetchMetadata({
 		res.end()
 	}
 }))
+
 v1Router.use(limiter)
 v1Router.use(compression())
 v1Router.use(express.urlencoded({ extended: true }))
 v1Router.use(express.json())
 
+v1Router.use('/topojson', topojsonRouter)
 v1Router.use('/guilds', guildRouter)
 v1Router.use('/auth', authRouter)
 
