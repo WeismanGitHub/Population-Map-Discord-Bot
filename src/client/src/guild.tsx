@@ -49,7 +49,7 @@ export default function Guild() {
         (async () => {
             const [guildRes, topojsonRes] = await Promise.all([
                 ky.get(`/api/v1/guilds/${guildID}`).json(),
-                ky.get(`/api/v1/topojson/${countryCode ?? ''}`).json()
+                ky.get(`https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/topojson/${countryCode ?? 'WORLD'}.json/}`).json()
             ]).catch(err => errorToast(err?.response?.data?.error || err.message)) as [GuildRes, TopojsonRes]
 
             setGuildMemberCount(guildRes.guildMemberCount)
