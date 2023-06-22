@@ -53,18 +53,20 @@ export default {
 			})),
 		)
 
-		if (interaction.guild) {
-			firstRow.addComponents(
-				new ButtonBuilder()
-				.setLabel('Server Map')
-				.setStyle(ButtonStyle.Link)
-				.setURL(`${config.websiteURL}/maps/${interaction.guildId}`)
-			)
-		}
+        const mapButtonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
+            new ButtonBuilder()
+            .setLabel('World Map')
+            .setStyle(ButtonStyle.Link)
+            .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapType=WORLD`),
+            new ButtonBuilder()
+            .setLabel('Continents Map')
+            .setStyle(ButtonStyle.Link)
+            .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapType=CONTINENTS`)
+        )
 
 		interaction.reply({
 			embeds: [embed],
-			components: [firstRow, linksRow],
+			components: interaction.guild ? [firstRow, linksRow, mapButtonsRow] : [firstRow, linksRow],
 			ephemeral: true
 		})
 	}
