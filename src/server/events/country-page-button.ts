@@ -5,6 +5,7 @@ import {
     ButtonInteraction,
     ButtonStyle,
     Events,
+    LinkButtonComponentData,
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
 } from "discord.js"
@@ -62,13 +63,12 @@ export default {
 
         const mapButtonsRow = !interaction.message.components[2] ? null : new ActionRowBuilder<ButtonBuilder>().addComponents(
             interaction.message.components[2].components.slice(0, 4).map(({ data }) => {
+                const { label, url, style } = data as LinkButtonComponentData
+
                 return new ButtonBuilder()
-                    // @ts-ignore
-                    .setLabel(data.label)
-                    // @ts-ignore
-                    .setStyle(data.style)
-                    // @ts-ignore
-                    .setURL(data.url)
+                    .setLabel(label || 'error')
+                    .setStyle(style)
+                    .setURL(url)
             })
         )
 

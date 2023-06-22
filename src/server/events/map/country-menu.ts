@@ -5,7 +5,8 @@ import {
     ButtonBuilder,
     ButtonStyle,
     Events,
-    StringSelectMenuInteraction
+    StringSelectMenuInteraction,
+    LinkButtonComponentData
 } from "discord.js"
 
 export default {
@@ -18,14 +19,15 @@ export default {
 
         if (type !== 'map-country') return
 
-        const previousMapButtons = interaction.message.components[2].components.slice(0, 4).map(({ data }) => {
+        const previousMapButtons = interaction.message.components[2].components.slice(0, 4)
+        .map(({ data }) => {
+            const { label, url, style } = data as LinkButtonComponentData
+
+
             return new ButtonBuilder()
-                // @ts-ignore
-                .setLabel(data.label)
-                // @ts-ignore
-                .setStyle(data.style)
-                // @ts-ignore
-                .setURL(data.url)
+                .setLabel(label || 'error')
+                .setStyle(style)
+                .setURL(url)
         })
 
         const mapButtons = new ActionRowBuilder<ButtonBuilder>()
