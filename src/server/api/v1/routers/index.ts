@@ -7,7 +7,6 @@ import config from '../../../config'
 require('express-async-errors')
 import helmet from 'helmet'
 
-import topojsonRouter from './topojson';
 import guildRouter from './guild';
 import authRouter from './auth';
 
@@ -38,7 +37,6 @@ v1Router.use(compression())
 v1Router.use(express.urlencoded({ extended: true }))
 v1Router.use(express.json())
 
-v1Router.use('/topojson', topojsonRouter)
 v1Router.use('/guilds', guildRouter)
 v1Router.use('/auth', authRouter)
 
