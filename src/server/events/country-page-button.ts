@@ -1,4 +1,5 @@
 import { CustomClient } from "../custom-client"
+import config from "../config"
 import {
     ActionRowBuilder,
     ButtonBuilder,
@@ -60,6 +61,19 @@ export default {
                 }))
         )
 
-        interaction.update({ components: [menuRow, buttonsRow] })
+        const mapButtonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
+            new ButtonBuilder()
+            .setLabel('World Map')
+            .setStyle(ButtonStyle.Link)
+            .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapType=WORLD`),
+            new ButtonBuilder()
+            .setLabel('Continents Map')
+            .setStyle(ButtonStyle.Link)
+            .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapType=CONTINENTS`)
+        )
+
+        interaction.update({
+            components: countrySelectType === 'map-country' ? [menuRow, buttonsRow, mapButtonsRow] : [menuRow, buttonsRow]
+        })
     }
 }
