@@ -25,7 +25,8 @@ export default {
             .setURL(`${config.websiteURL}/maps/${interaction.guildId}?countryCode=${interaction.values[0]}`)
 		)
 
-        interaction.update({
+        interaction.reply({
+            ephemeral: true,
             components: [row]
         })
     }
