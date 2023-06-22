@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import * as ChartGeo from "chartjs-chart-geo";
 import { useParams } from "react-router-dom";
+import { errorToast } from './toasts';
 import Map from "./map"
 import ky from 'ky'
 import {
@@ -10,6 +11,7 @@ import {
   Title,
   Legend
 } from "chart.js";
+import { clearInterval } from 'timers';
 
 ChartJS.register(
   Title,
@@ -23,18 +25,22 @@ ChartJS.register(
 );
 
 interface GuildRes {
-    geojson: { features: {}[] } | null
     locationsData: JSON
     name: string
     guildMemberCount: number
     iconURL: string
 }
 
+interface TopojsonRes {
+    features: {}[]
+}
+
 export default function Guild() {
+    const [loadingDotsAmount, setLoadingDotsAmount] = useState(1)
     const [guildMemberCount, setGuildMemberCount] = useState(0)
     const [guildIconURL, setGuildIconURL] = useState('')
     const [guildName, setGuildName] = useState('')
-    const [geojson, setGeojson] = useState()
+    const [topojson, setTopojson] = useState([{}])
     
     const urlParams = new URLSearchParams(window.location.search);
     const countryCode = urlParams.get('countryCode')
@@ -42,27 +48,33 @@ export default function Guild() {
 
     useEffect(() => {
         (async () => {
-            // @ts-ignore
-            const res: GuildRes = await ky.get(`/api/v1/guilds/${guildID}${countryCode ? `?countryCode=${countryCode}` : ''}`).json()
+            const [guildRes, topojsonRes] = await Promise.all([
+                ky.get(`/api/v1/guilds/${guildID}`).json(),
+                ky.get(`/api/v1/topojson/${countryCode ?? ''}`).json()
+            ]).catch(err => errorToast(err?.response?.data?.error || err.message)) as [GuildRes, TopojsonRes]
 
-            setGuildMemberCount(res.guildMemberCount)
-            setGuildIconURL(res.iconURL)
-            // @ts-ignore
-            setGeojson(res.geojson?.features)
-            setGuildName(res.name)
+            setGuildMemberCount(guildRes.guildMemberCount)
+            setGuildIconURL(guildRes.iconURL)
+            setTopojson(topojsonRes.features)
+            setGuildName(guildRes.name)
         })()
     }, [])
 
-    if (!geojson) {
-        return (<div>
-            loading...
+    const interval = setInterval(() => {
+        setLoadingDotsAmount(loadingDotsAmount === 3 ? 0 : loadingDotsAmount + 1)
+    }, 500)
+
+    if (!topojson) {
+        return (<div className='loading-text'>
+            loading{'.'.repeat(loadingDotsAmount)}
         </div>)
     } else {
+        clearInterval(interval)
         return (<div>
             {guildName} - {guildMemberCount} members
             <img src={guildIconURL}/>
 
-            <Map geojson={geojson} label={'test'}/>
+            <Map topojson={topojson} label={'test'}/>
         </div>);
     }
 }
