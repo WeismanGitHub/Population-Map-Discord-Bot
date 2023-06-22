@@ -13,7 +13,6 @@
     "express-rate-limit": "^6.7.0",
     "express-session": "^1.17.3",
     "fetch-metadata": "^1.0.0",
-    "geojson-places": "^1.0.8",
     "helmet": "^7.0.0",
     "iso-3166-2": "^1.0.0",
     "ky": "^0.33.3",

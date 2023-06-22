@@ -1,4 +1,3 @@
-const { getCountryGeoJSONByAlpha2 } = require('geojson-places')
 import { CustomClient } from '../../../custom-client';
 import { Guild, GuildMap } from '../../../db/models';
 import { Request, Response } from 'express';
@@ -14,7 +13,6 @@ import {
 async function getGuildData(req: Request, res: Response): Promise<void> {
     const client: CustomClient = req.app.get('discordClient')
     const { accessToken, userID } = req.session
-    const countryCode = req.query.countryCode
     const guildID = req.params.guildID
     const oauth = new DiscordOauth2();
 
@@ -54,7 +52,6 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
     res.status(200)
     .json({
         locationsData: guildMapData,
-        geojson: countryCode ? getCountryGeoJSONByAlpha2(String(countryCode)) : null,
         name: guild.name,
         iconURL: guild.iconURL(),
         guildMemberCount: guild.memberCount

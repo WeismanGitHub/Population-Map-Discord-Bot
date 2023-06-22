@@ -20,24 +20,26 @@ ChartJS.register(
     ChartGeo.GeoFeature
 );
 
-export default function Map(props: { geojson: JSON[], label: string }) {
+export default function Map(props: { topojson: {}[], label: string }) {
     const chartRef = useRef();
+    // convert the geojson to topojson
+    const geojson = props.topojson
 
     return (
         <ReactChart
             ref={chartRef}
             type="choropleth"
             data={{
-                labels: props.geojson.map((d: any) => d.properties.VARNAME_1),
+                labels: geojson.map((d: any) => d.properties.VARNAME_1),
                 datasets: [
                     {
-                        outline: props.geojson,
+                        outline: geojson,
                         label: props.label,
-                        data: props.geojson.map((d: any) => ({
+                        data: geojson.map((d: any) => ({
                             feature: d,
                             value: Math.random() * 10
-                        }))
-                        // backgroundColor: ["#94BA62", "#59A22F", "#1A830C"]
+                        })),
+                        backgroundColor: ["#94BA62", "#59A22F", "#1A830C"]
                     }
                 ]
             }}
@@ -49,7 +51,6 @@ export default function Map(props: { geojson: JSON[], label: string }) {
                 },
                 scales: {
                     xy: { projection: "equalEarth" }
-                // color: { display: false } // Hide color scale
                 }
             }}
         />

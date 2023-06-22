@@ -7,8 +7,8 @@ import config from '../../../config'
 require('express-async-errors')
 import helmet from 'helmet'
 
-import authRouter from './auth';
 import guildRouter from './guild';
+import authRouter from './auth';
 
 const v1Router: Router = Router();
 
@@ -31,6 +31,7 @@ v1Router.use(fetchMetadata({
 		res.end()
 	}
 }))
+
 v1Router.use(limiter)
 v1Router.use(compression())
 v1Router.use(express.urlencoded({ extended: true }))
