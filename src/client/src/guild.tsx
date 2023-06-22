@@ -11,7 +11,6 @@ import {
   Title,
   Legend
 } from "chart.js";
-import { clearInterval } from 'timers';
 
 ChartJS.register(
   Title,
