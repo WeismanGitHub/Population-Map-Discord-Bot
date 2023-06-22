@@ -1,4 +1,5 @@
 import { CustomClient } from '../custom-client'
+import config from '../config'
 import {
 	SlashCommandBuilder,
 	CommandInteraction,
@@ -13,7 +14,7 @@ export default {
 	data: new SlashCommandBuilder()
 		.setName('map')
         .setDMPermission(false)
-		.setDescription("Get a server map for a specific country.")
+		.setDescription("Get a server map for the world, continents, or a specific country.")
 	,
 	async execute(interaction: CommandInteraction): Promise<void> {
 		const client = interaction.client as CustomClient
@@ -34,7 +35,18 @@ export default {
                 )
         )
 
-        const buttonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
+        const mapButtonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
+            new ButtonBuilder()
+            .setLabel('World Map')
+            .setStyle(ButtonStyle.Link)
+            .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapType=WORLD`),
+            new ButtonBuilder()
+            .setLabel('Continents Map')
+            .setStyle(ButtonStyle.Link)
+            .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapType=CONTINENTS`)
+        )
+
+        const pageButtonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
                 .setLabel('⏪')
                 .setStyle(ButtonStyle.Primary)
@@ -51,7 +63,7 @@ export default {
 
         interaction.reply({
             ephemeral: true,
-            components: [menuRow, buttonsRow]
+            components: [menuRow, pageButtonsRow, mapButtonsRow]
         })
 	}
 }
