@@ -52,6 +52,12 @@ export default function Guild() {
                 ky.get(`https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/topojson/${countryCode ?? 'WORLD'}.json/}`).json()
             ]).catch(err => errorToast(err?.response?.data?.error || err.message)) as [GuildRes, TopojsonRes]
 
+            if (!topojson) {
+                return errorToast('Invalid country selection.')
+            }
+
+            console.log(topojsonRes)
+
             setGuildMemberCount(guildRes.guildMemberCount)
             setGuildIconURL(guildRes.iconURL)
             setTopojson(topojsonRes.features)
@@ -63,8 +69,8 @@ export default function Guild() {
         setLoadingDotsAmount(loadingDotsAmount === 3 ? 0 : loadingDotsAmount + 1)
     }, 500)
 
-    if (!topojson) {
-        return (<div className='loading-text'>
+    if (!Object.keys(topojson[0])) {
+        return (<div>
             loading{'.'.repeat(loadingDotsAmount)}
         </div>)
     } else {
