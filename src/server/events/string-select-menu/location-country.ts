@@ -1,6 +1,6 @@
 import { InternalServerError } from "../../errors";
 import { infoEmbed } from "../../utils/embeds";
-import { User } from "../../db/models/";
+import { User } from "../../db/models";
 import {
     ActionRowBuilder,
     ButtonBuilder,
