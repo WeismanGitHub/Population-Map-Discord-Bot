@@ -20,10 +20,9 @@ ChartJS.register(
     ChartGeo.GeoFeature
 );
 
-export default function Map(props: { topojson: {}[], label: string }) {
+export default function Map(props: { geojson: {}[], label: string }) {
     const chartRef = useRef();
-    // convert the geojson to topojson
-    const geojson = props.topojson
+    const geojson = props.geojson
 
     return (
         <ReactChart
