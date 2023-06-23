@@ -30,7 +30,7 @@ interface GuildRes {
     iconURL: string
 }
 
-interface TopojsonRes {
+interface GeojsonRes {
     features: {}[]
 }
 
@@ -38,7 +38,7 @@ export default function Guild() {
     const [guildMemberCount, setGuildMemberCount] = useState(0)
     const [guildIconURL, setGuildIconURL] = useState('')
     const [guildName, setGuildName] = useState('')
-    const [topojson, setTopojson] = useState(null)
+    const [geojson, setGeojson] = useState(null)
     
     const urlParams = new URLSearchParams(window.location.search);
     const mapType = urlParams.get('mapType')
@@ -47,23 +47,23 @@ export default function Guild() {
     useEffect(() => {
         (Promise.all([
             ky.get(`/api/v1/guilds/${guildID}`).json(),
-            ky.get(`https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/topojson/${mapType}.json`).json().catch(err => { throw new Error('Could not get country.') })
-        ]) as Promise<unknown> as Promise<[GuildRes, TopojsonRes]>)
-        .then(([guildRes, topojsonRes]) => {
-            if (!topojsonRes?.features) {
+            ky.get(`https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/geojson/${mapType}.json`).json().catch(err => { throw new Error('Could not get country.') })
+        ]) as Promise<unknown> as Promise<[GuildRes, GeojsonRes]>)
+        .then(([guildRes, geojsonRes]) => {
+            if (!geojsonRes?.features) {
                 return errorToast('Invalid country code.')
             }
     
             setGuildMemberCount(guildRes.guildMemberCount)
             setGuildIconURL(guildRes.iconURL)
             // @ts-ignore
-            setTopojson(topojsonRes.features)
+            setGeojson(geojsonRes.features)
             setGuildName(guildRes.name)
-        }).catch(err => { console.log(err); errorToast(err?.response?.data?.error || err.message) })
+        }).catch(err => { errorToast(err?.response?.data?.error || err.message) })
     }, [])
 
 
-    if (!topojson) {
+    if (!geojson) {
         return (<div>
             loading...
         </div>)
@@ -72,7 +72,7 @@ export default function Guild() {
             {guildName} - {guildMemberCount} members
             <img src={guildIconURL}/>
 
-            <Map topojson={topojson} label={'test'}/>
+            <Map geojson={geojson} label={'test'}/>
         </div>);
     }
 }
