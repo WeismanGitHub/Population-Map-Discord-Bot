@@ -6,7 +6,7 @@ const fs = require('fs');
 (async () => {
     for (const [threeCharCode, twoCharCode] of Object.entries(iso31662.codes)) {
         await new Promise((resolve, reject) => {
-            const file = fs.createWriteStream(`./topojson/${twoCharCode}.json`);
+            const file = fs.createWriteStream(`./topojson2/${twoCharCode}.json`);
         
             https.get(`https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_${threeCharCode}_1.json`, function(res) {
                 let geojson = ''
@@ -16,7 +16,7 @@ const fs = require('fs');
                 })
 
                 res.on('end', () => {
-                    const topojson = topojsonServer.topology(JSON.stringify(geojson), 1)
+                    const topojson = topojsonServer.topology(JSON.parse(geojson).features, 1)
                     file.write(JSON.stringify(topojson))
                 })
 
