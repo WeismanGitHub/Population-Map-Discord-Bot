@@ -35,7 +35,7 @@ export default {
         )
 
         interaction.update({
-            embeds: [infoEmbed('Selected a country`!', 'You can also optionally choose your subdivision (state, region, prefecture, etc).')],
+            embeds: [infoEmbed('Selected a country!', 'You can also optionally choose your subdivision (state, region, prefecture, etc).')],
             components: [row]
         })
     }
