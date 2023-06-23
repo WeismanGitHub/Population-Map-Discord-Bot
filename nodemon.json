@@ -1,6 +1,6 @@
 {
-    "ignore": [
-        "src/server/*"
+    "watch": [
+        "dist/server/*"
     ],
-    "delay": "800"
+    "delay": "100"
 }
