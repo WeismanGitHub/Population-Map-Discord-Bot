@@ -26,6 +26,12 @@ import app from './app'
 	appLogger.log({
 		level: 'info',
 		guildsAmount,
-		message: 'idk why i even need message'
+		message: 'success'
+	})
+})
+.catch((err: Error) => {
+	appLogger.log({
+		level: 'error',
+		message: err.message
 	})
 })
