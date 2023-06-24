@@ -1,31 +1,35 @@
-import wbs from 'winston-better-sqlite3'
-import { resolve } from 'path'
-import winston from 'winston'
+import { AppLog, APILog, BotLog } from './db/models/logs';
 import config from './config'
 
-function createLogger(table: string, params: string[]) {
-    const transport = new wbs({
-        db: resolve(__dirname, '../../db.sqlite'),
-        table: table,
-        params: params
-    })
-
-    return winston.createLogger({
-        levels: {
-            'error': 0,
-            'warn': 1,
-            'info': 2,
-        },
-        format: winston.format.json(),
-        transports: [
-            config.mode === 'prod' ? transport : new winston.transports.Console()
-        ]
-    });
+const levels = {
+    'error': 0,
+    'info': 2,
 }
 
-const apiLogger = createLogger('APILog', ['method', 'path', 'statusCode', 'responseTimeMS'])
-const botLogger = createLogger('BotLog', ['type', 'name', 'statusCode'])
-const appLogger = createLogger('AppLog', ['guildsAmount'])
+class Logger {
+    // if config.mode is dev then console.log, otherwise save to db
+    constructor() {
+
+    }
+
+    public log() {
+        
+    }
+}
+
+class APPLogger extends Logger {
+}
+
+class APILogger extends Logger {
+}
+
+class BotLogger extends Logger {
+}
+
+
+const botLogger = new BotLogger()
+const apiLogger = new APILogger()
+const appLogger = new APPLogger()
 
 export {
     apiLogger,
