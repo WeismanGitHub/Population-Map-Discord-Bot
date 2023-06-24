@@ -23,9 +23,9 @@ function createLogger(table: string, params: string[]) {
     });
 }
 
-const apiLogger = createLogger('APILog', ['method', 'path', 'statusCode', 'responseTimeMS', 'timeStamp'])
-const botLogger = createLogger('BotLog', ['type', 'name', 'statusCode', 'timeStamp'])
-const appLogger = createLogger('AppLog', ['guildsAmount', 'startTime'])
+const apiLogger = createLogger('APILog', ['method', 'path', 'statusCode', 'responseTimeMS'])
+const botLogger = createLogger('BotLog', ['type', 'name', 'statusCode'])
+const appLogger = createLogger('AppLog', ['guildsAmount'])
 
 export {
     apiLogger,
