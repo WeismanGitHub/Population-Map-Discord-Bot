@@ -2,19 +2,30 @@ import { InternalServerError } from './errors';
 import { CustomClient } from './custom-client';
 import { GatewayIntentBits } from 'discord.js';
 import sequelize from './db/sequelize'
+import { appLogger } from './logger';
 require('express-async-errors')
 import config from './config'
 import app from './app'
 
-const client: CustomClient = new CustomClient({
-    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
-});
+(async function() {
+	const client = new CustomClient({
+		intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
+	});
 
-app.set('discordClient', client);
-app.listen(config.appPort, (): void => console.log(`listening on port ${config.appPort}...`));
+	app.listen(config.appPort, (): void => console.log(`listening on port ${config.appPort}...`));
+	app.set('discordClient', client);
+	
+	await sequelize.authenticate()
+	.catch((err) => { throw new InternalServerError('Could not connect to database.') })
 
-try {
-	sequelize.authenticate().then(() => console.log('connected to database...'))
-} catch (error) {
-	throw new InternalServerError('Could not connect to database.')
-}
+	console.log('connected to database...')
+	
+	return (await client.guilds.fetch()).size
+})()
+.then((guildsAmount) => {
+	appLogger.log({
+		level: 'info',
+		guildsAmount,
+		message: 'idk why i even need message'
+	})
+})
