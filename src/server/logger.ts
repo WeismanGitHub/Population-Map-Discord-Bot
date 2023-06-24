@@ -3,20 +3,32 @@ import { resolve } from 'path'
 import winston from 'winston'
 import config from './config'
 
-const wbsTransport = new wbs({
-    db: resolve(__dirname, '../../db.sqlite'),
-    table: 'Log',
-    params: ['level', 'resource', 'query', 'message']
-})
+function createLogger(table: string, params: string[]) {
+    const transport = new wbs({
+        db: resolve(__dirname, '../../db.sqlite'),
+        table: table,
+        params: params
+    })
 
-export default winston.createLogger({
-    levels: {
-        'error': 0,
-        'warn': 1,
-        'info': 2,
-    },
-    format: winston.format.json(),
-    transports: [
-        config.mode === 'prod' ? wbsTransport : new winston.transports.Console()
-    ]
-});
+    return winston.createLogger({
+        levels: {
+            'error': 0,
+            'warn': 1,
+            'info': 2,
+        },
+        format: winston.format.json(),
+        transports: [
+            config.mode === 'prod' ? transport : new winston.transports.Console()
+        ]
+    });
+}
+
+const apiLogger = createLogger('APILog', ['method', 'path', 'statusCode', 'responseTimeMS'])
+const botLogger = createLogger('BotLog', ['type', 'name', 'statusCode'])
+const appLogger = createLogger('AppLog', ['guildsAmount', 'startTime'])
+
+export {
+    apiLogger,
+    botLogger,
+    appLogger,
+}
