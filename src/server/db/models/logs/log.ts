@@ -22,5 +22,5 @@ class Log {
         }
     }
 }
-g
+
 export default Log
