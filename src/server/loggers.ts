@@ -1,38 +1,24 @@
-import { AppLog, APILog, BotLog } from './db/models/logs';
+import { Model, ModelStatic } from 'sequelize';
+import { AppLog } from './db/models/logs';
 import config from './config'
 
-const levels = {
-    'error': 0,
-    'info': 2,
-}
-
 class Logger {
-    // if config.mode is dev then console.log, otherwise save to db
-    constructor() {
-
+    private model
+    constructor(LogModel: ModelStatic<Model<any, any>>) {
+        this.model = LogModel
     }
 
-    public log() {
-        
+    // make it pass in whatever is required by this.model
+    public async log() {
+        const log = this.model.build()
+        await log.validate()
+
+        config.mode === 'prod' ? await log.save() : console.log(log)
     }
 }
 
-class APPLogger extends Logger {
-}
-
-class APILogger extends Logger {
-}
-
-class BotLogger extends Logger {
-}
-
-
-const botLogger = new BotLogger()
-const apiLogger = new APILogger()
-const appLogger = new APPLogger()
+const appLogger = new Logger(AppLog)
 
 export {
-    apiLogger,
-    botLogger,
     appLogger,
 }
