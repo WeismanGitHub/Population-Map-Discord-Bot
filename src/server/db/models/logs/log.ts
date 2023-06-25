@@ -1,26 +1,40 @@
-import { DataTypes } from 'sequelize'
+import { DataTypes, Model } from 'sequelize'
+import sequelize from '../../sequelize';
 
-class Log {
-    level
-    description
-    timestamp
+type attributes = {
+    [key: string]: {
+        type: unknown,
+        allowNull: boolean
+    };
+}
 
-    constructor() {
-        this.level = {
-            type: DataTypes.ENUM('error', 'info'),
-            allowNull: false
-        }
+class LogModel extends Model {
+    public static async initialize(modelName: string, attributes: attributes) {
+        const baseAttributes = {
+            level: {
+                type: DataTypes.ENUM('error', 'info'),
+                allowNull: false
+            },
+            description: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            timestamp: {
+                type: DataTypes.NOW,
+                allowNull: false,
+            }
+        };
 
-        this.description = {
-            type: DataTypes.STRING,
-            allowNull: true
-        }
+        const model = this.init({ ...baseAttributes, ...attributes }, {
+            timestamps: false,
+            sequelize,
+            modelName,
+        });
+        
+        await this.sync()
 
-        this.timestamp = {
-            type: DataTypes.NOW,
-            allowNull: false,
-        }
+        return model
     }
 }
 
-export default Log
+export default LogModel
