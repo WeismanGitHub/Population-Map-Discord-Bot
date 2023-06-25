@@ -1,34 +1,33 @@
-import { DataTypes, Model } from 'sequelize'
 import sequelize from "../../sequelize";
+import { DataTypes } from 'sequelize'
+import Log from "./log";
 
-class BotLog extends Model {
-    declare type: 'command' | 'event'
-    declare name: string
-    declare statusCode: number
+class BotLogClass extends Log {
+    type
+    name
+    statusCode
+
+    constructor() {
+        super()
+
+        this.type = {
+            type: DataTypes.ENUM('command', 'event'),
+            allowNull: false,
+        }
+
+        this.name = {
+            type: DataTypes.STRING,
+            allowNull: false,
+        }
+
+        this.statusCode = {
+            type: DataTypes.NUMBER,
+            allowNull: false,
+        }
+    }
 }
 
-BotLog.init({
-    type: {
-        type: DataTypes.ENUM('command', 'event'),
-        allowNull: false,
-    },
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    statusCode: {
-        type: DataTypes.NUMBER,
-        allowNull: false,
-    },
-    timestamp: {
-        type: DataTypes.NOW,
-        allowNull: false,
-    }
-}, {
-    sequelize: sequelize,
-    modelName: 'BotLog',
-    timestamps: false
-});
+const BotLog = sequelize.define('BotLog', new BotLogClass(), { timestamps: false })
 
 BotLog.sync()
 

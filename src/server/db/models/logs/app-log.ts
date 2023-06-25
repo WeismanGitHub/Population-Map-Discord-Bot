@@ -1,24 +1,21 @@
-import { DataTypes, Model } from 'sequelize'
 import sequelize from "../../sequelize";
+import { DataTypes } from 'sequelize'
+import Log from "./log";
 
-class AppLog extends Model {
-    declare guildsAmount: number
+class APPLogClass extends Log {
+    guildsAmount
+
+    constructor() {
+        super()
+
+        this.guildsAmount = {
+            type: DataTypes.NUMBER,
+            allowNull: false,
+        }
+    }
 }
 
-AppLog.init({
-    guildsAmount: {
-        type: DataTypes.NUMBER,
-        allowNull: false,
-    },
-    timestamp: {
-        type: DataTypes.NOW,
-        allowNull: false,
-    }
-}, {
-    sequelize: sequelize,
-    modelName: 'AppLog',
-    timestamps: false,
-});
+const AppLog = sequelize.define('APILog', new APPLogClass(), { timestamps: false })
 
 AppLog.sync()
 
