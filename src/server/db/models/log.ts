@@ -1,15 +1,15 @@
 import { DataTypes, Model } from 'sequelize'
-import sequelize from '../../sequelize';
+import sequelize from '../sequelize';
 
 type attributes = {
     [key: string]: {
-        type: unknown,
+        type: any,
         allowNull: boolean
     };
 }
 
 class LogModel extends Model {
-    public static async initialize(modelName: string, attributes: attributes) {
+    public static initialize(modelName: string, attributes: attributes) {
         const baseAttributes = {
             level: {
                 type: DataTypes.ENUM('error', 'info'),
@@ -20,8 +20,8 @@ class LogModel extends Model {
                 allowNull: true
             },
             timestamp: {
-                type: DataTypes.NOW,
-                allowNull: false,
+                type: DataTypes.DATE,
+                default: DataTypes.NOW
             }
         };
 
@@ -30,8 +30,8 @@ class LogModel extends Model {
             sequelize,
             modelName,
         });
-        
-        await this.sync()
+
+        model.sync()
 
         return model
     }
