@@ -2,7 +2,7 @@ import { InternalServerError } from './errors';
 import { CustomClient } from './custom-client';
 import { GatewayIntentBits } from 'discord.js';
 import sequelize from './db/sequelize'
-import { appLogger } from './loggers';
+import { appLogger } from './loggers'
 require('express-async-errors')
 import config from './config'
 import app from './app'
@@ -21,15 +21,12 @@ import app from './app'
 	console.log('connected to database...')
 	
 	return (await client.guilds.fetch()).size
-})()
-.then((guildsAmount) => {
+})().then(guildsAmount => {
 	appLogger.log({
 		level: 'info',
-		guildsAmount,
-		message: 'success'
+		guildsAmount
 	})
-})
-.catch((err: Error) => {
+}).catch((err: Error) => {
 	appLogger.log({
 		level: 'error',
 		message: err.message
