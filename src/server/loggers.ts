@@ -22,12 +22,12 @@ const log = async function(model: typeof Log, input: LogInput) {
 }
 
 interface AppInput extends LogInput {
-    guildsAmount?: number | null
+    guilds?: number | null
 }
 
 const appLog = (input: AppInput) => {
     const model = Log.initialize('AppLog', {
-        guildsAmount: {
+        guilds: {
             allowNull: true,
             type: DataTypes.NUMBER,
         }

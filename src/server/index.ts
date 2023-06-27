@@ -24,7 +24,7 @@ import app from './app'
 })().then(guildsAmount => {
 	appLog({
 		level: 'info',
-		guildsAmount
+		guilds: guildsAmount
 	})
 }).catch((err: Error) => {
 	appLog({
