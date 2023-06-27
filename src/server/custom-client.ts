@@ -1,6 +1,7 @@
 import { errorEmbed } from './utils/embeds';
 import { readdirSync, statSync } from 'fs';
 import { CustomError } from './errors';
+import { botLog } from './loggers';
 import iso31662 from 'iso-3166-2'
 import config from './config';
 import { join } from 'path';
@@ -96,8 +97,21 @@ export class CustomClient extends Client {
             if (!command) return;
 
             command.execute(interaction)
+            .then(() => botLog({
+                level: 'info',
+                type: 'command',
+                description: '',
+                statusCode: 200,
+                name: interaction.commandName
+            }))
             .catch((err: Error) => {
-                console.error(err.message)
+                botLog({
+                    level: 'error',
+                    type: 'command',
+                    description: err.message,
+                    statusCode: err instanceof CustomError ? err.statusCode : 500,
+                    name: interaction.commandName
+                })
 
                 const embed = err instanceof CustomError ? errorEmbed(err.message, err.statusCode) : errorEmbed()
                 
