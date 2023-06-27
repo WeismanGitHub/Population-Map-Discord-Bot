@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize'
-import config from './config';
 import { Log } from "./db/models";
+import config from './config';
 
 interface LogInput {
     level: 'info' | 'error'
