@@ -12,6 +12,7 @@ import {
 export default {
 	name: Events.InteractionCreate,
 	once: false,
+    logDescription: "Show the map url button after a user has selected a country.",
     execute: async (interaction: StringSelectMenuInteraction) => {
         if (!interaction.isStringSelectMenu()) return;
 
@@ -22,7 +23,6 @@ export default {
         const previousMapButtons = interaction.message.components[2].components.slice(0, 4)
         .map(({ data }) => {
             const { label, url, style } = data as LinkButtonComponentData
-
 
             return new ButtonBuilder()
                 .setLabel(label || 'error')
