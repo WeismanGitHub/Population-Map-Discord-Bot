@@ -130,27 +130,23 @@ export class CustomClient extends Client {
         for (const eventPath of eventsPaths) {
             const event = require(eventPath);
 
-            if (event.default.once) {
-                this.once(event.default.name, (...args) => event.default.execute(...args))
-            } else {
-                this.on(event.default.name, (...args) => {
-                    event.default.execute(...args)
-                    .catch((err: Error) => {
-                        console.error(err.message)
+            this.on(event.default.name, (...args) => {
+                event.default.execute(...args)
+                .catch((err: Error) => {
+                    console.error(err.message)
 
-                        if (event.default.name !== Events.InteractionCreate) return
+                    if (event.default.name !== Events.InteractionCreate) return
 
-                        const embed = err instanceof CustomError ? errorEmbed(err.message, err.statusCode) : errorEmbed()
-                        const interaction = args[0]
-                        
-                        if (interaction.replied || interaction.deferred) {
-                            interaction.followUp({ embeds: [embed], ephemeral: true });
-                        } else {
-                            interaction.reply({ embeds: [embed], ephemeral: true });
-                        }
-                    })
-                });
-            }
+                    const embed = err instanceof CustomError ? errorEmbed(err.message, err.statusCode) : errorEmbed()
+                    const interaction = args[0]
+                    
+                    if (interaction.replied || interaction.deferred) {
+                        interaction.followUp({ embeds: [embed], ephemeral: true });
+                    } else {
+                        interaction.reply({ embeds: [embed], ephemeral: true });
+                    }
+                })
+            });
         }
 
         console.log(`loaded ${eventsPaths.length} event listeners...`);
