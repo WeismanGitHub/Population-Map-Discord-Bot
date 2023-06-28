@@ -14,8 +14,9 @@ export default {
         if (type !== 'location-subdivision') return
 
         const subdivisionCode = interaction.values[0]
-
-        User.upsert({ discordID: interaction.user.id, subdivisionCode })
+        
+        // is this inefficient? the database probably won't stop looking for rows to update even after finding a match
+        User.update({ subdivisionCode }, { where: { discordID: interaction.user.id } })
         .catch(err => { throw new InternalServerError('Could not save your subdivision.') })
 
         interaction.update({
