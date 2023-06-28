@@ -1,7 +1,12 @@
-import { DataTypes, Model } from 'sequelize'
 import sequelize from "../sequelize";
+import {
+    DataTypes,
+    InferAttributes,
+    InferCreationAttributes,
+    Model
+} from 'sequelize'
 
-class GuildMap extends Model {
+class GuildMap extends Model<InferAttributes<GuildMap>, InferCreationAttributes<GuildMap>> {
     declare ID: string
 }
 

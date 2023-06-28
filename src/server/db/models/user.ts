@@ -1,11 +1,16 @@
-import { DataTypes, Model } from 'sequelize'
 import sequelize from "../sequelize";
+import {
+    DataTypes,
+    InferAttributes,
+    InferCreationAttributes,
+    Model
+} from 'sequelize'
 
-class User extends Model {
+class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare discordID: string
     declare countryCode: string
-    declare subdivisionCode: string | null
-    declare addLocationOnJoin: boolean
+    declare subdivisionCode?: string | null
+    declare addLocationOnJoin?: boolean
 }
 
 User.init({
