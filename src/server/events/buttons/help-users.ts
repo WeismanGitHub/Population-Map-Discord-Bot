@@ -4,7 +4,6 @@ import { infoEmbed } from "../../utils/embeds";
 export default {
 	name: Events.InteractionCreate,
 	once: false,
-    logDescription: "Send the documentation for users when the users docs button is clicked.",
     execute: async (interaction: ButtonInteraction) => {
         if (!interaction.isButton()) return;
 

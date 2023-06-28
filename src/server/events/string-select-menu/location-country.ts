@@ -12,7 +12,6 @@ import {
 export default {
 	name: Events.InteractionCreate,
 	once: false,
-    logDescription: "Message to show after selecting a country.",
     execute: async (interaction: StringSelectMenuInteraction) => {
         if (!interaction.isStringSelectMenu()) return;
 

@@ -6,7 +6,6 @@ import { User } from "../../db/models";
 export default {
 	name: Events.InteractionCreate,
 	once: false,
-    logDescription: "Message to show after selecting a subdivision.",
     execute: async (interaction: StringSelectMenuInteraction) => {
         if (!interaction.isStringSelectMenu()) return;
 

@@ -1,7 +1,6 @@
 import { errorEmbed } from './utils/embeds';
 import { readdirSync, statSync } from 'fs';
 import { CustomError } from './errors';
-import { botLog } from './loggers';
 import iso31662 from 'iso-3166-2'
 import config from './config';
 import { join } from 'path';
@@ -97,22 +96,7 @@ export class CustomClient extends Client {
             if (!command) return;
 
             command.execute(interaction)
-            .then(() => botLog({
-                level: 'info',
-                type: 'command',
-                description: '',
-                statusCode: 200,
-                name: interaction.commandName
-            }))
             .catch((err: Error) => {
-                botLog({
-                    level: 'error',
-                    type: 'command',
-                    description: err.message,
-                    statusCode: err instanceof CustomError ? err.statusCode : 500,
-                    name: interaction.commandName
-                })
-
                 const embed = err instanceof CustomError ? errorEmbed(err.message, err.statusCode) : errorEmbed()
                 
                 if (interaction.replied || interaction.deferred) {
@@ -132,22 +116,7 @@ export class CustomClient extends Client {
 
             this.on(event.default.name, (...args) => {
                 event.default.execute(...args)
-                .then(() => botLog({
-                    level: 'info',
-                    type: 'event',
-                    statusCode: 200,
-                    description: event.default.logDescription,
-                    name: event.default.name
-                }))
                 .catch((err: Error) => {
-                    botLog({
-                        level: 'error',
-                        type: 'event',
-                        description: event.default.logDescription,
-                        statusCode: err instanceof CustomError ? err.statusCode : 500,
-                        name: event.default.name
-                    })
-
                     if (event.default.name !== Events.InteractionCreate) return
 
                     const embed = err instanceof CustomError ? errorEmbed(err.message, err.statusCode) : errorEmbed()

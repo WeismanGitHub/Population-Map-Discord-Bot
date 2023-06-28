@@ -13,7 +13,6 @@ import {
 export default {
 	name: Events.InteractionCreate,
 	once: false,
-    logDescription: "Show the subdivisions selection menu after button click.",
     execute: async (interaction: ButtonInteraction) => {
         if (!interaction.isButton()) {
             return

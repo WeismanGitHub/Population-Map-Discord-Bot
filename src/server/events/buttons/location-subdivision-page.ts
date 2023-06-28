@@ -13,7 +13,6 @@ import {
 export default {
 	name: Events.InteractionCreate,
 	once: false,
-    logDescription: "Change the subdivision selection menu when a page button is clicked.",
     execute: async (interaction: ButtonInteraction) => {
         if (!interaction.isButton()) {
             return

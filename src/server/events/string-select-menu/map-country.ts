@@ -12,7 +12,6 @@ import {
 export default {
 	name: Events.InteractionCreate,
 	once: false,
-    logDescription: "Show the map url button after a user has selected a country.",
     execute: async (interaction: StringSelectMenuInteraction) => {
         if (!interaction.isStringSelectMenu()) return;
 
