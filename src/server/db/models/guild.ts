@@ -8,7 +8,7 @@ import {
 
 class Guild extends Model<InferAttributes<Guild>, InferCreationAttributes<Guild>> {
     declare ID: string
-    declare visibility: 'public' | 'member-restricted' | 'map-role-restricted' | 'admin-role-restricted' | 'invisibile'
+    declare visibility?: 'public' | 'member-restricted' | 'map-role-restricted' | 'admin-role-restricted' | 'invisibile'
     declare mapRoleID: string | null
     declare adminRoleID: string | null
 }
