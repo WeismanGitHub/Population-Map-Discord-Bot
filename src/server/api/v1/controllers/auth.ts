@@ -35,7 +35,7 @@ function logout(req: Request, res: Response): void {
     req.session.destroy((err) => {
         if (err) throw new InternalServerError('Could not delete session and log you out.')
 
-        res.status(200).end()
+        res.status(200).clearCookie('sessionID').end()
     })
 }
 
