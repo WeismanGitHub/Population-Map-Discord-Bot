@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import * as ChartGeo from "chartjs-chart-geo";
 import { useParams } from "react-router-dom";
 import { errorToast } from './toasts';
+import NavBar from './nav-bar';
 import Map from "./map"
 import ky from 'ky'
 import {
@@ -67,6 +68,7 @@ export default function Guild() {
     </div>
     
     return (<div>
+        <NavBar/>
         { !geojson ? loading : <div>
             {guildName} - {guildMemberCount} members
             <img src={guildIconURL}/>
