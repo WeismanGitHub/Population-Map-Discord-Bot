@@ -62,17 +62,16 @@ export default function Guild() {
         }).catch(err => { errorToast(err?.response?.data?.error || err.message) })
     }, [])
 
-
-    if (!geojson) {
-        return (<div>
-            loading...
-        </div>)
-    } else {
-        return (<div>
+    const loading = <div>
+        loading...
+    </div>
+    
+    return (<div>
+        { !geojson ? loading : <div>
             {guildName} - {guildMemberCount} members
             <img src={guildIconURL}/>
 
             <Map geojson={geojson} label={'test'}/>
-        </div>);
-    }
+        </div>}
+    </div>)
 }
