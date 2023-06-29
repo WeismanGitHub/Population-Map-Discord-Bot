@@ -57,11 +57,11 @@ export default {
             new ButtonBuilder()
             .setLabel('World Map')
             .setStyle(ButtonStyle.Link)
-            .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapType=WORLD`),
+            .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapCode=WORLD`),
             new ButtonBuilder()
             .setLabel('Continents Map')
             .setStyle(ButtonStyle.Link)
-            .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapType=CONTINENTS`)
+            .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapCode=CONTINENTS`)
         )
 
 		interaction.reply({

@@ -35,7 +35,7 @@ export default {
             new ButtonBuilder()
                 .setLabel(`${country(interaction.values[0])?.name} Map`)
                 .setStyle(ButtonStyle.Link)
-                .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapType=${interaction.values[0]}`)
+                .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapCode=${interaction.values[0]}`)
 		)
 
         interaction.update({

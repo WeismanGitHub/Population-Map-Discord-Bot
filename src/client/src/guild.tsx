@@ -41,13 +41,13 @@ export default function Guild() {
     const [geojson, setGeojson] = useState(null)
     
     const urlParams = new URLSearchParams(window.location.search);
-    const mapType = urlParams.get('mapType')
+    const mapCode = urlParams.get('mapCode')
     const { guildID } = useParams()
 
     useEffect(() => {
         (Promise.all([
             ky.get(`/api/v1/guilds/${guildID}`).json(),
-            ky.get(`https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/geojson/${mapType}.json`).json().catch(err => { throw new Error('Could not get country.') })
+            ky.get(`https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/geojson/${mapCode}.json`).json().catch(err => { throw new Error('Could not get country.') })
         ]) as Promise<unknown> as Promise<[GuildRes, GeojsonRes]>)
         .then(([guildRes, geojsonRes]) => {
             if (!geojsonRes?.features) {
