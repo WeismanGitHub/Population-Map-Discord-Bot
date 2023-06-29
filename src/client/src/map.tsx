@@ -38,7 +38,6 @@ export default function Map(props: { geojson: {}[], label: string }) {
                             feature: d,
                             value: Math.random() * 10
                         })),
-                        backgroundColor: ["#94BA62", "#59A22F", "#1A830C"]
                     }
                 ]
             }}
