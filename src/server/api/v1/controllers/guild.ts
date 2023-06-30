@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import DiscordOauth2 from 'discord-oauth2'
 require('express-async-errors')
 import {
+    BadRequestError,
     ForbiddenError,
     InternalServerError,
     NotFoundError,
@@ -14,7 +15,12 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
     const client: CustomClient = req.app.get('discordClient')
     const { accessToken, userID } = req.session
     const guildID = req.params.guildID
-    const oauth = new DiscordOauth2();
+    const mapCode = req.query.mapCode
+    const oauth = new DiscordOauth2()
+
+    if (!guildID || !mapCode) {
+        throw new BadRequestError('Missing map code or guild ID.')
+    }
 
     const guildData = await Guild.findOne({
         where: { ID: guildID },
