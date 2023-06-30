@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import * as ChartGeo from "chartjs-chart-geo";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { errorToast } from './toasts';
 import NavBar from './nav-bar';
 import Map from "./map"
@@ -40,12 +40,17 @@ export default function Guild() {
     const [guildIconURL, setGuildIconURL] = useState('')
     const [guildName, setGuildName] = useState('')
     const [geojson, setGeojson] = useState(null)
+    const navigate = useNavigate();
     
     const urlParams = new URLSearchParams(window.location.search);
     const mapCode = urlParams.get('mapCode')
     const { guildID } = useParams()
 
     useEffect(() => {
+        if (!mapCode || !guildID) {
+            return errorToast('Missing mapCode or guildID')
+        }
+
         (Promise.all([
             ky.get(`/api/v1/guilds/${guildID}`).json(),
             ky.get(`https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/geojson/${mapCode}.json`).json().catch(err => { throw new Error('Could not get country.') })
@@ -64,7 +69,13 @@ export default function Guild() {
                 return feature
             }))
             setGuildName(guildRes.name)
-        }).catch(err => { errorToast(err?.response?.data?.error || err.message) })
+        }).catch((err) => {
+            errorToast(err.response.statusText || err.message)
+
+            if (err.response.status == 401) {
+                navigate(`/discord/oauth2?guildID=${guildID}&mapCode=${mapCode}`)
+            }
+        })
     }, [])
 
     const loading = <div>
