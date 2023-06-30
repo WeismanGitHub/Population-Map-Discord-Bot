@@ -4,9 +4,9 @@ import { errorToast } from './toasts'
 import React from 'react'
 import ky from 'ky';
 
-function generateRandomString() {
-	let randomString = '';
+function generateState() {
 	const randomNumber = Math.floor(Math.random() * 10);
+	let randomString = '';
 
 	for (let i = 0; i < 20 + randomNumber; i++) {
 		randomString += String.fromCharCode(33 + Math.floor(Math.random() * 94));
@@ -16,27 +16,36 @@ function generateRandomString() {
 }
 
 export default function DiscordOAuth2() {
-	const [searchParams, setSearchParams] = useSearchParams();
-	const [randomString] = useState(generateRandomString())
 	const [authorized, setAuthorized] = useState(false)
+	const [searchParams] = useSearchParams();
+	const randomString = generateState()
 	const navigate = useNavigate();
 
-    useEffect(() => {
+	useEffect(() => {
+		const mapCode = searchParams.get('mapCode')
+		const guildID = searchParams.get('guildID')
 		const state = searchParams.get('state')
 		const code = searchParams.get('code')
-		setSearchParams({})
 
-		if (!code || !state || localStorage.getItem('auth-state') !== atob(decodeURIComponent(state))) {
-			return localStorage.setItem('auth-state', randomString);
+		if (mapCode && guildID) {
+			localStorage.setItem('mapCode', mapCode)
+			localStorage.setItem('guildID', guildID)
 		}
-		
-		ky.post('/api/v1/auth/discord/oauth2', { json: { code } })
-		.then(res => { setAuthorized(true) })
-		.catch((err) => { errorToast(err.response.data.error || err.message) });
-    }, [])
-    
+
+		if (code && state && localStorage.getItem('auth-state') == atob(decodeURIComponent(state))) {
+			ky.post('/api/v1/auth/discord/oauth2', { json: { code } })
+			.then(res => setAuthorized(true))
+			.catch(err => errorToast(err.response.statusText || err.message));
+		} else {
+			localStorage.setItem('auth-state', randomString);
+		}
+	}, [])
+	
 	if (authorized) {
-		navigate('/')
+		const [mapCode, guildID] = [localStorage.getItem('mapCode'), localStorage.getItem('guildID')]
+		localStorage.clear()
+
+		navigate((mapCode && guildID) ? `/maps/${guildID}?mapCode=${mapCode}` : '/')
 	}
 
 	return <>
