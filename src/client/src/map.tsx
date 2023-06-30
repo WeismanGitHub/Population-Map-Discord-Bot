@@ -21,22 +21,28 @@ ChartJS.register(
 );
 
 export default function Map(props: { geojson: {}[], label: string }) {
-    const chartRef = useRef();
     const geojson = props.geojson
+    const chartRef = useRef();
+    
+    console.log(geojson.map((d: any) => ({
+        feature: d,
+        value: Math.random() * 10
+    })))
 
     return (
         <ReactChart
+            color="red"
             ref={chartRef}
             type="choropleth"
             data={{
-                labels: geojson.map((d: any) => d.properties.VARNAME_1),
+                labels: geojson.map((d: any) => d.properties.NAME_1),
                 datasets: [
                     {
                         outline: geojson,
                         label: props.label,
                         data: geojson.map((d: any) => ({
                             feature: d,
-                            value: Math.random() * 10
+                            value: d.count
                         })),
                     }
                 ]

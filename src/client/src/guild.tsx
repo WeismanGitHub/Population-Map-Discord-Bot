@@ -25,7 +25,7 @@ ChartJS.register(
 );
 
 interface GuildRes {
-    locationsData: JSON
+    locationsData: { [key: string]: any }
     name: string
     guildMemberCount: number
     iconURL: string
@@ -54,11 +54,15 @@ export default function Guild() {
             if (!geojsonRes?.features) {
                 return errorToast('Invalid country code.')
             }
-    
+            
             setGuildMemberCount(guildRes.guildMemberCount)
             setGuildIconURL(guildRes.iconURL)
             // @ts-ignore
-            setGeojson(geojsonRes.features)
+            setGeojson(geojsonRes.features.map((feature) => {
+                // @ts-ignore
+                feature.count = guildRes.locationsData[feature.properties.CC_1]
+                return feature
+            }))
             setGuildName(guildRes.name)
         }).catch(err => { errorToast(err?.response?.data?.error || err.message) })
     }, [])
