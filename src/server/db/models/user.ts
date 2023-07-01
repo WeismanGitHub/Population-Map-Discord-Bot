@@ -11,6 +11,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare countryCode: string
     declare subdivisionCode?: string | null
     declare addLocationOnJoin?: boolean
+    declare role: 'regular' | 'admin'
 }
 
 User.init({
@@ -34,6 +35,10 @@ User.init({
     addLocationOnJoin: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
+    },
+    role: {
+        type: DataTypes.ENUM('regular', 'admin'),
+        defaultValue: 'regular'
     }
 }, {
     sequelize: sequelize,
