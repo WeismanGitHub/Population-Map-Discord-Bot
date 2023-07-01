@@ -1,5 +1,5 @@
+import { Guild } from '../../../db/models';
 import { CustomClient } from '../../../custom-client';
-import { Guild, GuildMap } from '../../../db/models';
 import { Request, Response } from 'express';
 import DiscordOauth2 from 'discord-oauth2'
 require('express-async-errors')
@@ -55,11 +55,16 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
         }
     }
 
-    const guildMapData = await GuildMap.findOne({ where: { ID: guildID } })
+    // const guildLocations = await GuildMap.findOne({ where: { ID: guildID } })
+    const guildLocations = {
+        'US-CA': 5,
+        'US-NV': 1,
+        'US-NY': 9,
+    }
 
     res.status(200)
     .json({
-        locationsData: guildMapData,
+        locationsData: guildLocations,
         name: guild.name,
         iconURL: guild.iconURL(),
         guildMemberCount: guild.memberCount
