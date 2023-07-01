@@ -1,3 +1,5 @@
+import { ForbiddenError } from '../../errors'
+import { User } from '../../db/models'
 import {
 	SlashCommandBuilder,
 	CommandInteraction,
@@ -11,5 +13,14 @@ export default {
 	,
 	globalCommand: false,
 	async execute(interaction: CommandInteraction): Promise<void> {
+		const user = await User.findOne({ where: { discordID: interaction.user.id } })
+
+		if (!user) {
+			throw new ForbiddenError('You are not in the database.')
+		}
+
+		if (user.role !== 'admin') {
+			throw new ForbiddenError('You are not an admin.')
+		}
 	}
 }
