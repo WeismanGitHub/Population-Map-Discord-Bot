@@ -31,7 +31,7 @@
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "dev": "nodemon dist/server/index.js",
-    "commands": "node set-commands.js"
+    "commands": "node deploy-commands.js"
   },
   "eslintConfig": {
     "extends": [
