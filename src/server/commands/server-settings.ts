@@ -42,7 +42,7 @@ export default {
             )
         )
 	,
-	universalCommand: true,
+	globalCommand: true,
 	async execute(interaction: ChatInputCommandInteraction) {
         if (!interaction.inGuild()) return
 

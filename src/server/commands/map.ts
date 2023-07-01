@@ -16,7 +16,7 @@ export default {
         .setDMPermission(false)
 		.setDescription("Get a server map for the world, continents, or a specific country.")
 	,
-	universalCommand: true,
+	globalCommand: true,
 	async execute(interaction: CommandInteraction): Promise<void> {
 		const client = interaction.client as CustomClient
 

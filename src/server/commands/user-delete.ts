@@ -8,7 +8,7 @@ export default {
 		.setName('user-delete')
 		.setDescription("Delete all your user data.")
 	,
-	universalCommand: true,
+	globalCommand: true,
 	async execute(interaction: ChatInputCommandInteraction) {
         interaction.reply({
             ephemeral: true,
