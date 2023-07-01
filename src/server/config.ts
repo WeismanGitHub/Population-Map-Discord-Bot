@@ -19,6 +19,7 @@ interface Configuration {
     sessionSecret: string
     mode: 'prod' | 'dev'
     websiteURL: string
+    supportServerID: string
 }
 
 const config: Configuration = {
@@ -43,7 +44,8 @@ const config: Configuration = {
     appPort: 5001,
     sessionSecret: process.env.JWT_SECRET!,
     mode: process.env.MODE as 'prod' | 'dev',
-    websiteURL: process.env.WEBSITE_URL! // Example: http://localhost:5001
+    websiteURL: process.env.WEBSITE_URL!, // Example: http://localhost:5001
+    supportServerID: process.env.SUPPORT_SERVER_ID!
 }
 
 for (const entry of Object.entries(config)) {
