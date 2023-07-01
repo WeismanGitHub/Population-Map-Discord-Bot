@@ -13,7 +13,8 @@ export default {
 	data: new SlashCommandBuilder()
 		.setName('location')
 		.setDescription("Set your country and optionally your subdivision (state, region, prefecture, etc).")
-	,
+    ,
+	universalCommand: true,
 	async execute(interaction: CommandInteraction): Promise<void> {
         const client = interaction.client as CustomClient
 
