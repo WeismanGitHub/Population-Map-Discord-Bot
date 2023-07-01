@@ -11,7 +11,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare countryCode: string
     declare subdivisionCode?: string | null
     declare addLocationOnJoin?: boolean
-    declare role: 'regular' | 'admin'
+    declare role?: 'regular' | 'admin'
 }
 
 User.init({
