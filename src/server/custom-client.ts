@@ -125,13 +125,22 @@ export class CustomClient extends Client {
     private async loadEventListeners() {
         const eventsPaths = getPaths(join(__dirname, 'events')).filter(file => file.endsWith('.js'))
 
-        for (const eventPath of eventsPaths) {
-            const event = require(eventPath);
+        for (const path of eventsPaths) {
+            const event = require(path)?.default;
 
-            this.on(event.default.name, (...args) => {
-                event.default.execute(...args)
+            if (!event?.name ||!event.execute || (typeof event?.once !== 'boolean')) {
+                logger.warn({
+                    type: 'event',
+                    message: `Malformed event file. Path: ${path}`
+                })
+
+                continue
+            }
+
+            this.on(event.name, (...args) => {
+                event.execute(...args)
                 .catch((err: Error) => {
-                    if (event.default.name !== Events.InteractionCreate) return
+                    if (event.name !== Events.InteractionCreate) return
 
                     const embed = err instanceof CustomError ? errorEmbed(err.message, err.statusCode) : errorEmbed()
                     const interaction = args[0]
