@@ -39,7 +39,33 @@ class Logger {
         })
     }
 
-    public info(log: { type: logType, message: string }) {
+    public error(log: {
+        type: logType,
+        message: string,
+        stack: string | undefined
+    }) {
+        this.logger.log({
+            level: 'error',
+            timestamp: Date.now(),
+            ...log
+        })
+    }
+
+    public warn(log: {
+        type: logType,
+        message: string,
+    }) {
+        this.logger.log({
+            level: 'warn',
+            timestamp: Date.now(),
+            ...log
+        })
+    }
+
+    public info(log: {
+        type: logType,
+        message: string
+    }) {
         this.logger.log({
             level: 'info',
             timestamp: Date.now(),
