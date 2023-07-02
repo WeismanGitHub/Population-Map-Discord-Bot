@@ -2,7 +2,7 @@ import { errorEmbed } from './utils/embeds';
 import { readdirSync, statSync } from 'fs';
 import { CustomError } from './errors';
 import iso31662 from 'iso-3166-2'
-import logger from '../logger';
+import logger from './logger';
 import config from './config';
 import { join } from 'path';
 import {

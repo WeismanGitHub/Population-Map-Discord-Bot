@@ -2,7 +2,7 @@ import { InternalServerError } from './errors';
 import { CustomClient } from './custom-client';
 import { GatewayIntentBits } from 'discord.js';
 import sequelize from './db/sequelize'
-import logger from '../logger';
+import logger from './logger';
 require('express-async-errors')
 import config from './config'
 import app from './app'

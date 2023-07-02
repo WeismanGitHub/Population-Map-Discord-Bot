@@ -1,5 +1,5 @@
 import wbs from 'winston-better-sqlite3';
-import config from './server/config';
+import config from './config';
 import { resolve } from 'path';
 import winston from 'winston';
 
