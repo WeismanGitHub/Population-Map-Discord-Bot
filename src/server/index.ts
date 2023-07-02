@@ -7,6 +7,18 @@ import config from './config'
 import app from './app'
 
 (async function() {
+	for (const entry of Object.entries(config)) {
+		const [key, value] = entry
+	
+		if (Number.isNaN(value) || value === undefined) {
+			throw new InternalServerError(`${key} is missing.`)
+		}
+	}
+	
+	if (!['prod', 'dev'].includes(config.mode)) {
+		throw new InternalServerError('Mode must be equal to "prod" or "dev".')
+	}
+
 	const client = new CustomClient({
 		intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
 	});
@@ -18,6 +30,7 @@ import app from './app'
 	.catch((err) => { throw new InternalServerError('Could not connect to database.') })
 
 	console.log('connected to database...')
-	
-	return (await client.guilds.fetch()).size
-})()
+})().then(() => {
+
+}).catch((err: Error) => {
+})
