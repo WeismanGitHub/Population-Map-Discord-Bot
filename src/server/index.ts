@@ -2,6 +2,7 @@ import { InternalServerError } from './errors';
 import { CustomClient } from './custom-client';
 import { GatewayIntentBits } from 'discord.js';
 import sequelize from './db/sequelize'
+import logger from '../logger';
 require('express-async-errors')
 import config from './config'
 import app from './app'
@@ -18,7 +19,7 @@ import app from './app'
 	if (!['prod', 'dev'].includes(config.mode)) {
 		throw new InternalServerError('Mode must be equal to "prod" or "dev".')
 	}
-
+	
 	const client = new CustomClient({
 		intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
 	});
@@ -31,6 +32,14 @@ import app from './app'
 
 	console.log('connected to database...')
 })().then(() => {
-
+	logger.info({
+		message: 'Successfully started app.',
+		type: 'app'
+	})
 }).catch((err: Error) => {
+	logger.fatal({
+		message: 'Fatal error in index.js.',
+		stack: err.stack,
+		type: 'app'
+	})
 })
