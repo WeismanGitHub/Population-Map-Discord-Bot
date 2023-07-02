@@ -1,4 +1,3 @@
-import { InternalServerError } from "./errors";
 require("dotenv").config();
 
 interface Configuration {
@@ -46,18 +45,6 @@ const config: Configuration = {
     mode: process.env.MODE as 'prod' | 'dev',
     websiteURL: process.env.WEBSITE_URL!, // Example: http://localhost:5001
     supportServerID: process.env.SUPPORT_SERVER_ID!
-}
-
-for (const entry of Object.entries(config)) {
-    const [key, value] = entry
-
-    if (Number.isNaN(value) || value === undefined) {
-        throw new InternalServerError(`${key} is missing.`)
-    }
-}
-
-if (!['prod', 'dev'].includes(config.mode)) {
-    throw new InternalServerError('Mode must be equal to "prod" or "dev".')
 }
 
 export default config
