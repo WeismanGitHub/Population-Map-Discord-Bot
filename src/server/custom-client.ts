@@ -76,9 +76,9 @@ export class CustomClient extends Client {
         const commands = [];
 
         for (const path of commandsPaths) {
-            const command = require(path);
+            const command = require(path)?.default;
     
-            if (!command.default.data) {
+            if (!command?.data || (typeof command?.globalCommand !== 'boolean') || !command?.execute) {
                 logger.warn({
                     type: 'command',
                     message: `Malformed command. Path: ${path}`
@@ -87,8 +87,8 @@ export class CustomClient extends Client {
                 continue
             }
     
-            commands.push(command.default.data.toJSON());
-            this.commands.set(command.default.data.name, command.default);
+            commands.push(command.data.toJSON());
+            this.commands.set(command.data.name, command);
         }
 
         console.log(`loaded ${commands.length} commands...`)
