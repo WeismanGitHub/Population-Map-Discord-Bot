@@ -65,6 +65,13 @@ export class CustomClient extends Client {
             this.loadEventListeners()
             this.loadCommands()
         })
+        .catch((err: Error) => {
+            logger.error({
+                type: 'app',
+                message: 'Error happened in event or command listeners.',
+                stack: err.stack
+            })
+        })
     }
 
     // implement binary search instead of using countries.find() or like make it more efficient idk. hash map?
