@@ -139,7 +139,18 @@ export class CustomClient extends Client {
 
             this.on(event.name, (...args) => {
                 event.execute(...args)
+                .then(() => {
+                    logger.info({
+                        type: 'event',
+                        message: `${event.name}: successful`
+                    })
+                })
                 .catch((err: Error) => {
+                    logger.info({
+                        type: 'event',
+                        message: `${event.name}: ${err.message}`
+                    })
+                    
                     if (event.name !== Events.InteractionCreate) return
 
                     const embed = err instanceof CustomError ? errorEmbed(err.message, err.statusCode) : errorEmbed()
