@@ -97,11 +97,20 @@ export class CustomClient extends Client {
             if (!interaction.isCommand()) return;
         
             const command = this.commands.get(interaction.commandName);
-        
-            if (!command) return;
 
             command.execute(interaction)
+            .then(() => {
+                logger.info({
+                    type: 'command',
+                    message: `${interaction.commandName}: successful`
+                })
+            })
             .catch((err: Error) => {
+                logger.info({
+                    type: 'command',
+                    message: `${interaction.commandName}: ${err.message}`
+                })
+
                 const embed = err instanceof CustomError ? errorEmbed(err.message, err.statusCode) : errorEmbed()
                 
                 if (interaction.replied || interaction.deferred) {
