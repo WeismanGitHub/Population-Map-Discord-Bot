@@ -50,6 +50,8 @@ type Countries = ReturnType<typeof getOrderedCountries>
 
 export class CustomClient extends Client {
     declare public countries: Countries
+    declare private commands: Collection<unknown, any>;
+    declare token: string;
 
     constructor(clientOptions: ClientOptions) {
         super(clientOptions);
@@ -150,7 +152,7 @@ export class CustomClient extends Client {
                         type: 'event',
                         message: `${event.name}: ${err.message}`
                     })
-                    
+
                     if (event.name !== Events.InteractionCreate) return
 
                     const embed = err instanceof CustomError ? errorEmbed(err.message, err.statusCode) : errorEmbed()
@@ -181,7 +183,4 @@ export class CustomClient extends Client {
             },],
         });
     }
-
-    commands: Collection<unknown, any>;
-    token: string;
 }
