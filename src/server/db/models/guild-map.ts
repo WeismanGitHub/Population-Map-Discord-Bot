@@ -17,9 +17,6 @@ GuildMap.init({
         primaryKey: true,
     },
 }, {
-    indexes: [{
-            fields: ['ID']
-    }],
     sequelize: sequelize,
     modelName: 'GuildMap',
     timestamps: false

@@ -32,9 +32,6 @@ Guild.init({
         allowNull: true,
     },
 }, {
-    indexes: [{
-        fields: ['ID']
-    }],
     sequelize: sequelize,
     modelName: 'Guild',
     timestamps: false
