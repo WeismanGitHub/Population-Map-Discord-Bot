@@ -41,6 +41,9 @@ User.init({
         defaultValue: 'regular'
     }
 }, {
+    indexes: [{
+        fields: ['discordID']
+    }],
     sequelize: sequelize,
     modelName: 'User',
     timestamps: false
