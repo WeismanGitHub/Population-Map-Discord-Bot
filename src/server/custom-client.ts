@@ -2,6 +2,7 @@ import { errorEmbed } from './utils/embeds';
 import { readdirSync, statSync } from 'fs';
 import { CustomError } from './errors';
 import iso31662 from 'iso-3166-2'
+import logger from '../logger';
 import config from './config';
 import { join } from 'path';
 import {
@@ -78,7 +79,11 @@ export class CustomClient extends Client {
             const command = require(path);
     
             if (!command.default.data) {
-                console.log(`malformed command file...`)
+                logger.warn({
+                    type: 'command',
+                    message: `Malformed command. Path: ${path}`
+                })
+
                 continue
             }
     
