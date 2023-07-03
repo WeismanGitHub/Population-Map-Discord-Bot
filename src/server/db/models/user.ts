@@ -16,7 +16,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
 
 User.init({
     discordID: {
-        type: DataTypes.STRING,
+        type: DataTypes.BIGINT,
         allowNull: false,
         primaryKey: true,
     },
