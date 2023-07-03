@@ -1,7 +1,7 @@
 import config from './config';
 import winston from 'winston';
 
-interface log {
+interface LogInput {
     type: 'app' | 'api' | 'event' | 'command',
     message: string
 }
@@ -24,7 +24,7 @@ class Logger {
         });
     }
 
-    public fatal(log: log & { stack: string | undefined }) {
+    public fatal(log: LogInput & { stack: string | undefined }) {
         this.logger.log({
             level: 'fatal',
             timestamp: Date.now(),
@@ -32,7 +32,7 @@ class Logger {
         })
     }
 
-    public error(log: log & { stack: string | undefined }) {
+    public error(log: LogInput & { stack: string | undefined }) {
         this.logger.log({
             level: 'error',
             timestamp: Date.now(),
@@ -40,7 +40,7 @@ class Logger {
         })
     }
 
-    public warn(log: log) {
+    public warn(log: LogInput) {
         this.logger.log({
             level: 'warn',
             timestamp: Date.now(),
@@ -48,7 +48,7 @@ class Logger {
         })
     }
 
-    public info(log: log) {
+    public info(log: LogInput) {
         this.logger.log({
             level: 'info',
             timestamp: Date.now(),
