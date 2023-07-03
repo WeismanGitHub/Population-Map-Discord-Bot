@@ -6,6 +6,7 @@ import {
     ButtonInteraction,
     ButtonStyle,
     Events,
+    Interaction,
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
 } from "discord.js"
@@ -13,19 +14,24 @@ import {
 export default {
 	name: Events.InteractionCreate,
 	once: false,
-    execute: async (interaction: ButtonInteraction) => {
-        if (!interaction.isButton()) {
-            return
-        }
+    check: async (interaction: Interaction) => {
+        if (!interaction.isButton()) return
 
-        const { type, data }: CustomID<{ page: number, countryCode: string }> = JSON.parse(interaction.customId)
-        const client = interaction.client as CustomClient
-        const { page, countryCode } = data
-
+        const customID: CustomID<{ page: number, countryCode: string }> = JSON.parse(interaction.customId)
+        const { type } = customID
+        
         if (type !== 'location-subdivision-page') {
             return
         }
-
+        
+        return { customID: customID, interaction }
+    },
+    execute: async ({ interaction, customID }: {
+        interaction: ButtonInteraction,
+        customID: CustomID<{ page: number, countryCode: string }>
+    }) => {
+        const client = interaction.client as CustomClient
+        const { countryCode, page } = customID.data
         const country = client.getCountry(countryCode)
         
         if (!country) {

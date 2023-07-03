@@ -6,19 +6,26 @@ import {
     ButtonBuilder,
     ButtonStyle,
     Events,
+    Interaction,
     StringSelectMenuInteraction
 } from "discord.js"
 
 export default {
 	name: Events.InteractionCreate,
 	once: false,
-    execute: async (interaction: StringSelectMenuInteraction) => {
+    check: async (interaction: Interaction) => {
         if (!interaction.isStringSelectMenu()) return;
 
-        const { type }: CustomID<{}> = JSON.parse(interaction.customId)
+        const customID: CustomID<{}> = JSON.parse(interaction.customId)
 
-        if (type !== 'location-country') return
+        if (customID.type !== 'location-country') return
 
+        return { customID, interaction }
+    },
+    execute: async ({ interaction, customID }: {
+        interaction: StringSelectMenuInteraction,
+        customID: CustomID<{ countryCode: string }>
+    }) => {
         const countryCode = interaction.values[0]
 
         User.upsert({ discordID: interaction.user.id, countryCode })
