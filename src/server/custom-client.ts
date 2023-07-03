@@ -137,7 +137,7 @@ export class CustomClient extends Client {
         for (const path of eventsPaths) {
             const event = require(path)?.default;
 
-            if (!event?.name ||!event.execute || (typeof event?.once !== 'boolean')) {
+            if (!event?.name ||!event.execute || (typeof event?.once !== 'boolean') || !event.check) {
                 logger.warn({
                     type: 'event',
                     message: `Malformed event file. Path: ${path}`
@@ -146,30 +146,35 @@ export class CustomClient extends Client {
                 continue
             }
 
+            // Check is run first, then if res is not undefined, you log and execute.
+            // Check is supposed to verify that this is the correct file.
             this.on(event.name, (...args) => {
-                event.execute(...args)
-                .then(() => {
+                event.check(...args).then((res: any) => {
+                    if (!res) return
+
                     logger.info({
                         type: 'event',
                         message: `${event.name}: successful`
                     })
-                })
-                .catch((err: Error) => {
-                    logger.info({
-                        type: 'event',
-                        message: `${event.name}: ${err.message}`
+
+                    event.execute(res)
+                    .catch((err: Error) => {
+                        logger.info({
+                            type: 'event',
+                            message: `${event.name}: ${err.message}`
+                        })
+    
+                        if (event.name !== Events.InteractionCreate) return
+    
+                        const embed = err instanceof CustomError ? errorEmbed(err.message, err.statusCode) : errorEmbed()
+                        const interaction = args[0]
+                        
+                        if (interaction.replied || interaction.deferred) {
+                            interaction.followUp({ embeds: [embed], ephemeral: true });
+                        } else {
+                            interaction.reply({ embeds: [embed], ephemeral: true });
+                        }
                     })
-
-                    if (event.name !== Events.InteractionCreate) return
-
-                    const embed = err instanceof CustomError ? errorEmbed(err.message, err.statusCode) : errorEmbed()
-                    const interaction = args[0]
-                    
-                    if (interaction.replied || interaction.deferred) {
-                        interaction.followUp({ embeds: [embed], ephemeral: true });
-                    } else {
-                        interaction.reply({ embeds: [embed], ephemeral: true });
-                    }
                 })
             });
         }
