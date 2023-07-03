@@ -24,7 +24,8 @@
     "sequelize": "^6.32.0",
     "sqlite3": "^5.1.6",
     "winston": "^3.9.0",
-    "winston-better-sqlite3": "^1.0.4"
+    "winston-better-sqlite3": "^1.0.4",
+    "winston-daily-rotate-file": "^4.7.1"
   },
   "scripts": {
     "start": "react-app-rewired start",
