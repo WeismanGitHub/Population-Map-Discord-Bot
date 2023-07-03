@@ -1,19 +1,16 @@
-import wbs from 'winston-better-sqlite3';
 import config from './config';
-import { resolve } from 'path';
 import winston from 'winston';
 
-type logType = 'app' | 'api' | 'event' | 'command'
+interface log {
+    type: 'app' | 'api' | 'event' | 'command',
+    message: string
+}
 
 class Logger {
     private logger: winston.Logger
 
-    constructor(tableName: string, params: string[]) {
-        const transport = config.mode === 'prod' ? new wbs({
-            db: resolve(__dirname, '../../../db.sqlite'),
-            table: tableName,
-            params: params
-        }) : new winston.transports.Console()
+    constructor() {
+        const transport = config.mode === 'prod' ? new winston.transports.Console() : new winston.transports.Console()
 
         this.logger = winston.createLogger({
             level: 'info',
@@ -27,11 +24,7 @@ class Logger {
         });
     }
 
-    public fatal(log: {
-        type: logType,
-        message: string,
-        stack: string | undefined
-    }) {
+    public fatal(log: log & { stack: string | undefined }) {
         this.logger.log({
             level: 'fatal',
             timestamp: Date.now(),
@@ -39,11 +32,7 @@ class Logger {
         })
     }
 
-    public error(log: {
-        type: logType,
-        message: string,
-        stack: string | undefined
-    }) {
+    public error(log: log & { stack: string | undefined }) {
         this.logger.log({
             level: 'error',
             timestamp: Date.now(),
@@ -51,10 +40,7 @@ class Logger {
         })
     }
 
-    public warn(log: {
-        type: logType,
-        message: string,
-    }) {
+    public warn(log: log) {
         this.logger.log({
             level: 'warn',
             timestamp: Date.now(),
@@ -62,10 +48,7 @@ class Logger {
         })
     }
 
-    public info(log: {
-        type: logType,
-        message: string
-    }) {
+    public info(log: log) {
         this.logger.log({
             level: 'info',
             timestamp: Date.now(),
@@ -74,4 +57,4 @@ class Logger {
     }
 }
 
-export default new Logger('Logs', []);
+export default new Logger();
