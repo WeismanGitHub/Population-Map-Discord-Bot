@@ -10,6 +10,13 @@ interface LogInput {
 class Logger {
     private logger: winston.Logger
 
+    private generateBaseLog() {
+        return {
+            timestamp: Date.now(),
+            ID: ''
+        }
+    }
+
     constructor() {
         const transport = config.mode === 'dev' ? new winston.transports.Console() : new DailyRotateFile({
             level: 'info',
@@ -33,7 +40,7 @@ class Logger {
     public fatal(log: LogInput & { stack: string | undefined }) {
         this.logger.log({
             level: 'fatal',
-            timestamp: Date.now(),
+            ...this.generateBaseLog(),
             ...log
         })
     }
@@ -41,7 +48,7 @@ class Logger {
     public error(log: LogInput & { stack: string | undefined }) {
         this.logger.log({
             level: 'error',
-            timestamp: Date.now(),
+            ...this.generateBaseLog(),
             ...log
         })
     }
@@ -49,7 +56,7 @@ class Logger {
     public warn(log: LogInput) {
         this.logger.log({
             level: 'warn',
-            timestamp: Date.now(),
+            ...this.generateBaseLog(),
             ...log
         })
     }
@@ -57,7 +64,7 @@ class Logger {
     public info(log: LogInput) {
         this.logger.log({
             level: 'info',
-            timestamp: Date.now(),
+            ...this.generateBaseLog(),
             ...log
         })
     }
