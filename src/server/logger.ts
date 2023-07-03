@@ -1,3 +1,4 @@
+import DailyRotateFile from 'winston-daily-rotate-file'
 import config from './config';
 import winston from 'winston';
 
@@ -10,7 +11,12 @@ class Logger {
     private logger: winston.Logger
 
     constructor() {
-        const transport = config.mode === 'prod' ? new winston.transports.Console() : new winston.transports.Console()
+        const transport = config.mode === 'dev' ? new winston.transports.Console() : new DailyRotateFile({
+            level: 'info',
+            filename: './logs/%DATE%.log',
+            datePattern: 'MM',
+            zippedArchive: true,
+        })
 
         this.logger = winston.createLogger({
             level: 'info',
