@@ -4,7 +4,12 @@ import { User } from '../db/models'
 export default {
 	name: Events.GuildMemberAdd,
 	once: false,
-	async execute(member: GuildMember) {
+	check: async (member: GuildMember) => {
+		return member
+    },
+    execute: async ({ member }: {
+        member: GuildMember,
+    }) => {
 		if (!member.user.bot) return
 		
 		const user = await User.findOne({ where: { discordID: member.id } })
