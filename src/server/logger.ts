@@ -21,7 +21,7 @@ class Logger {
         const transport = config.mode === 'dev' ? new winston.transports.Console() : new DailyRotateFile({
             level: 'info',
             filename: './logs/%DATE%.log',
-            datePattern: 'MM',
+            datePattern: 'YYYY-MM',
             zippedArchive: true,
         })
 
