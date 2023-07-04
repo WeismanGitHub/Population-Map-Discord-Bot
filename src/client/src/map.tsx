@@ -24,11 +24,6 @@ export default function Map(props: { geojson: {}[], label: string }) {
     const geojson = props.geojson
     const chartRef = useRef();
     
-    console.log(geojson.map((d: any) => ({
-        feature: d,
-        value: Math.random() * 10
-    })))
-
     return (
         <ReactChart
             color="red"
