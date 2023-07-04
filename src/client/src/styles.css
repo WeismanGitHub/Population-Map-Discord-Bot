@@ -1,6 +1,17 @@
-body {
-    background-color: '#2b2d31';
-    color: '#a4a7aa';
-    padding: '0px';
-    margin: '0px';
+* {
+    background-color: #2b2d31;
+    color: #a4a7aa;
+    padding: 0px;
+    margin: 0px;
+}
+
+.guild {
+    float: left;
+    font-size: large;
+    display: inline;
+    position: relative;
+    object-fit: cover;
+    left: 5%;
+    width: 95%;
+    margin-bottom: 10px;
 }
