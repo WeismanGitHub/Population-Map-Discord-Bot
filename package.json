@@ -28,9 +28,9 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "tsc & react-app-rewired build & npm run copyfiles",
+    "build": "tsc & npm run copy-files & react-app-rewired build",
     "tsc": "tsc",
-    "copyfiles": "copyfiles -u 1 src/client/**/*.html src/client/**/*.css dist/",
+    "copy-files": "copyfiles -u 1 src/client/**/*.html src/client/**/*.css dist/",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "clean": "rimraf dist/",
