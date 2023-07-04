@@ -35,17 +35,6 @@ interface GeojsonRes {
     features: {}[]
 }
 
-const guildStyles = {
-    // float: left
-    'font-size': 'large',
-    'display': 'inline',
-    // position: 'relative',
-    'object-fit': 'cover',
-    'left': '5%',
-    'width': '95%',
-    'margin-bottom': '10px'
-}
-
 export default function Guild() {
     const [guildMemberCount, setGuildMemberCount] = useState(0)
     const [guildIconURL, setGuildIconURL] = useState('')
@@ -97,13 +86,13 @@ export default function Guild() {
         <NavBar/>
         { !geojson ? loading : <div>
             {guildMemberCount} members
-            <div style={guildStyles}>
+            <div className='guild'>
                 <img
-                    width={75}
-                    height={75}
+                    width={50}
+                    height={50}
                     src={guildIconURL}
                     alt="The icon of the Discord server."
-                    style={{ borderRadius: '50%' }}
+                    style={{ borderRadius: '50%', float: 'left' }}
                 />
                 {guildName}
             </div>
