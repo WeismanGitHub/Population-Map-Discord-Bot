@@ -3,7 +3,7 @@ import { ToastContainer } from 'react-toastify';
 import { createRoot } from "react-dom/client";
 import 'react-toastify/dist/ReactToastify.css';
 import React from 'react';
-import './index.css'
+import './styles.css'
 
 import DiscordOAuth2 from "./discord-oauth2";
 import Guild from './guild';
