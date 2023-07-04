@@ -32,7 +32,7 @@
     "tsc": "tsc",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "clean": "Rmdir /s /Q dist",
+    "clean": "rimraf dist/",
     "dev": "nodemon dist/server/index.js",
     "commands": "node deploy-commands.js"
   },
