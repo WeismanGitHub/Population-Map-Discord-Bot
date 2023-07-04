@@ -13,8 +13,16 @@ class Logger {
     private generateBaseLog() {
         return {
             timestamp: Date.now(),
-            ID: ''
+            ID: this.generateID()
         }
+    }
+
+    private generateID() {
+        const date = new Date()
+        const [year, month] = [date.getFullYear(), date.getMonth() + 1]
+        const randomNum = Math.floor(Math.random() * 100000)
+
+        return `${year}-${month}-${Date.now()}-${randomNum}`;
     }
 
     constructor() {
