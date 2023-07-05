@@ -12,7 +12,7 @@ export default {
 		.setDescription("[Privileged Users Only] See the logs.")
 		.setDMPermission(false)
 	,
-	guildIDs: [config.supportServerID],
+	guildIDs: [config.supportServerID, config.personalServerID],
 	async execute(interaction: CommandInteraction): Promise<void> {
 		const user = await User.findOne({ where: { discordID: interaction.user.id } })
 
