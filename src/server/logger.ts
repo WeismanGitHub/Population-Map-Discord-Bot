@@ -12,7 +12,7 @@ class Logger {
 
     private generateBaseLog() {
         return {
-            timestamp: Date.now(),
+            timestamp: new Date(),
             ID: this.generateID()
         }
     }
