@@ -8,7 +8,7 @@ export default {
         .setDMPermission(false)
 		.setDescription("Use this command in a server to add your location to the server map.")
 	,
-	globalCommand: true,
+	guildIDs: null,
 	async execute(interaction: ChatInputCommandInteraction) {
         // if (!guild) {
         //     throw new NotFoundError('No server map could be found.')

@@ -13,7 +13,7 @@ export default {
 		.setName('help')
 		.setDescription("Information about this bot.")
 	,
-	globalCommand: true,
+	guildIDs: null,
 	async execute(interaction: CommandInteraction): Promise<void> {
 		const embed = 
 			infoEmbed(null, "Generate a population density map based off of server member's self reported locations. Use `/help` in a Discord server to get the link to the server map. `/map` can be used to get a map for a specific country. Countries and subdivisions are from [ISO 3166](https://www.iso.org/iso-3166-country-codes.html).")

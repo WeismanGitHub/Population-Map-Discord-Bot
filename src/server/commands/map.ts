@@ -16,7 +16,7 @@ export default {
         .setDMPermission(false)
 		.setDescription("Get a server map for the world, continents, or a specific country.")
 	,
-	globalCommand: true,
+	guildIDs: null,
 	async execute(interaction: CommandInteraction): Promise<void> {
 		const client = interaction.client as CustomClient
 

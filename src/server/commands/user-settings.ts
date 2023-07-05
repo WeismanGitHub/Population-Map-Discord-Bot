@@ -13,7 +13,7 @@ export default {
             .setDescription("Automatically add your location to a server's map when you join. Off by default.")
         )
 	,
-	globalCommand: true,
+	guildIDs: null,
 	async execute(interaction: ChatInputCommandInteraction) {
         const user = await User.findOne({ where: { discordID: interaction.user.id } })
         const client = interaction.client as CustomClient

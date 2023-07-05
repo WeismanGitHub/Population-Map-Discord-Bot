@@ -4,6 +4,7 @@ import {
 	SlashCommandBuilder,
 	CommandInteraction,
 } from 'discord.js'
+import config from '../../config'
 
 export default {
 	data: new SlashCommandBuilder()
@@ -11,7 +12,7 @@ export default {
 		.setDescription("[Privileged Users Only] See the logs.")
 		.setDMPermission(false)
 	,
-	globalCommand: false,
+	guildIDs: [config.supportServerID],
 	async execute(interaction: CommandInteraction): Promise<void> {
 		const user = await User.findOne({ where: { discordID: interaction.user.id } })
 

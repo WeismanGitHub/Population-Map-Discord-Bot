@@ -1,6 +1,7 @@
 import { guildEmbed } from '../../utils/embeds'
 import { ForbiddenError } from '../../errors'
 import { User } from '../../db/models'
+import config from '../../config'
 import {
 	SlashCommandBuilder,
 	CommandInteraction,
@@ -15,7 +16,7 @@ export default {
 		.setDescription("[Privileged Users Only] See the servers this bot is in.")
 		.setDMPermission(false)
 	,
-	globalCommand: false,
+	guildIDs: [config.supportServerID],
 	async execute(interaction: CommandInteraction){
 		const user = await User.findOne({ where: { discordID: interaction.user.id } })
 
