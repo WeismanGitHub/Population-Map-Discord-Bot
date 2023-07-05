@@ -46,7 +46,7 @@ for (const path of commandsPaths) {
         if (guildCommands[guildID]) {
             guildCommands[guildID].push(command.data.toJSON())
         } else {
-            guildCommands[command.guildID] = [command.data.toJSON()]
+            guildCommands[guildID] = [command.data.toJSON()]
         }
     }
 }
@@ -58,11 +58,11 @@ rest.put(
     console.log(`deployed ${globalCommands.length} global commands...`);
 })
 
-for (const [guildID, commands] of Object.entries(guildCommands)) {
-    rest.put(
+Promise.all(Object.entries(guildCommands).map(([guildID, commands]) => {
+    return rest.put(
         Routes.applicationGuildCommands(process.env.BOT_ID, guildID),
         { body: commands },
     )
-}
-
-console.log(`deployed ${Object.entries(guildCommands).length} server commands...`)
+})).then(() => {
+    console.log(`deployed ${Object.entries(guildCommands).length} server commands...`)
+})
