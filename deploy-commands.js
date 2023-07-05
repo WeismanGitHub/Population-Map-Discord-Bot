@@ -27,20 +27,27 @@ function getPaths(dir) {
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
 const commandsPaths = getPaths(join(__dirname, 'dist\\server\\commands')).filter(file => file.endsWith('.js'))
-const supportServerCommands = [];
 const globalCommands = [];
+const guildCommands = {}
 
 for (const path of commandsPaths) {
-    const command = require(path);
+    const command = require(path).default;
 
-    if (!Object.keys(command.default).every(key => ['globalCommand', 'data', 'execute'].includes(key))) {
+    if (!Object.keys(command).every(key => ['guildIDs', 'data', 'execute'].includes(key))) {
         throw new Error('malformed command file...')
     }
 
-    if (command.default.globalCommand) {
-        globalCommands.push(command.default.data.toJSON());
-    } else {
-        supportServerCommands.push(command.default.data.toJSON());
+    if (!command.guildIDs) {
+        globalCommands.push(command.data.toJSON());
+        continue
+    }
+
+    for (let guildID of command.guildIDs) {
+        if (guildCommands[guildID]) {
+            guildCommands[guildID].push(command.data.toJSON())
+        } else {
+            guildCommands[command.guildID] = [command.data.toJSON()]
+        }
     }
 }
 
@@ -51,9 +58,11 @@ rest.put(
     console.log(`deployed ${globalCommands.length} global commands...`);
 })
 
-rest.put(
-    Routes.applicationGuildCommands(process.env.BOT_ID, process.env.SUPPORT_SERVER_ID),
-    { body: supportServerCommands },
-).then(res => {
-    console.log(`deployed ${supportServerCommands.length} support server commands...`);
-})
+for (const [guildID, commands] of Object.entries(guildCommands)) {
+    rest.put(
+        Routes.applicationGuildCommands(process.env.BOT_ID, guildID),
+        { body: commands },
+    )
+}
+
+console.log(`deployed ${Object.entries(guildCommands).length} server commands...`)
