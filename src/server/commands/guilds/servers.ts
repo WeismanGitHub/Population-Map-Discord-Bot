@@ -41,7 +41,7 @@ export default {
                 .setDisabled(guildEmbeds.length < 10)
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(JSON.stringify({
-                    type: 'guilds',
+                    type: 'servers',
                     data: { page: 1 }
                 }))
         )
