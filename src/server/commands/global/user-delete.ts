@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js'
 // import { InternalServerError } from '../errors'
-import { infoEmbed } from '../utils/embeds'
+import { infoEmbed } from '../../utils/embeds'
 // import { User } from '../db/models'
 
 export default {

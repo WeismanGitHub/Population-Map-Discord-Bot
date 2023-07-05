@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction, GuildMemberManager } from 'discord.js'
-import { BadRequestError, InternalServerError } from '../errors'
-import { Guild, GuildMap } from '../db/models'
-import { infoEmbed } from '../utils/embeds'
+import { BadRequestError, InternalServerError } from '../../errors'
+import { Guild, GuildMap } from '../../db/models'
+import { infoEmbed } from '../../utils/embeds'
 
 interface GuildSettings {
     visibility?: 'public' | 'member-restricted' | 'map-role-restricted' | 'admin-role-restricted' | 'invisibile'

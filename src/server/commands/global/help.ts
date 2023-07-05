@@ -1,5 +1,5 @@
-import { infoEmbed } from '../utils/embeds'
-import config from '../config'
+import { infoEmbed } from '../../utils/embeds'
+import config from '../../config'
 import {
 	SlashCommandBuilder,
 	CommandInteraction,

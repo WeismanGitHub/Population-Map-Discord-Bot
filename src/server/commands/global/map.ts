@@ -1,5 +1,5 @@
-import { CustomClient } from '../custom-client'
-import config from '../config'
+import { CustomClient } from '../../custom-client'
+import config from '../../config'
 import {
 	SlashCommandBuilder,
 	CommandInteraction,

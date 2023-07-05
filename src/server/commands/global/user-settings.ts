@@ -1,8 +1,8 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js'
-import { InternalServerError } from '../errors'
-import { CustomClient } from '../custom-client'
-import { infoEmbed } from '../utils/embeds'
-import { User } from '../db/models'
+import { InternalServerError } from '../../errors'
+import { CustomClient } from '../../custom-client'
+import { infoEmbed } from '../../utils/embeds'
+import { User } from '../../db/models'
 
 export default {
 	data: new SlashCommandBuilder()

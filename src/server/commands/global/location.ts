@@ -1,4 +1,4 @@
-import { CustomClient } from '../custom-client'
+import { CustomClient } from '../../custom-client'
 import {
     SlashCommandBuilder,
     CommandInteraction,
