@@ -18,11 +18,8 @@ class Logger {
     }
 
     private generateID() {
-        const date = new Date()
-        const [year, month] = [date.getFullYear(), date.getMonth() + 1]
         const randomNum = Math.floor(Math.random() * 100000)
-
-        return `${year}-${month}-${Date.now()}-${randomNum}`;
+        return `${Date.now()}-${randomNum}`;
     }
 
     constructor() {
