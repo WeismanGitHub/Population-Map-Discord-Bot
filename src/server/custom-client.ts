@@ -87,7 +87,7 @@ export class CustomClient extends Client {
         for (const path of commandsPaths) {
             const command = require(path)?.default;
     
-            if (!command?.data || (typeof command?.globalCommand !== 'boolean') || !command?.execute) {
+            if (!command?.data || !command?.execute) {
                 logger.warn({
                     type: 'command',
                     message: `Malformed command. Path: ${path}`
