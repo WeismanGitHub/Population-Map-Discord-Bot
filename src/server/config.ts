@@ -19,6 +19,7 @@ interface Configuration {
     mode: 'prod' | 'dev'
     websiteURL: string
     supportServerID: string
+    personalServerID: string
 }
 
 const config: Configuration = {
@@ -44,7 +45,8 @@ const config: Configuration = {
     sessionSecret: process.env.JWT_SECRET!,
     mode: process.env.MODE as 'prod' | 'dev',
     websiteURL: process.env.WEBSITE_URL!, // Example: http://localhost:5001
-    supportServerID: process.env.SUPPORT_SERVER_ID!
+    supportServerID: process.env.SUPPORT_SERVER_ID!,
+    personalServerID: process.env.PERSONAL_SERVER_ID!,
 }
 
 export default config
