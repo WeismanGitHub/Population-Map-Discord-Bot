@@ -17,7 +17,7 @@ export default {
 		.setDMPermission(false)
 	,
 	guildIDs: [config.supportServerID, config.personalServerID],
-	async execute(interaction: CommandInteraction){
+	async execute(interaction: CommandInteraction) {
 		const user = await User.findOne({ where: { discordID: interaction.user.id } })
 
 		if (!user) {
@@ -28,7 +28,7 @@ export default {
 			throw new ForbiddenError('You are not an admin.')
 		}
 
-        const guildEmbeds = interaction.client.guilds.cache.map((guild) => guildEmbed(guild))
+        const guildEmbeds = interaction.client.guilds.cache.first(10).map((guild) => guildEmbed(guild))
 
         const buttonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
@@ -41,7 +41,7 @@ export default {
                 .setDisabled(guildEmbeds.length < 10)
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(JSON.stringify({
-                    type: 'servers',
+                    type: 'servers-page',
                     data: { page: 1 }
                 }))
         )
