@@ -53,7 +53,7 @@ export default function Guild() {
 
         (Promise.all([
             ky.get(`/api/v1/guilds/${guildID}?mapCode=${mapCode}`).json(),
-            ky.get(`https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/geojson/${mapCode}.json`).json().catch(err => { throw new Error('Could not get country.') })
+            ky.get(`https://eric.clst.org/assets/wiki/uploads/Stuff/gz_2010_us_040_00_500k.json`).json().catch(err => { throw new Error('Could not get country.') })
         ]) as Promise<unknown> as Promise<[GuildRes, GeojsonRes]>)
         .then(([guildRes, geojsonRes]) => {
             if (!geojsonRes?.features) {
@@ -65,7 +65,7 @@ export default function Guild() {
             // @ts-ignore
             setGeojson(geojsonRes.features.map((feature) => {
                 // @ts-ignore
-                feature.count = guildRes.locationsData[feature.properties.CC_1] ?? undefined
+                feature.amount = guildRes.locationsData[feature.properties.isoCode] || 0
                 return feature
             }))
             setGuildName(guildRes.name)
@@ -85,19 +85,21 @@ export default function Guild() {
     return (<div>
         <NavBar/>
         { !geojson ? loading : <div>
-            {guildMemberCount} members
             <div className='guild'>
                 <img
-                    width={50}
-                    height={50}
+                    width={53}
+                    height={53}
                     src={guildIconURL}
                     alt="The icon of the Discord server."
                     style={{ borderRadius: '50%', float: 'left' }}
                 />
                 {guildName}
+                <br/>
+                <div style={{ fontSize: 'small', marginLeft: '2px' }}>{guildMemberCount} members</div>
             </div>
-
-            <Map geojson={geojson} label={'test'}/>
+            <div className='map'>
+                <Map geojson={geojson} label={'test'}/>
+            </div>
         </div>}
     </div>)
 }

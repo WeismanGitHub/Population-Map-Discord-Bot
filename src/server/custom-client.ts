@@ -57,7 +57,12 @@ export class CustomClient extends Client {
 
         this.token = config.discordToken
         this.commands = new Collection()
-        this.countries = getOrderedCountries()
+        this.countries = getOrderedCountries().filter((country => {
+            // These are countries that I don't have geojson for. I didn't look very hard though.
+            const countriesWithoutGeoJSON = ['AQ', 'AW', 'BV', 'CC', 'CW', 'CX', 'FK', 'GI', 'GS', 'HK', 'HM', 'IO', 'KI', 'MC', 'MF', 'MO', 'MV', 'NF', 'NU', 'PN', 'SX', 'VA']
+
+            return countriesWithoutGeoJSON.includes(country.code)
+        }))
         
         this.login(this.token)
         .then(async () => {

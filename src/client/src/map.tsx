@@ -26,18 +26,19 @@ export default function Map(props: { geojson: {}[], label: string }) {
     
     return (
         <ReactChart
-            color="red"
+            style={{ backgroundColor: 'white' }}
+            
             ref={chartRef}
             type="choropleth"
             data={{
-                labels: geojson.map((d: any) => d.properties.NAME_1),
+                labels: geojson.map((d: any) => d.properties.name),
                 datasets: [
                     {
                         outline: geojson,
                         label: props.label,
                         data: geojson.map((d: any) => ({
                             feature: d,
-                            value: d.count
+                            value: d.amount
                         })),
                     }
                 ]
