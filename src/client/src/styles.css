@@ -7,12 +7,12 @@ html, body {
 
 .guild {
     float: left;
-    font-size: large;
+    font-size: x-large;
     display: inline;
     position: relative;
     object-fit: cover;
-    left: 5%;
-    width: 95%;
+    left: 12.5%;
+    width: 87.5%;
     margin-bottom: 10px;
 }
 
