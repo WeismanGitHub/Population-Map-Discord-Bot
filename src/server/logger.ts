@@ -24,19 +24,19 @@ class Logger {
 
     constructor() {
         const transport = config.mode === 'dev' ? new winston.transports.Console() : new DailyRotateFile({
-            level: 'info',
+            level: 'INFO',
             filename: './logs/%DATE%.log',
             datePattern: 'YYYY-MM',
             zippedArchive: true,
         })
 
         this.logger = winston.createLogger({
-            level: 'info',
+            level: 'INFO',
             levels: {
-                fatal: 0,
-                error: 1,
-                warn: 2,
-                info: 3,
+                FATAL: 0,
+                ERROR: 1,
+                WARN: 2,
+                INFO: 3,
             },
             transports: [transport],
         });
@@ -44,7 +44,7 @@ class Logger {
 
     public fatal(log: LogInput & { stack: string | undefined }) {
         this.logger.log({
-            level: 'fatal',
+            level: 'FATAL',
             ...this.generateBaseLog(),
             ...log
         })
@@ -52,7 +52,7 @@ class Logger {
 
     public error(log: LogInput & { stack: string | undefined }) {
         this.logger.log({
-            level: 'error',
+            level: 'ERROR',
             ...this.generateBaseLog(),
             ...log
         })
@@ -60,7 +60,7 @@ class Logger {
 
     public warn(log: LogInput) {
         this.logger.log({
-            level: 'warn',
+            level: 'WARN',
             ...this.generateBaseLog(),
             ...log
         })
@@ -68,7 +68,7 @@ class Logger {
 
     public info(log: LogInput) {
         this.logger.log({
-            level: 'info',
+            level: 'INFO',
             ...this.generateBaseLog(),
             ...log
         })
