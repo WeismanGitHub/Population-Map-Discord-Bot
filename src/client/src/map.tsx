@@ -26,7 +26,8 @@ export default function Map(props: { geojson: {}[], label: string }) {
     
     return (
         <ReactChart
-            color="red"
+            style={{ backgroundColor: 'white' }}
+            
             ref={chartRef}
             type="choropleth"
             data={{
