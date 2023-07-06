@@ -22,3 +22,34 @@ html, body {
     border-radius: 5%;
     height: 75%;
 }
+
+.navbar {
+    border-radius: 0px;
+    height: 6vh;
+    background-color: #202225;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.navbar-button {
+    display: inline-block;
+    font-size: x-large;
+    margin: 5px;
+    padding: 4px;
+    border-radius: 5px;
+    background-color: #40444b;
+    color: #a4a7aa;
+    cursor: pointer;
+    all: unset;
+}
+
+.navbar-button:hover {
+    filter: brightness(90%);
+}
+
+.navbar-button:active {
+    filter: brightness(80%);
+}
