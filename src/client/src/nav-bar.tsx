@@ -18,7 +18,7 @@ export default function NavBar() {
     return (<>
         <div className='navbar'>
             <a className='navbar-button' href="/">home</a>
-            <a className='navbar-button' href="/discord/oauth2">oauth2</a>
+            <a className='navbar-button' href="/discord/oauth2">login</a>
             <div className='navbar-button' onClick={logout}>logout</div>
         </div>
     </>)
