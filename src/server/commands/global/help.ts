@@ -1,11 +1,13 @@
 import { infoEmbed } from '../../utils/embeds'
 import config from '../../config'
+import { resolve } from 'path'
 import {
 	SlashCommandBuilder,
 	CommandInteraction,
 	ActionRowBuilder,
 	ButtonBuilder,
 	ButtonStyle,
+	AttachmentBuilder,
 } from 'discord.js'
 
 export default {
@@ -15,10 +17,12 @@ export default {
 	,
 	guildIDs: null,
 	async execute(interaction: CommandInteraction): Promise<void> {
+		const attachment = new AttachmentBuilder(resolve(__dirname, '../../../../images/WORLD-example.jpg'), { name: 'world-example.png'})
+
 		const embed = 
 			infoEmbed(null, "Generate a population density map based off of server member's self reported locations. Use `/help` in a Discord server to get the link to the server map. `/map` can be used to get a map for a specific country. Countries and subdivisions are from [ISO 3166](https://www.iso.org/iso-3166-country-codes.html).")
 			.addFields({ name: 'Contact the Creator:', value: `<@${config.mainAccountID}>` })
-			// .setImage('../../../population-map-example.png')
+			.setImage('attachment://world-example.png')
 	
 		const linksRow = new ActionRowBuilder<ButtonBuilder>()
 		.addComponents([
@@ -68,7 +72,8 @@ export default {
 		interaction.reply({
 			embeds: [embed],
 			components: interaction.guild ? [firstRow, linksRow, mapButtonsRow] : [firstRow, linksRow],
-			ephemeral: true
+			ephemeral: true,
+			files: [attachment]
 		})
 	}
 }
