@@ -20,7 +20,7 @@ ChartJS.register(
     ChartGeo.GeoFeature
 );
 
-export default function Map(props: { geojson: {}[], label: string }) {
+export default function Map(props: { geojson: {}[], projection: 'albers' | 'equalEarth' }) {
     const geojson = props.geojson
     const chartRef = useRef();
     
@@ -35,7 +35,6 @@ export default function Map(props: { geojson: {}[], label: string }) {
                 datasets: [
                     {
                         outline: geojson,
-                        label: props.label,
                         data: geojson.map((d: any) => ({
                             feature: d,
                             value: d.amount
@@ -51,7 +50,7 @@ export default function Map(props: { geojson: {}[], label: string }) {
                     legend: { display: false }
                 },
                 scales: {
-                    xy: { projection: "albers" }
+                    xy: { projection: props.projection }
                 }
             }}
         />

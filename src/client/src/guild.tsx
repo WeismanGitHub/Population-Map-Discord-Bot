@@ -65,7 +65,7 @@ export default function Guild() {
             // @ts-ignore
             setGeojson(geojsonRes.features.map((feature) => {
                 // @ts-ignore
-                feature.amount = guildRes.locationsData[feature.properties.isoCode] || 0
+                feature.amount = guildRes.locationsData[feature.properties.isoCode] || -1
                 return feature
             }))
             setGuildName(guildRes.name)
@@ -98,7 +98,7 @@ export default function Guild() {
                 <div style={{ fontSize: 'small', marginLeft: '2px' }}>{guildMemberCount} members</div>
             </div>
             <div className='map'>
-                <Map geojson={geojson} label={'test'}/>
+                <Map geojson={geojson} projection={mapCode === 'WORLD' ? 'equalEarth' : 'albers'}/>
             </div>
         </div>}
     </div>)
