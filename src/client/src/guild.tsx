@@ -53,7 +53,7 @@ export default function Guild() {
 
         (Promise.all([
             ky.get(`/api/v1/guilds/${guildID}?mapCode=${mapCode}`).json(),
-            ky.get(`https://eric.clst.org/assets/wiki/uploads/Stuff/gz_2010_us_040_00_500k.json`).json().catch(err => { throw new Error('Could not get country.') })
+            ky.get(`https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/geojson/${mapCode}.json`).json().catch(err => { throw new Error('Could not get country.') })
         ]) as Promise<unknown> as Promise<[GuildRes, GeojsonRes]>)
         .then(([guildRes, geojsonRes]) => {
             if (!geojsonRes?.features) {
