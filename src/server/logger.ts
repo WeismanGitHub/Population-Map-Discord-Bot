@@ -3,8 +3,8 @@ import config from './config';
 import winston from 'winston';
 
 interface LogInput {
-    type: 'app' | 'api' | 'event' | 'command',
-    message: string
+    type: 'app' | 'api' | 'bot',
+    message: string,
 }
 
 class Logger {
@@ -50,7 +50,7 @@ class Logger {
         })
     }
 
-    public error(log: LogInput & { stack: string | undefined }) {
+    public error(log: LogInput & { stack: string | undefined}) {
         this.logger.log({
             level: 'ERROR',
             ...this.generateBaseLog(),
@@ -66,7 +66,7 @@ class Logger {
         })
     }
 
-    public info(log: LogInput) {
+    public info(log: LogInput & { statusCode: number | null, name: string | null }) {
         this.logger.log({
             level: 'INFO',
             ...this.generateBaseLog(),

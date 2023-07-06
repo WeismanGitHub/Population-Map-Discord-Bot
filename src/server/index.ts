@@ -33,6 +33,8 @@ import app from './app'
 	console.log('connected to database...')
 })().then(() => {
 	logger.info({
+		statusCode: null,
+		name: null,
 		message: 'Successfully started app.',
 		type: 'app'
 	})

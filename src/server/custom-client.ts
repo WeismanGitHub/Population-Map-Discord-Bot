@@ -67,8 +67,8 @@ export class CustomClient extends Client {
         })
         .catch((err: Error) => {
             logger.error({
-                type: 'app',
-                message: 'Error happened in event or command listeners.',
+                type: 'bot',
+                message: err.message,
                 stack: err.stack
             })
         })
@@ -89,7 +89,7 @@ export class CustomClient extends Client {
     
             if (!command?.data || !command?.execute) {
                 logger.warn({
-                    type: 'command',
+                    type: 'bot',
                     message: `Malformed command. Path: ${path}`
                 })
 
@@ -110,16 +110,13 @@ export class CustomClient extends Client {
             command.execute(interaction)
             .then(() => {
                 logger.info({
-                    type: 'command',
-                    message: `${interaction.commandName}: successful`
+                    type: 'bot',
+                    name: interaction.commandName,
+                    statusCode: 200,
+                    message: 'success'
                 })
             })
             .catch((err: Error) => {
-                logger.info({
-                    type: 'command',
-                    message: `${interaction.commandName}: ${err.message}`
-                })
-
                 const embed = err instanceof CustomError ? errorEmbed(err.message, err.statusCode) : errorEmbed()
                 
                 if (interaction.replied || interaction.deferred) {
@@ -127,6 +124,15 @@ export class CustomClient extends Client {
                 } else {
                     interaction.reply({ embeds: [embed], ephemeral: true });
                 }
+
+                if (!(err instanceof CustomError)) throw err
+
+                logger.info({
+                    type: 'bot',
+                    name: interaction.commandName,
+                    statusCode: err.statusCode,
+                    message: err.message
+                })
             })
         });
     }
@@ -139,7 +145,7 @@ export class CustomClient extends Client {
 
             if (!event?.name ||!event.execute || (typeof event?.once !== 'boolean') || !event.check) {
                 logger.warn({
-                    type: 'event',
+                    type: 'bot',
                     message: `Malformed event file. Path: ${path}`
                 })
 
