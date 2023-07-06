@@ -46,10 +46,24 @@ html, body {
     all: unset;
 }
 
-.navbar-button:hover {
+.oauth2-button {
+    position:absolute;
+    top:50%;
+    left:50%;
+    margin-top:-50px;
+    margin-left:-100px;
+    font-size: xx-large;
+    padding: 25px;
+    border-radius: 7px;
+    background-color: #40444b;
+    color: #a4a7aa;
+    border: #202225 solid 2px;
+}
+
+.navbar-button:hover, .oauth2-button:hover {
     filter: brightness(90%);
 }
 
-.navbar-button:active {
+.navbar-button:active, .oauth2-button:active {
     filter: brightness(80%);
 }
