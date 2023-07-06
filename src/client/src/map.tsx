@@ -44,13 +44,14 @@ export default function Map(props: { geojson: {}[], label: string }) {
                 ]
             }}
             options={{
+                borderColor: 'black',
                 showOutline: true,
                 showGraticule: true,
                 plugins: {
                     legend: { display: false }
                 },
                 scales: {
-                    xy: { projection: "equalEarth" }
+                    xy: { projection: "albers" }
                 }
             }}
         />
