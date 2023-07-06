@@ -85,19 +85,21 @@ export default function Guild() {
     return (<div>
         <NavBar/>
         { !geojson ? loading : <div>
-            {guildMemberCount} members
             <div className='guild'>
                 <img
-                    width={50}
-                    height={50}
+                    width={53}
+                    height={53}
                     src={guildIconURL}
                     alt="The icon of the Discord server."
                     style={{ borderRadius: '50%', float: 'left' }}
                 />
                 {guildName}
+                <br/>
+                <div style={{ fontSize: 'small', marginLeft: '2px' }}>{guildMemberCount} members</div>
             </div>
-
-            <Map geojson={geojson} label={'test'}/>
+            <div className='map'>
+                <Map geojson={geojson} label={'test'}/>
+            </div>
         </div>}
     </div>)
 }
