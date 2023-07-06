@@ -16,7 +16,7 @@ export default {
 		.setDescription("[Privileged Users Only] See the servers this bot is in.")
 		.setDMPermission(false)
 	,
-	guildIDs: [config.supportServerID, ...config.personalServers],
+	guildIDs: [config.supportServerID, ...config.personalServerIDs],
 	async execute(interaction: CommandInteraction) {
 		const user = await User.findOne({ where: { discordID: interaction.user.id } })
 

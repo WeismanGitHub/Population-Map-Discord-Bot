@@ -19,7 +19,7 @@ interface Configuration {
     mode: 'prod' | 'dev'
     websiteURL: string
     supportServerID: string
-    personalServers: string[]
+    personalServerIDs: string[]
 }
 
 const config: Configuration = {
@@ -46,7 +46,7 @@ const config: Configuration = {
     mode: process.env.MODE as 'prod' | 'dev',
     websiteURL: process.env.WEBSITE_URL!, // Example: http://localhost:5001
     supportServerID: process.env.SUPPORT_SERVER_ID!,
-    personalServers: [process.env.PERSONAL_SERVER_ID!, process.env.TEST_SERVER_ID!],
+    personalServerIDs: [process.env.PERSONAL_SERVER_ID!, process.env.TEST_SERVER_ID!],
 }
 
 export default config
