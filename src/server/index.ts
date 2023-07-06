@@ -2,7 +2,6 @@ import { InternalServerError } from './errors';
 import { CustomClient } from './custom-client';
 import { GatewayIntentBits } from 'discord.js';
 import sequelize from './db/sequelize'
-import logger from './logger';
 require('express-async-errors')
 import config from './config'
 import app from './app'
@@ -31,17 +30,4 @@ import app from './app'
 	.catch((err) => { throw new InternalServerError('Could not connect to database.') })
 
 	console.log('connected to database...')
-})().then(() => {
-	logger.info({
-		statusCode: null,
-		name: null,
-		message: 'Successfully started app.',
-		type: 'app'
-	})
-}).catch((err: Error) => {
-	logger.fatal({
-		message: 'Fatal error in index.js.',
-		stack: err.stack,
-		type: 'app'
-	})
-})
+})()

@@ -2,7 +2,6 @@ import { errorEmbed } from './utils/embeds';
 import { readdirSync, statSync } from 'fs';
 import { CustomError } from './errors';
 import iso31662 from 'iso-3166-2'
-import logger from './logger';
 import config from './config';
 import { join } from 'path';
 import {
@@ -65,13 +64,6 @@ export class CustomClient extends Client {
             this.loadEventListeners()
             this.loadCommands()
         })
-        .catch((err: Error) => {
-            logger.error({
-                type: 'bot',
-                message: err.message,
-                stack: err.stack
-            })
-        })
     }
 
     // implement binary search instead of using countries.find() or like make it more efficient idk. hash map?
@@ -88,11 +80,7 @@ export class CustomClient extends Client {
             const command = require(path)?.default;
     
             if (!command?.data || !command?.execute) {
-                logger.warn({
-                    type: 'bot',
-                    message: `Malformed command. Path: ${path}`
-                })
-
+                console.log(`malformed command file: ${path}`)
                 continue
             }
     
@@ -108,15 +96,9 @@ export class CustomClient extends Client {
             const command = this.commands.get(interaction.commandName);
 
             command.execute(interaction)
-            .then(() => {
-                logger.info({
-                    type: 'bot',
-                    name: interaction.commandName,
-                    statusCode: 200,
-                    message: 'success'
-                })
-            })
             .catch((err: Error) => {
+                if (!(err instanceof CustomError)) console.log(err)
+
                 const embed = err instanceof CustomError ? errorEmbed(err.message, err.statusCode) : errorEmbed()
                 
                 if (interaction.replied || interaction.deferred) {
@@ -125,14 +107,6 @@ export class CustomClient extends Client {
                     interaction.reply({ embeds: [embed], ephemeral: true });
                 }
 
-                if (!(err instanceof CustomError)) throw err
-
-                logger.info({
-                    type: 'bot',
-                    name: interaction.commandName,
-                    statusCode: err.statusCode,
-                    message: err.message
-                })
             })
         });
     }
@@ -144,11 +118,7 @@ export class CustomClient extends Client {
             const event = require(path)?.default;
 
             if (!event?.name ||!event.execute || (typeof event?.once !== 'boolean') || !event.check) {
-                logger.warn({
-                    type: 'bot',
-                    message: `Malformed event file. Path: ${path}`
-                })
-
+                console.log(`malformed event file: ${path}`)
                 continue
             }
 
