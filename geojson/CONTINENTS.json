@@ -4,7 +4,7 @@
         {
             "type": "Feature",
             "properties": {
-                "continent": "South America"
+                "name": "South America"
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -2495,7 +2495,7 @@
         {
             "type": "Feature",
             "properties": {
-                "continent": "Oceania"
+                "name": "Oceania"
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -5174,7 +5174,7 @@
         {
             "type": "Feature",
             "properties": {
-                "continent": "North America"
+                "name": "North America"
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -13521,7 +13521,7 @@
         {
             "type": "Feature",
             "properties": {
-                "continent": "Europe"
+                "name": "Europe"
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -17528,7 +17528,7 @@
         {
             "type": "Feature",
             "properties": {
-                "continent": "Asia"
+                "name": "Asia"
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -27375,7 +27375,7 @@
         {
             "type": "Feature",
             "properties": {
-                "continent": "Africa"
+                "name": "Africa"
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -29602,7 +29602,7 @@
         {
             "type": "Feature",
             "properties": {
-                "continent": "Oceania"
+                "name": "Oceania"
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -32281,7 +32281,7 @@
         {
             "type": "Feature",
             "properties": {
-                "continent": "North America"
+                "name": "North America"
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -40628,7 +40628,7 @@
         {
             "type": "Feature",
             "properties": {
-                "continent": "Europe"
+                "name": "Europe"
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -44635,7 +44635,7 @@
         {
             "type": "Feature",
             "properties": {
-                "continent": "Asia"
+                "name": "Asia"
             },
             "geometry": {
                 "type": "MultiPolygon",
@@ -54482,7 +54482,7 @@
         {
             "type": "Feature",
             "properties": {
-                "continent": "Africa"
+                "name": "Africa"
             },
             "geometry": {
                 "type": "MultiPolygon",
