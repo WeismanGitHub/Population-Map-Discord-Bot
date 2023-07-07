@@ -65,11 +65,7 @@ export default function Guild() {
             // @ts-ignore
             setGeojson(geojsonRes.features.map((feature) => {
                 // @ts-ignore
-<<<<<<< HEAD
-                feature.count = guildRes.locationsData[feature.properties.ISO_1] ?? 0
-=======
                 feature.amount = guildRes.locationsData[feature.properties.isoCode] || 0
->>>>>>> main
                 return feature
             }))
             setGuildName(guildRes.name)

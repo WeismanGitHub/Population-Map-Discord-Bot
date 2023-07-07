@@ -23,11 +23,7 @@ ChartJS.register(
 export default function Map(props: { geojson: {}[], projection: 'albers' | 'equalEarth' }) {
     const geojson = props.geojson
     const chartRef = useRef();
-<<<<<<< HEAD
-
-=======
     
->>>>>>> main
     return (
         <ReactChart
             style={{ backgroundColor: 'white' }}
