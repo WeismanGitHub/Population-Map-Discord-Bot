@@ -1,8 +1,7 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction, GuildMemberManager } from 'discord.js'
 import { BadRequestError, InternalServerError } from '../../errors'
-import { Guild, GuildMap } from '../../db/models'
+import { Guild, GuildCountries } from '../../db/models'
 import { infoEmbed } from '../../utils/embeds'
-import sequelize from '../../db/sequelize'
 
 interface GuildSettings {
     visibility?: 'public' | 'member-restricted' | 'map-role-restricted' | 'admin-role-restricted' | 'invisibile'
@@ -73,23 +72,13 @@ export default {
         const thereAreChanges = Boolean(Object.keys(settings).length)
 
         if (interaction.user.id === interaction.guild?.ownerId && !guild) {
-            const transaction = await sequelize.transaction()
+            guild = await Guild.create({
+                ID: interaction.guildId,
+                ...settings
+            }).catch(err => { throw new InternalServerError('Could not save server data to database.') })
 
-            try {
-                guild = await Guild.create({
-                    ID: interaction.guildId,
-                    ...settings
-                }, { transaction })
-    
-                await GuildMap.create({ ID: interaction.guildId }, { transaction })
-
-                await transaction.commit()
-            } catch(err) {
-                await transaction.rollback()
-                
-                throw new InternalServerError('Could not save server data to database.')
-            }
-
+            const guildCountries = new GuildCountries(interaction.guildId)
+            await guildCountries.sync().catch(err => { throw new InternalServerError('Could not save server data to database.') })
         } else if (interaction.user.id === interaction.guild?.ownerId && guild) {
             await guild.update({
                 ID: interaction.guildId,
