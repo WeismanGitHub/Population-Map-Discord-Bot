@@ -3,7 +3,12 @@ import { Events, GuildMember } from 'discord.js'
 export default {
 	name: Events.GuildMemberRemove,
 	once: false,
-	async execute(member: GuildMember) {
+	check: async (member: GuildMember) => {
+		return member
+    },
+    execute: async ({ member }: {
+        member: GuildMember,
+    }) => {
 		if (!member.user.bot) return
 
 		console.log(member)

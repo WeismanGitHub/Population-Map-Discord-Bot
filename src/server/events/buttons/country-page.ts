@@ -5,6 +5,7 @@ import {
     ButtonInteraction,
     ButtonStyle,
     Events,
+    Interaction,
     LinkButtonComponentData,
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
@@ -13,18 +14,21 @@ import {
 export default {
 	name: Events.InteractionCreate,
 	once: false,
-    execute: async (interaction: ButtonInteraction) => {
-        if (!interaction.isButton()) {
-            return
-        }
+    check: async (interaction: Interaction) => {
+        if (!interaction.isButton()) return
 
-        const { type, data }: CustomID<{ page: number, countrySelectType: string }> = JSON.parse(interaction.customId)
+        const customID: CustomID<{ page: number, countrySelectType: string }> = JSON.parse(interaction.customId)
+
+        if (customID.type !== 'country-page') return
+
+        return { customID, interaction }
+    },
+    execute: async ({ interaction, customID }: {
+        interaction: ButtonInteraction,
+        customID: CustomID<{ page: number, countrySelectType: string }>
+    }) => {
         const client = interaction.client as CustomClient
-        const { page, countrySelectType } = data
-
-        if (type !== 'country-page') {
-            return
-        }
+        const { page, countrySelectType } = customID.data
 
         const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()

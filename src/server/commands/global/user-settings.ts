@@ -1,8 +1,8 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js'
-import { InternalServerError } from '../errors'
-import { CustomClient } from '../custom-client'
-import { infoEmbed } from '../utils/embeds'
-import { User } from '../db/models'
+import { InternalServerError } from '../../errors'
+import { CustomClient } from '../../custom-client'
+import { infoEmbed } from '../../utils/embeds'
+import { User } from '../../db/models'
 
 export default {
 	data: new SlashCommandBuilder()
@@ -13,6 +13,7 @@ export default {
             .setDescription("Automatically add your location to a server's map when you join. Off by default.")
         )
 	,
+	guildIDs: null,
 	async execute(interaction: ChatInputCommandInteraction) {
         const user = await User.findOne({ where: { discordID: interaction.user.id } })
         const client = interaction.client as CustomClient

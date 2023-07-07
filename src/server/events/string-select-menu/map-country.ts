@@ -6,19 +6,26 @@ import {
     ButtonStyle,
     Events,
     StringSelectMenuInteraction,
-    LinkButtonComponentData
+    LinkButtonComponentData,
+    Interaction
 } from "discord.js"
 
 export default {
 	name: Events.InteractionCreate,
 	once: false,
-    execute: async (interaction: StringSelectMenuInteraction) => {
+    check: async (interaction: Interaction) => {
         if (!interaction.isStringSelectMenu()) return;
 
-        const { type }: CustomID<{}> = JSON.parse(interaction.customId)
+        const customID: CustomID<{}> = JSON.parse(interaction.customId)
 
-        if (type !== 'map-country') return
+        if (customID.type !== 'map-country') return
 
+        return { customID, interaction }
+    },
+    execute: async ({ interaction, customID }: {
+        interaction: StringSelectMenuInteraction,
+        customID: CustomID<{}>
+    }) => {
         const previousMapButtons = interaction.message.components[2].components.slice(0, 4)
         .map(({ data }) => {
             const { label, url, style } = data as LinkButtonComponentData

@@ -1,6 +1,6 @@
+import { errorToast, successToast } from './toasts'
 import React from 'react'
 import ky from 'ky'
-import { errorToast, successToast } from './toasts'
 
 export default function NavBar() {
     function logout() {
@@ -16,9 +16,10 @@ export default function NavBar() {
     }
 
     return (<>
-        <div>
-            <a href="/">home</a>
-            <div onClick={logout}>logout</div>
+        <div className='navbar'>
+            <a className='navbar-button' href="/">home</a>
+            <a className='navbar-button' href="/discord/oauth2">login</a>
+            <div className='navbar-button' onClick={logout}>logout</div>
         </div>
     </>)
 }

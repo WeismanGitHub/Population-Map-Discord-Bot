@@ -12,7 +12,7 @@ class GuildMap extends Model<InferAttributes<GuildMap>, InferCreationAttributes<
 
 GuildMap.init({
     ID: {
-        type: DataTypes.STRING,
+        type: DataTypes.BIGINT,
         allowNull: false,
         primaryKey: true,
     },

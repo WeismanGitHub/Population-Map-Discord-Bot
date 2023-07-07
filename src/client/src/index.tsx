@@ -3,6 +3,7 @@ import { ToastContainer } from 'react-toastify';
 import { createRoot } from "react-dom/client";
 import 'react-toastify/dist/ReactToastify.css';
 import React from 'react';
+import './styles.css'
 
 import DiscordOAuth2 from "./discord-oauth2";
 import Guild from './guild';
@@ -18,15 +19,15 @@ createRoot(document.getElementById("root")!)
 .render(<>
     <RouterProvider router={router}/>
     <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="colored"
-        />
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+    />
 </>);

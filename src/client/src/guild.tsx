@@ -65,7 +65,11 @@ export default function Guild() {
             // @ts-ignore
             setGeojson(geojsonRes.features.map((feature) => {
                 // @ts-ignore
+<<<<<<< HEAD
                 feature.count = guildRes.locationsData[feature.properties.ISO_1] ?? 0
+=======
+                feature.amount = guildRes.locationsData[feature.properties.isoCode] || 0
+>>>>>>> main
                 return feature
             }))
             setGuildName(guildRes.name)
@@ -85,10 +89,25 @@ export default function Guild() {
     return (<div>
         <NavBar/>
         { !geojson ? loading : <div>
-            {guildName} - {guildMemberCount} members
-            <img src={guildIconURL}/>
-
-            <Map geojson={geojson} label={'test'}/>
+            <div className='guild'>
+                <img
+                    width={65}
+                    height={65}
+                    src={guildIconURL}
+                    alt="The icon of the Discord server."
+                    style={{ borderRadius: '50%', float: 'left' }}
+                />
+                {guildName}
+                <br/>
+                <div style={{ fontSize: 'medium' }}>
+                    Total Members: {guildMemberCount}
+                    <br/>
+                    Members on Map: {-1}
+                </div>
+            </div>
+            <div className='map'>
+                <Map geojson={geojson} projection={(mapCode === 'WORLD' || mapCode === 'CONTINENTS') ? 'equalEarth' : 'albers'}/>
+            </div>
         </div>}
     </div>)
 }

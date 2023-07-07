@@ -1,28 +1,27 @@
-import { CustomClient } from '../custom-client'
-import config from '../config'
+import { CustomClient } from '../../custom-client'
 import {
-	SlashCommandBuilder,
-	CommandInteraction,
-	ActionRowBuilder,
-	StringSelectMenuBuilder,
-	StringSelectMenuOptionBuilder,
-	ButtonBuilder,
-	ButtonStyle,
+    SlashCommandBuilder,
+    CommandInteraction,
+    StringSelectMenuBuilder,
+    StringSelectMenuOptionBuilder,
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle
 } from 'discord.js'
 
 export default {
 	data: new SlashCommandBuilder()
-		.setName('map')
-        .setDMPermission(false)
-		.setDescription("Get a server map for the world, continents, or a specific country.")
-	,
+		.setName('location')
+		.setDescription("Set your country and optionally your subdivision (state, region, prefecture, etc).")
+        ,
+    guildIDs: null,
 	async execute(interaction: CommandInteraction): Promise<void> {
-		const client = interaction.client as CustomClient
+        const client = interaction.client as CustomClient
 
         const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId(JSON.stringify({
-                    type: 'map-country',
+                    type: 'location-country',
                     data: {}
                 }))
                 .setPlaceholder('Select a country!')
@@ -35,18 +34,7 @@ export default {
                 )
         )
 
-        const mapButtonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
-            new ButtonBuilder()
-            .setLabel('World Map')
-            .setStyle(ButtonStyle.Link)
-            .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapCode=WORLD`),
-            new ButtonBuilder()
-            .setLabel('Continents Map')
-            .setStyle(ButtonStyle.Link)
-            .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapCode=CONTINENTS`)
-        )
-
-        const pageButtonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
+        const buttonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
                 .setLabel('⏪')
                 .setStyle(ButtonStyle.Primary)
@@ -57,13 +45,13 @@ export default {
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(JSON.stringify({
                     type: 'country-page',
-                    data: { page: 1, countrySelectType: 'map-country' }
+                    data: { page: 1, countrySelectType: 'location-country' }
                 }))
         )
 
         interaction.reply({
             ephemeral: true,
-            components: [menuRow, pageButtonsRow, mapButtonsRow]
+            components: [menuRow, buttonsRow]
         })
 	}
 }

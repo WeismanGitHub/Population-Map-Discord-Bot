@@ -27,22 +27,42 @@ function getPaths(dir) {
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
 const commandsPaths = getPaths(join(__dirname, 'dist\\server\\commands')).filter(file => file.endsWith('.js'))
-const commands = [];
+const globalCommands = [];
+const guildCommands = {}
 
 for (const path of commandsPaths) {
-    const command = require(path);
+    const command = require(path).default;
 
-    if (!command.default.data) {
-        console.log(`malformed command file...`)
+    if (!Object.keys(command).every(key => ['guildIDs', 'data', 'execute'].includes(key))) {
+        throw new Error('malformed command file...')
+    }
+
+    if (!command.guildIDs) {
+        globalCommands.push(command.data.toJSON());
         continue
     }
 
-    commands.push(command.default.data.toJSON());
+    for (let guildID of command.guildIDs) {
+        if (guildCommands[guildID]) {
+            guildCommands[guildID].push(command.data.toJSON())
+        } else {
+            guildCommands[guildID] = [command.data.toJSON()]
+        }
+    }
 }
 
 rest.put(
     Routes.applicationCommands(process.env.BOT_ID),
-    { body: commands },
+    { body: globalCommands },
 ).then(res => {
-    console.log(`reloaded ${commands.length} commands...`);
+    console.log(`deployed ${globalCommands.length} global commands...`);
+})
+
+Promise.all(Object.entries(guildCommands).map(([guildID, commands]) => {
+    return rest.put(
+        Routes.applicationGuildCommands(process.env.BOT_ID, guildID),
+        { body: commands },
+    )
+})).then(() => {
+    console.log(`deployed ${Object.entries(guildCommands).length} server commands...`)
 })

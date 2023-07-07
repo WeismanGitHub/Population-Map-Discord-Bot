@@ -1,4 +1,3 @@
-import { InternalServerError } from "./errors";
 require("dotenv").config();
 
 interface Configuration {
@@ -19,6 +18,8 @@ interface Configuration {
     sessionSecret: string
     mode: 'prod' | 'dev'
     websiteURL: string
+    supportServerID: string
+    personalServerIDs: string[]
 }
 
 const config: Configuration = {
@@ -43,19 +44,9 @@ const config: Configuration = {
     appPort: 5001,
     sessionSecret: process.env.JWT_SECRET!,
     mode: process.env.MODE as 'prod' | 'dev',
-    websiteURL: process.env.WEBSITE_URL! // Example: http://localhost:5001
-}
-
-for (const entry of Object.entries(config)) {
-    const [key, value] = entry
-
-    if (Number.isNaN(value) || value === undefined) {
-        throw new InternalServerError(`${key} is missing.`)
-    }
-}
-
-if (!['prod', 'dev'].includes(config.mode)) {
-    throw new InternalServerError('Mode must be equal to "prod" or "dev".')
+    websiteURL: process.env.WEBSITE_URL!, // Example: http://localhost:5001
+    supportServerID: process.env.SUPPORT_SERVER_ID!,
+    personalServerIDs: [process.env.PERSONAL_SERVER_ID!, process.env.TEST_SERVER_ID!],
 }
 
 export default config

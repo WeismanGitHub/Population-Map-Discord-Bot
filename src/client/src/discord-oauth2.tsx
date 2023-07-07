@@ -1,6 +1,7 @@
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { errorToast } from './toasts'
+import NavBar from './nav-bar';
 import React from 'react'
 import ky from 'ky';
 
@@ -49,7 +50,8 @@ export default function DiscordOAuth2() {
 	}
 
 	return <>
-		<a href={process.env.REACT_APP_OAUTH_URL + `&state=${btoa(randomString)}`}>
+		<NavBar/>
+		<a className='oauth2-button' href={process.env.REACT_APP_OAUTH_URL + `&state=${btoa(randomString)}`}>
 			Login
 		</a>
 	</>
