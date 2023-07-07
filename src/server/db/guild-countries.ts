@@ -24,6 +24,7 @@ class GuildCountries {
             },
             amount: {
                 type: DataTypes.NUMBER,
+                allowNull: false,
             },
         }, {
             sequelize: sequelize,
