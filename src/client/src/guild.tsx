@@ -102,7 +102,7 @@ export default function Guild() {
                 </div>
             </div>
             <div className='map'>
-                <Map geojson={geojson} projection={mapCode === 'WORLD' ? 'equalEarth' : 'albers'}/>
+                <Map geojson={geojson} projection={(mapCode === 'WORLD' || mapCode === 'CONTINENTS') ? 'equalEarth' : 'albers'}/>
             </div>
         </div>}
     </div>)
