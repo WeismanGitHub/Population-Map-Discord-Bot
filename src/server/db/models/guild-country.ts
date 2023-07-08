@@ -28,7 +28,7 @@ class GuildCountry {
             },
         }, {
             sequelize: sequelize,
-            modelName: `${guildID}-countryCode`,
+            modelName: `${guildID}-${countryCode}`,
             timestamps: false
         });
     }
