@@ -40,8 +40,8 @@ export default {
         interaction.reply({
             ephemeral: true,
             embeds: [infoEmbed('Your Data:',`
-            Country: ${country.name}
-            ${user.subdivisionCode ? `Subdivision: ${country.sub.find(sub => sub.code === user.subdivisionCode)?.name}` : ''}\n
+            \`Country\`: \`${country.name}\`
+            \`Subdivision\`: \`${country.sub.find(sub => sub.code === user.subdivisionCode)?.name || null}\`
             \`add-location-on-join\`: \`${user.addLocationOnJoin}\`
             `)]
         })
