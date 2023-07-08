@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js'
-// import { InternalServerError, NotFoundError } from '../errors'
-// import { User, GuildMap } from '../db/models'
+import { Guild, User } from '../../db/models'
+import { NotFoundError } from '../../errors'
 
 export default {
 	data: new SlashCommandBuilder()
@@ -10,8 +10,18 @@ export default {
 	,
 	guildIDs: null,
 	async execute(interaction: ChatInputCommandInteraction) {
-        // if (!guild) {
-        //     throw new NotFoundError('No server map could be found.')
-        // }
+		const guildID = interaction.guildId!
+		const guild = await Guild.findOne({ where: { ID: guildID! } })
+
+        if (!guild) {
+            throw new NotFoundError('This server is not in the database.')
+        }
+		
+		// @ts-ignore
+		const [affectedRows] = await User.update({ guildIDs: guildID }, { where: { discordID: interaction.user.id } })
+
+		if (!affectedRows) {
+			throw new NotFoundError('Could not find you in database.')
+		}
 	}
 }
