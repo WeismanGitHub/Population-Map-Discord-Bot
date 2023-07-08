@@ -4,7 +4,8 @@ import {
     DataTypes,
     InferAttributes,
     InferCreationAttributes,
-    Model
+    Model,
+    Transaction
 } from 'sequelize'
 
 class GuildSubdivisions extends Model<InferAttributes<GuildSubdivisions>, InferCreationAttributes<GuildSubdivisions>> {
@@ -41,24 +42,24 @@ class GuildCountry {
         return this.model.findAll()
     }
 
-    public async increaseCountry(subdivisionCode: string) {
+    public async increaseCountry(subdivisionCode: string, transaction: Transaction) {
         const subdivision = await this.model.findOne({ where: { subdivisionCode: subdivisionCode } })
 
         if (!subdivision) {
-            return this.model.create({ subdivisionCode, amount: 1 })
+            return this.model.create({ subdivisionCode, amount: 1 }, { transaction })
         }
 
-        return subdivision.update({ amount: subdivision.amount + 1 })
+        return subdivision.update({ amount: subdivision.amount + 1 }, { transaction })
     }
 
-    public async decreaseCountry(subdivisionCode: string) {
+    public async decreaseCountry(subdivisionCode: string, transaction: Transaction) {
         const subdivision = await this.model.findOne({ where: { subdivisionCode } })
 
         if (!subdivision) return null
         
         if (subdivision.amount <= 0) throw new InternalServerError('Invalid amount')
 
-        subdivision.update({ amount: subdivision.amount - 1 })
+        subdivision.update({ amount: subdivision.amount - 1 }, { transaction })
     }
 }
 
