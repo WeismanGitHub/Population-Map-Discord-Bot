@@ -12,6 +12,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare subdivisionCode?: string | null
     declare addLocationOnJoin?: boolean
     declare role?: 'regular' | 'admin'
+    declare guildIDs?: string[]
 }
 
 User.init({
@@ -39,6 +40,25 @@ User.init({
     role: {
         type: DataTypes.ENUM('regular', 'admin'),
         defaultValue: 'regular'
+    },
+    guildIDs: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: '[]',
+        get: function () {
+            // @ts-ignore
+            return JSON.parse(this.getDataValue('guildIDs'))
+        },
+        set: function(guildID: string) {
+            const guildIDs = [
+                // @ts-ignore
+                ...this.getDataValue('guildIDs') ? JSON.parse(this.getDataValue('guildIDs')) : [],
+                ...guildID ? [guildID] : []
+            ]
+            console.log(guildIDs)
+            // @ts-ignore
+            return this.setDataValue('guildIDs', JSON.stringify(guildIDs))
+        }
     }
 }, {
     sequelize: sequelize,
