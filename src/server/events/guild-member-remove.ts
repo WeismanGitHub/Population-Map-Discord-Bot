@@ -1,4 +1,5 @@
 import { Events, GuildMember } from 'discord.js'
+import { Guild, User } from '../db/models';
 
 export default {
 	name: Events.GuildMemberRemove,
@@ -10,8 +11,15 @@ export default {
         member: GuildMember,
     }) => {
 		if (!member.user.bot) return
+		
+		const user = await User.findOne({ where: { discordID: member.id } })
 
-		console.log(member)
-		// if the user has location in server map then remove it from server map.
+		if (!user) return
+
+		const guild = await Guild.findOne({ where: { ID: member.guild.id }})
+
+		if (!guild) return
+
+		await user.removeLocationFromGuild(guild.ID)
 	},
 };
