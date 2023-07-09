@@ -35,7 +35,7 @@ export default {
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(JSON.stringify({
                     type: 'remove-location-confirmation',
-                    data: {}
+                    data: { guildID }
                 }))
 		)
 
