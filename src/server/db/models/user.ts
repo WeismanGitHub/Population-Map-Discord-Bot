@@ -103,11 +103,6 @@ User.prototype.removeLocationFromGuild = async function(guildID: string) {
 
     const guildCountries = new GuildCountries(guildID)
     const guildCountry = this.subdivisionCode ? new GuildCountry(guildID, this.countryCode) : null
-    guildIDs.filter(id=> {
-        console.log(guildIDs)
-        console.log(id, guildID)
-        console.log(id == guildID)
-    })
 
     await sequelize.transaction(async (transaction) => {
         await guildCountries.decreaseCountry(this.countryCode, transaction)
@@ -117,7 +112,6 @@ User.prototype.removeLocationFromGuild = async function(guildID: string) {
             await guildCountry.decreaseSubdivision(this.subdivisionCode, transaction)
         }
     }).catch(err => {
-        console.log(err)
         throw new InternalServerError('Could not remove location from database.')
     })
 }
