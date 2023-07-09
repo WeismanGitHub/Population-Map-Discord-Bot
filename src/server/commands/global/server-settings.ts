@@ -111,8 +111,8 @@ export default {
         return interaction.reply({
             ephemeral: true,
             embeds: [infoEmbed('Server Settings',
-                `\`visibility\`: \`${guild.visibility}\`\n
-                \`admin-role\`: ${guild.adminRoleID ? `<@&${guild.adminRoleID}>` : '`null`'}\n
+                `\`visibility\`: \`${guild.visibility}\`
+                \`admin-role\`: ${guild.adminRoleID ? `<@&${guild.adminRoleID}>` : '`null`'}
                 \`map-role\`: ${guild.mapRoleID ? `<@&${guild.mapRoleID}>` : '`null`'}`
             )]
         })
