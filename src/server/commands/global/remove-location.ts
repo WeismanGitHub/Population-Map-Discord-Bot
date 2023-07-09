@@ -1,7 +1,15 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js'
+import { BadRequestError, NotFoundError } from '../../errors'
 import { Guild, User } from '../../db/models'
-import { NotFoundError } from '../../errors'
 import { infoEmbed } from '../../utils/embeds'
+import {
+	SlashCommandBuilder,
+	ChatInputCommandInteraction,
+	ActionRowBuilder,
+	StringSelectMenuBuilder,
+	StringSelectMenuOptionBuilder,
+	ButtonBuilder,
+	ButtonStyle
+} from 'discord.js'
 
 export default {
 	data: new SlashCommandBuilder()
@@ -24,11 +32,46 @@ export default {
 			throw new NotFoundError('Could not find you in the database.')
 		}
 
-		await user.removeLocationFromGuild(guildID)
+		if (!user.guildIDs?.length) {
+			throw new BadRequestError('You have not saved your location in any servers.')
+		}
+
+		const guilds = await Promise.all(user.guildIDs.map(guildID => {
+			return interaction.client.guilds.fetch(guildID)
+		}))
+
+		const guildsRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+            new StringSelectMenuBuilder()
+                .setCustomId(JSON.stringify({
+                    type: 'map-country',
+                    data: {}
+                }))
+                .setPlaceholder('Select a server!')
+                .addOptions(guilds.slice(0, 25).map(guild =>
+					new StringSelectMenuOptionBuilder().setLabel(guild.name).setValue(guild.name)
+				))
+        )
+
+		const pageButtonsRow = new ActionRowBuilder<ButtonBuilder>()
+		.addComponents(
+            new ButtonBuilder()
+                .setLabel('⏪')
+                .setStyle(ButtonStyle.Primary)
+                .setCustomId('0')
+                .setDisabled(true),
+            new ButtonBuilder()
+                .setLabel('⏩')
+                .setStyle(ButtonStyle.Primary)
+                .setCustomId(JSON.stringify({
+                    type: 'remove-location',
+                    data: { page: 1 }
+                }))
+        )
 
 		interaction.reply({
 			ephemeral: true,
-			embeds: [infoEmbed('Your location has been removed!')]
+			components: [guildsRow, pageButtonsRow],
+			embeds: [infoEmbed('Choose a server to remove your location from.')]
 		})
 	}
 }
