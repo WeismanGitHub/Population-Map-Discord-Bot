@@ -25,7 +25,7 @@ ChartJS.register(
 );
 
 interface GuildRes {
-    locationsData: { [key: string]: any }
+    locations: { count: number, countryCode?: string, subdivisionCode?: string }[]
     name: string
     guildMemberCount: number
     iconURL: string
@@ -38,6 +38,7 @@ interface GeojsonRes {
 export default function Guild() {
     const [guildMemberCount, setGuildMemberCount] = useState(0)
     const [guildIconURL, setGuildIconURL] = useState('')
+    const [membersOnMap, setMembersOnMap] = useState(0)
     const [guildName, setGuildName] = useState('')
     const [geojson, setGeojson] = useState(null)
     const navigate = useNavigate();
@@ -59,13 +60,21 @@ export default function Guild() {
             if (!geojsonRes?.features) {
                 return errorToast('Invalid country code.')
             }
+
+            const locations = {}
+            setMembersOnMap(guildRes.locations.length)
+            
+            guildRes.locations.forEach(location => {
+                // @ts-ignore
+                locations[location.countryCode || location.subdivisionCode] = location.count
+            })
             
             setGuildMemberCount(guildRes.guildMemberCount)
             setGuildIconURL(guildRes.iconURL)
             // @ts-ignore
             setGeojson(geojsonRes.features.map((feature) => {
                 // @ts-ignore
-                feature.amount = guildRes.locationsData[feature.properties.isoCode] || 0
+                feature.count = locations[feature.properties.isoCode] || 0
                 return feature
             }))
             setGuildName(guildRes.name)
@@ -98,7 +107,7 @@ export default function Guild() {
                 <div style={{ fontSize: 'medium' }}>
                     Total Members: {guildMemberCount}
                     <br/>
-                    Members on Map: {-1}
+                    Members on Map: {membersOnMap}
                 </div>
             </div>
             <div className='map'>
