@@ -1,3 +1,6 @@
+import { BadRequestError, InternalServerError } from "../../errors";
+import GuildCountries from "./guild-countries";
+import GuildCountry from "./guild-country";
 import sequelize from "../sequelize";
 import {
     DataTypes,
@@ -13,6 +16,8 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare addLocationOnJoin?: boolean
     declare role?: 'regular' | 'admin'
     declare guildIDs?: string[]
+    declare addLocationToGuild: (guildID: string) => Promise<void>
+    declare removeLocationFromGuild: (guildID: string) => Promise<void>
 }
 
 User.init({
@@ -59,6 +64,54 @@ User.init({
     modelName: 'User',
     timestamps: false
 });
+
+User.prototype.addLocationToGuild = async function(guildID: string) {
+    if (this.guildIDs && this.guildIDs.includes(guildID)) {
+        throw new BadRequestError('You have already added your location to this server.')
+    }
+
+    const guildCountries = new GuildCountries(guildID)
+    
+    await sequelize.transaction(async (transaction) => {
+        await guildCountries.increaseCountry(this.countryCode, transaction)
+        // @ts-ignore
+        await this.update({ guildIDs: [...this.guildIDs, guildID] }, { transaction })
+
+        if (this.subdivisionCode) {
+            const guildCountry = new GuildCountry(guildID, this.countryCode)
+            await guildCountry.sync()
+            
+            await guildCountry.increaseSubdivision(this.subdivisionCode, transaction)
+        }
+    }).catch(err => {
+        console.log(err)
+        throw new InternalServerError('Could not save location to database.')
+    })
+}
+
+User.prototype.removeLocationFromGuild = async function(guildID: string) {
+    if (this.guildIDs &&this.guildIDs.includes(guildID)) {
+        throw new BadRequestError('You have already added your location to this server.')
+    }
+
+    const guildCountries = new GuildCountries(guildID)
+    
+    await sequelize.transaction(async (transaction) => {
+        await guildCountries.increaseCountry(this.countryCode, transaction)
+        // @ts-ignore
+        await this.update({ guildIDs: [...this.guildIDs, guildID] }, { transaction })
+
+        if (this.subdivisionCode) {
+            const guildCountry = new GuildCountry(guildID, this.countryCode)
+            await guildCountry.sync()
+            
+            await guildCountry.increaseSubdivision(this.subdivisionCode, transaction)
+        }
+    }).catch(err => {
+        console.log(err)
+        throw new InternalServerError('Could not save location to database.')
+    })
+}
 
 User.sync()
 
