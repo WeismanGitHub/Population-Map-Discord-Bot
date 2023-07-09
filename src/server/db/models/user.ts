@@ -49,13 +49,7 @@ User.init({
             // @ts-ignore
             return JSON.parse(this.getDataValue('guildIDs'))
         },
-        set: function(guildID: string) {
-            const guildIDs = [
-                // @ts-ignore
-                ...this.getDataValue('guildIDs') ? JSON.parse(this.getDataValue('guildIDs')) : [],
-                ...guildID ? [guildID] : []
-            ]
-            console.log(guildIDs)
+        set: function(guildIDs: string[]) {
             // @ts-ignore
             return this.setDataValue('guildIDs', JSON.stringify(guildIDs))
         }
