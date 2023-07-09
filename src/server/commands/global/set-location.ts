@@ -11,7 +11,7 @@ import {
 
 export default {
 	data: new SlashCommandBuilder()
-		.setName('location')
+		.setName('set-location')
 		.setDescription("Set your country and optionally your subdivision (state, region, prefecture, etc).")
         ,
     guildIDs: null,

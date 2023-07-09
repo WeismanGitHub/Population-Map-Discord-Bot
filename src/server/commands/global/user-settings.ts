@@ -22,7 +22,7 @@ export default {
         if (!user) {
             return interaction.reply({
                 ephemeral: true,
-                embeds: [infoEmbed('You need to first set your location with `/location`.', 'Please read the documentation with `/help`.')]
+                embeds: [infoEmbed('You need to first set your location with `/set-location`.', 'Please read the documentation with `/help`.')]
             })
         }
 
