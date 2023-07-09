@@ -90,14 +90,14 @@ User.prototype.addLocationToGuild = async function(guildID: string) {
 }
 
 User.prototype.removeLocationFromGuild = async function(guildID: string) {
-    if (this.guildIDs &&this.guildIDs.includes(guildID)) {
+    if (this.guildIDs && this.guildIDs.includes(guildID)) {
         throw new BadRequestError('You have already added your location to this server.')
     }
 
     const guildCountries = new GuildCountries(guildID)
     
     await sequelize.transaction(async (transaction) => {
-        await guildCountries.increaseCountry(this.countryCode, transaction)
+        await guildCountries.decreaseCountry(this.countryCode, transaction)
         // @ts-ignore
         await this.update({ guildIDs: [...this.guildIDs, guildID] }, { transaction })
 
@@ -105,7 +105,7 @@ User.prototype.removeLocationFromGuild = async function(guildID: string) {
             const guildCountry = new GuildCountry(guildID, this.countryCode)
             await guildCountry.sync()
             
-            await guildCountry.increaseSubdivision(this.subdivisionCode, transaction)
+            await guildCountry.decreaseSubdivision(this.subdivisionCode, transaction)
         }
     }).catch(err => {
         console.log(err)
