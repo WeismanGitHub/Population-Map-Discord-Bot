@@ -59,7 +59,7 @@ class GuildCountry {
         
         if (subdivision.count <= 0) throw new InternalServerError('Cannot decrease further.')
 
-        subdivision.update({ count: subdivision.count - 1 }, { transaction })
+        return subdivision.update({ count: subdivision.count - 1 }, { transaction })
     }
 }
 
