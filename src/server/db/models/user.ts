@@ -22,7 +22,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
 
 User.init({
     discordID: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.STRING,
         allowNull: false,
         primaryKey: true,
     },
@@ -56,7 +56,8 @@ User.init({
         },
         set: function(guildIDs: string[]) {
             // @ts-ignore
-            return this.setDataValue('guildIDs', JSON.stringify(guildIDs))
+            this.setDataValue('guildIDs', JSON.stringify(guildIDs))
+            return this.save()
         }
     }
 }, {
@@ -65,26 +66,30 @@ User.init({
     timestamps: false
 });
 
-User.prototype.addLocationToGuild = async function(guildID: string) {
-    if (this.guildIDs && this.guildIDs.includes(guildID)) {
+User.prototype.addLocationToGuild = async function(guildID) {
+    const guildIDs = this.guildIDs
+
+    if (!guildIDs) {
+        throw new InternalServerError('Could not get your servers.')
+    }
+
+    if (guildIDs.includes(guildID)) {
         throw new BadRequestError('You have already added your location to this server.')
     }
 
     const guildCountries = new GuildCountries(guildID)
-    
+    const guildCountry = this.subdivisionCode ? new GuildCountry(guildID, this.countryCode) : null
+
+    if (guildCountry) await guildCountry.sync()
+
     await sequelize.transaction(async (transaction) => {
         await guildCountries.increaseCountry(this.countryCode, transaction)
-        // @ts-ignore
-        await this.update({ guildIDs: [...this.guildIDs, guildID] }, { transaction })
+        await this.update({ guildIDs: [...guildIDs, guildID] }, { transaction })
 
-        if (this.subdivisionCode) {
-            const guildCountry = new GuildCountry(guildID, this.countryCode)
-            await guildCountry.sync()
-            
+        if (guildCountry && this.subdivisionCode) {
             await guildCountry.increaseSubdivision(this.subdivisionCode, transaction)
         }
     }).catch(err => {
-        console.log(err)
         throw new InternalServerError('Could not save location to database.')
     })
 }
