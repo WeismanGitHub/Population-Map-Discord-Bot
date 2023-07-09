@@ -1,8 +1,7 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js'
-import { Guild, GuildCountries, GuildCountry, User } from '../../db/models'
-import { BadRequestError, InternalServerError, NotFoundError } from '../../errors'
-import sequelize from '../../db/sequelize'
 import { infoEmbed } from '../../utils/embeds'
+import { Guild, User } from '../../db/models'
+import { NotFoundError } from '../../errors'
 
 export default {
 	data: new SlashCommandBuilder()
@@ -25,27 +24,7 @@ export default {
 			throw new NotFoundError('Could not find you in the database.')
 		}
 
-		if (user.guildIDs.includes(guildID)) {
-			throw new BadRequestError('You have already added your location to this server.')
-		}
-
-		const guildCountries = new GuildCountries(guildID)
-		
-		await sequelize.transaction(async (transaction) => {
-			await guildCountries.increaseCountry(user.countryCode, transaction)
-			// @ts-ignore
-			await user.update({ guildIDs: [...user.guildIDs, guildID] }, { transaction })
-	
-			if (user.subdivisionCode) {
-				const guildCountry = new GuildCountry(guildID, user.countryCode)
-				await guildCountry.sync()
-				
-				await guildCountry.increaseSubdivision(user.subdivisionCode, transaction)
-			}
-		}).catch(err => {
-			console.log(err)
-			throw new InternalServerError('Could not save location to database.')
-		})
+		await user.addLocationToGuild(guildID)
 
 		interaction.reply({
 			ephemeral: true,
