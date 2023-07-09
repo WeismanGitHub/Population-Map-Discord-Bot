@@ -47,7 +47,7 @@ export default {
                 }))
                 .setPlaceholder('Select a server!')
                 .addOptions(guilds.slice(0, 25).map(guild =>
-					new StringSelectMenuOptionBuilder().setLabel(guild.name).setValue(guild.name)
+					new StringSelectMenuOptionBuilder().setLabel(guild.name).setValue(guild.id)
 				))
         )
 
