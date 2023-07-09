@@ -37,7 +37,7 @@ export default function Map(props: { geojson: {}[], projection: 'albers' | 'equa
                         outline: geojson,
                         data: geojson.map((d: any) => ({
                             feature: d,
-                            value: d.amount
+                            value: d.count
                         })),
                     }
                 ]

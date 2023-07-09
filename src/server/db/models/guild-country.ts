@@ -10,7 +10,7 @@ import {
 
 class GuildSubdivisions extends Model<InferAttributes<GuildSubdivisions>, InferCreationAttributes<GuildSubdivisions>> {
     declare subdivisionCode: string
-    declare amount: number
+    declare count: number
 }
 
 class GuildCountry {
@@ -23,7 +23,7 @@ class GuildCountry {
                 primaryKey: true,
                 allowNull: false
             },
-            amount: {
+            count: {
                 type: DataTypes.NUMBER,
                 allowNull: false,
             },
@@ -46,10 +46,10 @@ class GuildCountry {
         const subdivision = await this.model.findOne({ where: { subdivisionCode: subdivisionCode } })
 
         if (!subdivision) {
-            return this.model.create({ subdivisionCode, amount: 1 }, { transaction })
+            return this.model.create({ subdivisionCode, count: 1 }, { transaction })
         }
 
-        return subdivision.update({ amount: subdivision.amount + 1 }, { transaction })
+        return subdivision.update({ count: subdivision.count + 1 }, { transaction })
     }
 
     public async decreaseSubdivision(subdivisionCode: string, transaction: Transaction) {
@@ -57,9 +57,9 @@ class GuildCountry {
 
         if (!subdivision) return null
         
-        if (subdivision.amount <= 0) throw new InternalServerError('Invalid amount')
+        if (subdivision.count <= 0) throw new InternalServerError('Cannot decrease further.')
 
-        subdivision.update({ amount: subdivision.amount - 1 }, { transaction })
+        subdivision.update({ count: subdivision.count - 1 }, { transaction })
     }
 }
 
