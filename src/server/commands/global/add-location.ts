@@ -20,7 +20,7 @@ export default {
 		
 		const user = await User.findOne({ where: { discordID: interaction.user.id } })
 
-		if (!user || !user.guildIDs) {
+		if (!user) {
 			throw new NotFoundError('Could not find you in the database.')
 		}
 
