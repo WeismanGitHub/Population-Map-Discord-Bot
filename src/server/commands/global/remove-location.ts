@@ -42,7 +42,7 @@ export default {
 		const guildsRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId(JSON.stringify({
-                    type: 'map-country',
+                    type: 'remove-location',
                     data: {}
                 }))
                 .setPlaceholder('Select a server!')
@@ -62,7 +62,7 @@ export default {
                 .setLabel('⏩')
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(JSON.stringify({
-                    type: 'remove-location',
+                    type: 'remove-location-page',
                     data: { page: 1 }
                 }))
         )
