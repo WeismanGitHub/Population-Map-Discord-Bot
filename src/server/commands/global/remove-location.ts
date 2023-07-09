@@ -13,7 +13,6 @@ import {
 export default {
 	data: new SlashCommandBuilder()
 		.setName('remove-location')
-        .setDMPermission(false)
 		.setDescription("Use this command in a server to remove your location to the server map.")
 	,
 	guildIDs: null,
