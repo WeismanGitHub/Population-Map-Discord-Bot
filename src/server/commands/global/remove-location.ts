@@ -5,7 +5,7 @@ import { infoEmbed } from '../../utils/embeds'
 
 export default {
 	data: new SlashCommandBuilder()
-		.setName('add-location')
+		.setName('remove-location')
         .setDMPermission(false)
 		.setDescription("Use this command in a server to remove your location to the server map.")
 	,
