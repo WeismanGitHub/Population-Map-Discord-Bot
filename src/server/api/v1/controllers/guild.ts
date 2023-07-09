@@ -1,4 +1,4 @@
-import { Guild } from '../../../db/models';
+import { Guild, GuildCountries, GuildCountry } from '../../../db/models';
 import { CustomClient } from '../../../custom-client';
 import { Request, Response } from 'express';
 import DiscordOauth2 from 'discord-oauth2'
@@ -55,16 +55,19 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
         }
     }
 
-    // const guildLocations = await GuildMap.findOne({ where: { ID: guildID } })
-    const guildLocations = {
-        'US-CA': 5,
-        'US-NV': 1,
-        'US-NY': 9,
-    }
+    const locations = await (() => {
+        if (mapCode === 'WORLD' || mapCode === 'CONTINENTS') {
+            const guildCountries = new GuildCountries(guildID)
+            return guildCountries.getCountries()
+        } else {
+            const guildCountry = new GuildCountry(guildID, String(mapCode))
+            return guildCountry.getSubdivisions()
+        }
+    })()
 
     res.status(200)
     .json({
-        locationsData: guildLocations,
+        locations: locations,
         name: guild.name,
         iconURL: guild.iconURL(),
         guildMemberCount: guild.memberCount

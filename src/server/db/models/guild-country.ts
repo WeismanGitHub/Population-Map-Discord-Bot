@@ -38,7 +38,7 @@ class GuildCountry {
         return this.model.sync()
     }
 
-    public getCountrySubdivisions() {
+    public getSubdivisions() {
         return this.model.findAll()
     }
 
