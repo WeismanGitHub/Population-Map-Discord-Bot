@@ -1,5 +1,5 @@
 import { Events, GuildMember } from 'discord.js'
-import { User } from '../db/models'
+import { Guild, User } from '../db/models'
 
 export default {
 	name: Events.GuildMemberAdd,
@@ -16,6 +16,10 @@ export default {
 
 		if (!user || !user.addLocationOnJoin) return
 
-		// add the users location to the server map.
+		const guild = await Guild.findOne({ where: { ID: member.guild.id }})
+
+		if (!guild) return
+
+		await user.addLocationToGuild(guild.ID)
 	},
 };
