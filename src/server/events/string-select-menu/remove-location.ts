@@ -25,7 +25,6 @@ export default {
         customID: CustomID<{}>
     }) => {
         const guildID = interaction.values[0]
-        console.log(interaction)
 
         const guild = await interaction.client.guilds.fetch(guildID)
 
