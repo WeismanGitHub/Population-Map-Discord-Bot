@@ -83,11 +83,11 @@ User.prototype.addLocationToGuild = async function(guildID) {
     if (guildCountry) await guildCountry.sync()
 
     await sequelize.transaction(async (transaction) => {
-        await guildCountries.increaseCountry(this.countryCode, transaction)
+        await guildCountries.increaseCountryCount(this.countryCode, transaction)
         await this.update({ guildIDs: [...guildIDs, guildID] }, { transaction })
 
         if (guildCountry && this.subdivisionCode) {
-            await guildCountry.increaseSubdivision(this.subdivisionCode, transaction)
+            await guildCountry.increaseSubdivisionCount(this.subdivisionCode, transaction)
         }
     }).catch(err => {
         throw new InternalServerError('Could not save location to database.')
@@ -105,11 +105,11 @@ User.prototype.removeLocationFromGuild = async function(guildID: string) {
     const guildCountry = this.subdivisionCode ? new GuildCountry(guildID, this.countryCode) : null
 
     await sequelize.transaction(async (transaction) => {
-        await guildCountries.decreaseCountry(this.countryCode, transaction)
+        await guildCountries.decreaseCountryCount(this.countryCode, transaction)
         await this.update({ guildIDs: guildIDs.filter(id=> id !== guildID) }, { transaction })
 
         if (guildCountry && this.subdivisionCode) {
-            await guildCountry.decreaseSubdivision(this.subdivisionCode, transaction)
+            await guildCountry.decreaseSubdivisionCount(this.subdivisionCode, transaction)
         }
     }).catch(err => {
         throw new InternalServerError('Could not remove location from database.')

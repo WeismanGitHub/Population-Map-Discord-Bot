@@ -42,7 +42,7 @@ class GuildCountry {
         return this.model.findAll()
     }
 
-    public async increaseSubdivision(subdivisionCode: string, transaction: Transaction) {
+    public async increaseSubdivisionCount(subdivisionCode: string, transaction: Transaction) {
         const subdivision = await this.model.findOne({ where: { subdivisionCode: subdivisionCode } })
 
         if (!subdivision) {
@@ -52,7 +52,7 @@ class GuildCountry {
         return subdivision.update({ count: subdivision.count + 1 }, { transaction })
     }
 
-    public async decreaseSubdivision(subdivisionCode: string, transaction: Transaction) {
+    public async decreaseSubdivisionCount(subdivisionCode: string, transaction: Transaction) {
         const subdivision = await this.model.findOne({ where: { subdivisionCode } })
 
         if (!subdivision) return null

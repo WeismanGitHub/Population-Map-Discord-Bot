@@ -42,7 +42,7 @@ class GuildCountries {
         return this.model.findAll()
     }
 
-    public async increaseCountry(countryCode: string, transaction: Transaction) {
+    public async increaseCountryCount(countryCode: string, transaction: Transaction) {
         const country = await this.model.findOne({ where: { countryCode } })
 
         if (!country) {
@@ -52,7 +52,7 @@ class GuildCountries {
         return country.update({ count: country.count + 1 }, { transaction })
     }
 
-    public async decreaseCountry(countryCode: string, transaction: Transaction) {
+    public async decreaseCountryCount(countryCode: string, transaction: Transaction) {
         const country = await this.model.findOne({ where: { countryCode } })
 
         if (!country) return null
