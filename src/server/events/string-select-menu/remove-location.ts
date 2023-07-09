@@ -1,11 +1,11 @@
-import { guildEmbed } from '../../utils/embeds';
 import {
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
     Events,
     StringSelectMenuInteraction,
-    Interaction
+    Interaction,
+    EmbedBuilder
 } from "discord.js"
 
 export default {
@@ -39,8 +39,14 @@ export default {
                 }))
 		)
 
+        const guildEmbed = new EmbedBuilder()
+            .setTitle(guild.name)
+            .setColor('#8F00FF') // Purple
+            .setImage(guild.iconURL())
+            .setFooter({ text: `ID: ${guildID}` })
+
         interaction.update({
-            embeds: [guildEmbed(guild)],
+            embeds: [guildEmbed],
             components: [confirmationButtonRow]
         })
     }
