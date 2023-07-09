@@ -95,26 +95,24 @@ User.prototype.addLocationToGuild = async function(guildID) {
 }
 
 User.prototype.removeLocationFromGuild = async function(guildID: string) {
-    if (this.guildIDs && this.guildIDs.includes(guildID)) {
-        throw new BadRequestError('You have already added your location to this server.')
+    const guildIDs = this.guildIDs
+
+    if (!guildIDs || !guildIDs.includes(guildID)) {
+        throw new BadRequestError('Your location has not been saved in this server.')
     }
 
     const guildCountries = new GuildCountries(guildID)
-    
+    const guildCountry = this.subdivisionCode ? new GuildCountry(guildID, this.countryCode) : null
+
     await sequelize.transaction(async (transaction) => {
         await guildCountries.decreaseCountry(this.countryCode, transaction)
-        // @ts-ignore
-        await this.update({ guildIDs: [...this.guildIDs, guildID] }, { transaction })
+        await this.update({ guildIDs: guildIDs.filter(id=> id === guildID) }, { transaction })
 
-        if (this.subdivisionCode) {
-            const guildCountry = new GuildCountry(guildID, this.countryCode)
-            await guildCountry.sync()
-            
+        if (guildCountry && this.subdivisionCode) {
             await guildCountry.decreaseSubdivision(this.subdivisionCode, transaction)
         }
     }).catch(err => {
-        console.log(err)
-        throw new InternalServerError('Could not save location to database.')
+        throw new InternalServerError('Could not remove location from database.')
     })
 }
 
