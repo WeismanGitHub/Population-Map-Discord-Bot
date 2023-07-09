@@ -1,6 +1,5 @@
 import { BadRequestError, NotFoundError } from '../../errors'
 import { Guild, User } from '../../db/models'
-import { infoEmbed } from '../../utils/embeds'
 import {
 	SlashCommandBuilder,
 	ChatInputCommandInteraction,
@@ -71,7 +70,6 @@ export default {
 		interaction.reply({
 			ephemeral: true,
 			components: [guildsRow, pageButtonsRow],
-			embeds: [infoEmbed('Choose a server to remove your location from.')]
 		})
 	}
 }
