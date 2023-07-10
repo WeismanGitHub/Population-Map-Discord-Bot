@@ -15,7 +15,7 @@ class Guild extends Model<InferAttributes<Guild>, InferCreationAttributes<Guild>
 
 Guild.init({
     ID: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.STRING,
         allowNull: false,
         primaryKey: true,
     },
