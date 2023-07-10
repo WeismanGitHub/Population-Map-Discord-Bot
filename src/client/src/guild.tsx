@@ -71,7 +71,7 @@ export default function Guild() {
                         // @ts-ignore
                         if (feature.properties.isoCode !== geojsonRes?.countryContinentMap[location.countryCode]) return
                         // @ts-ignore
-                        feature.count = feature.count ? feature.count + location.count : location.count
+                        feature.count = feature.count ? feature.count + location.count : location.count || 0
                     })
                     // @ts-ignore
                     geojsonRes?.countryContinentMap[location.countryCode]
