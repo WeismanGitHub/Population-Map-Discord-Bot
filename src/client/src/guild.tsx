@@ -33,6 +33,7 @@ interface GuildRes {
 
 interface GeojsonRes {
     features: {}[]
+    countryContinentMap?: { [key: string]: string }
 }
 
 export default function Guild() {
@@ -57,27 +58,41 @@ export default function Guild() {
             ky.get(`https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/geojson/${mapCode}.json`).json().catch(err => { throw new Error('Could not get country.') })
         ]) as Promise<unknown> as Promise<[GuildRes, GeojsonRes]>)
         .then(([guildRes, geojsonRes]) => {
-            if (!geojsonRes?.features) {
-                return errorToast('Invalid country code.')
-            }
+            if (!geojsonRes?.features) return errorToast('Invalid country code.')
 
-            const locations = {}
             setMembersOnMap(guildRes.locations.length)
-            
-            guildRes.locations.forEach(location => {
-                // @ts-ignore
-                locations[location.countryCode || location.subdivisionCode] = location.count
-            })
-            
             setGuildMemberCount(guildRes.guildMemberCount)
             setGuildIconURL(guildRes.iconURL)
-            // @ts-ignore
-            setGeojson(geojsonRes.features.map((feature) => {
-                // @ts-ignore
-                feature.count = locations[feature.properties.isoCode] || 0
-                return feature
-            }))
             setGuildName(guildRes.name)
+
+            if (mapCode === 'CONTINENTS') {
+                guildRes.locations.forEach(location => {
+                    geojsonRes.features.forEach(feature => {
+                        // @ts-ignore
+                        if (feature.properties.isoCode !== geojsonRes?.countryContinentMap[location.countryCode]) return
+                        // @ts-ignore
+                        feature.count = feature.count ? feature.count + location.count : location.count
+                    })
+                    // @ts-ignore
+                    geojsonRes?.countryContinentMap[location.countryCode]
+                })
+                // @ts-ignore
+                setGeojson(geojsonRes.features)
+            } else {
+                const locations = {}
+
+                guildRes.locations.forEach(location => {
+                    // @ts-ignore
+                    locations[location.countryCode || location.subdivisionCode] = location.count
+                })
+
+                // @ts-ignore
+                setGeojson(geojsonRes.features.map((feature) => {
+                    // @ts-ignore
+                    feature.count = locations[feature.properties.isoCode] || 0
+                    return feature
+                }))
+            }
         }).catch((err) => {
             errorToast(err.response.statusText || err.message)
 
