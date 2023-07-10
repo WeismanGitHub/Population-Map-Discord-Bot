@@ -28,7 +28,14 @@ export default {
 
 		interaction.reply({
 			ephemeral: true,
-			embeds: [infoEmbed('Your location has been added!', 'View the server map with `/map`.')]
+			embeds: [infoEmbed(
+				null,
+				`# Your location has been added!
+				## Server Settings
+				\`visibility\`: \`${guild.visibility}\`
+                \`admin-role\`: ${guild.adminRoleID ? `<@&${guild.adminRoleID}>` : '`null`'}
+                \`map-role\`: ${guild.mapRoleID ? `<@&${guild.mapRoleID}>` : '`null`'}`
+			)]
 		})
 	}
 }
