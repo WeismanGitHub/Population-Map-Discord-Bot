@@ -80,10 +80,9 @@ export default {
             const guildCountries = new GuildCountries(interaction.guildId)
             await guildCountries.sync().catch(err => { throw new InternalServerError('Could not save server data to database.') })
         } else if (interaction.user.id === interaction.guild?.ownerId && guild) {
-            await guild.update({
-                ID: interaction.guildId,
-                ...settings
-            }).catch(err => { throw new InternalServerError('Could not save server settings.') })
+            console.log(guild)
+            await guild.update(settings)
+            .catch(err => { throw new InternalServerError('Could not save server settings.') })
         } else if (!guild) {
             return interaction.reply({
                 ephemeral: true,
