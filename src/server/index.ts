@@ -19,15 +19,15 @@ import app from './app'
 		throw new InternalServerError('Mode must be equal to "prod" or "dev".')
 	}
 	
+	await sequelize.authenticate()
+	.catch((err) => { throw new InternalServerError('Could not connect to database.') })
+	
 	const client = new CustomClient({
 		intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
 	});
 
 	app.listen(config.appPort, (): void => console.log(`listening on port ${config.appPort}...`));
 	app.set('discordClient', client);
-	
-	await sequelize.authenticate()
-	.catch((err) => { throw new InternalServerError('Could not connect to database.') })
 
 	console.log('connected to database...')
 })()
