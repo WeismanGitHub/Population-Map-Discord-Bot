@@ -55,13 +55,13 @@ export default function Guild() {
 
         (Promise.all([
             ky.get(`/api/v1/guilds/${guildID}?mapCode=${mapCode}`).json(),
-            ky.get(`https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/topojson/${mapCode}.json`).json().catch(err => { throw new Error('Could not get country.') })
+            ky.get(`https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/topojson/${mapCode}.json`).json().catch(err => { throw new Error('Could not get map.') })
         ]) as Promise<unknown> as Promise<[GuildRes, GeojsonRes]>)
         .then(([guildRes, geojsonRes]) => {
             // @ts-ignore
             geojsonRes.features = Object.values(geojsonRes.objects).map(feature => ChartGeo.topojson.feature(geojsonRes, feature))
 
-            if (!geojsonRes?.features) return errorToast('Invalid country code.')
+            if (!geojsonRes?.features) return errorToast('Invalid map code.')
 
             setMembersOnMap(guildRes.locations.length)
             setGuildMemberCount(guildRes.guildMemberCount)
@@ -97,7 +97,6 @@ export default function Guild() {
                 }))
             }
         }).catch((err) => {
-            console.log(err)
             errorToast(err?.response?.statusText || err?.message || 'Something went wrong.')
 
             if (err.response.status == 401) {
