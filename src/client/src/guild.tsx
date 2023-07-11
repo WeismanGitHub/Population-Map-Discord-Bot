@@ -98,7 +98,7 @@ export default function Guild() {
             }
         }).catch((err) => {
             console.log(err)
-            errorToast(err.response.statusText || err.message || 'Something went wrong.')
+            errorToast(err?.response?.statusText || err?.message || 'Something went wrong.')
 
             if (err.response.status == 401) {
                 navigate(`/discord/oauth2?guildID=${guildID}&mapCode=${mapCode}`)
