@@ -55,7 +55,7 @@ class GuildCountries {
     public async decreaseCountryCount(countryCode: string, transaction: Transaction) {
         const country = await this.model.findOne({ where: { countryCode } })
 
-        if (!country) return null
+        if (!country) throw new InternalServerError('Cannot decrease country count.')
         
         if (country.count <= 0) throw new InternalServerError('Cannot decrease further.')
 

@@ -55,7 +55,7 @@ class GuildCountry {
     public async decreaseSubdivisionCount(subdivisionCode: string, transaction: Transaction) {
         const subdivision = await this.model.findOne({ where: { subdivisionCode } })
 
-        if (!subdivision) return null
+        if (!subdivision) throw new InternalServerError('Cannot decrease subdivision count.')
         
         if (subdivision.count <= 0) throw new InternalServerError('Cannot decrease further.')
 
