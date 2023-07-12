@@ -13,7 +13,7 @@ import {
 export default {
 	data: new SlashCommandBuilder()
 		.setName('remove-location')
-		.setDescription("Use this command in a server to remove your location to the server map.")
+		.setDescription("Use this command in a server to remove your location from a server map.")
 	,
 	guildIDs: null,
 	async execute(interaction: ChatInputCommandInteraction) {
