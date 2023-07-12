@@ -6,7 +6,7 @@ interface Configuration {
     appPort: number
     limiterWindowMs: number
     botID: string
-    inviteURL: string
+    botInvite: string
     buyMeACoffeeURL: string
     githubURL: string
     limiterMax: number
@@ -14,6 +14,7 @@ interface Configuration {
     limiterStandardHeaders: boolean
     limiterLegacyHeaders: boolean
     botSecret: string
+    supportServerInvite: string
     redirectURI: string
     sessionSecret: string
     mode: 'prod' | 'dev'
@@ -27,9 +28,10 @@ const config: Configuration = {
     discordToken: process.env.DISCORD_TOKEN!,
     botID: process.env.BOT_ID!,
     mainAccountID: process.env.MAIN_ACCOUNT_ID!,
-    inviteURL: process.env.INVITE_URL!,
+    botInvite: process.env.BOT_INVITE!,
     botSecret: process.env.BOT_SECRET!,
     redirectURI: process.env.REDIRECT_URI!,
+    supportServerInvite: process.env.SUPPORT_SERVER_INVITE!,
 
     // Rate Limiter
     limiterWindowMs: 2000,
