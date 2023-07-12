@@ -16,7 +16,7 @@ export default {
 			throw new NotFoundError('Could not find your user data in database.')
 		}
 
-		await user.deleteLocation()
+		await user.delete()
 
         interaction.reply({
             ephemeral: true,
