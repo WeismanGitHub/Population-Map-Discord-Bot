@@ -19,8 +19,8 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare role?: 'regular' | 'admin'
     declare guildIDs?: string[]
 
-    declare addLocationToGuild: (guildID: string, commit: boolean, transaction?: Transaction) => Promise<void>
-    declare removeLocationFromGuild: (guildID: string, commit: boolean, transaction?: Transaction) => Promise<void>
+    declare addLocationToGuild: (guildID: string, transaction?: Transaction, commit?: boolean) => Promise<void>
+    declare removeLocationFromGuild: (guildID: string, transaction?: Transaction, commit?: boolean) => Promise<void>
     declare updateLocation: (countryCode: string | null, subdivisionCode: string | null) => Promise<void>
     declare delete: () => Promise<void>
 }
@@ -71,7 +71,7 @@ User.init({
     timestamps: false
 });
 
-User.prototype.addLocationToGuild = async function(guildID, commit, transaction) {
+User.prototype.addLocationToGuild = async function(guildID, transaction, commit=true) {
     const guildIDs = this.guildIDs
 
     if (!guildIDs) {
@@ -83,9 +83,10 @@ User.prototype.addLocationToGuild = async function(guildID, commit, transaction)
     }
 
     const guildCountries = new GuildCountries(guildID)
+    // You need to sync outside of transaction otherwise the sqlite will throw "Error: SQLITE_BUSY: database is locked"
     const guildCountry = this.subdivisionCode ? new GuildCountry(guildID, this.countryCode) : null
-
     if (guildCountry) await guildCountry.sync()
+
     transaction = transaction || await sequelize.transaction()
 
     try {
@@ -103,7 +104,7 @@ User.prototype.addLocationToGuild = async function(guildID, commit, transaction)
     }
 }
 
-User.prototype.removeLocationFromGuild = async function(guildID, commit=true, transaction) {
+User.prototype.removeLocationFromGuild = async function(guildID, transaction, commit=true) {
     const guildIDs = this.guildIDs
 
     if (!guildIDs || !guildIDs.includes(guildID)) {
@@ -111,7 +112,6 @@ User.prototype.removeLocationFromGuild = async function(guildID, commit=true, tr
     }
 
     const guildCountries = new GuildCountries(guildID)
-    const guildCountry = this.subdivisionCode ? new GuildCountry(guildID, this.countryCode) : null
 
     transaction = transaction || await sequelize.transaction()
 
@@ -119,7 +119,8 @@ User.prototype.removeLocationFromGuild = async function(guildID, commit=true, tr
         await guildCountries.decreaseCountryCount(this.countryCode, transaction)
         await this.update({ guildIDs: guildIDs.filter(id=> id !== guildID) }, { transaction })
 
-        if (guildCountry && this.subdivisionCode) {
+        if (this.subdivisionCode) {
+            const guildCountry = new GuildCountry(guildID, this.countryCode)
             await guildCountry.decreaseSubdivisionCount(this.subdivisionCode, transaction)
         }
         
@@ -132,37 +133,41 @@ User.prototype.removeLocationFromGuild = async function(guildID, commit=true, tr
 }
 
 User.prototype.updateLocation = async function(countryCode: string | null, subdivisionCode: string | null) {
-    if (subdivisionCode && !iso3166.data[this.countryCode].sub[subdivisionCode]) {
+    if (subdivisionCode && !iso3166.data[countryCode || this.countryCode].sub[subdivisionCode]) {
         throw new BadRequestError('Country and subdivision codes are mismatched.')
+    }
+    // You need to sync outside of transaction otherwise the sqlite will throw "Error: SQLITE_BUSY: database is locked"
+    const guildIDs = this.guildIDs || []
+    const guildCountryArray = subdivisionCode ? guildIDs.map(guildID => new GuildCountry(guildID, this.countryCode)) : null
+
+    if (subdivisionCode && guildCountryArray) {
+        await Promise.all(guildCountryArray.map(guildCountry => guildCountry.sync()))
     }
     
     await sequelize.transaction(async (transaction) => {
-        await this.update({ countryCode }, { transaction })
+        await Promise.all(guildIDs.map(async (guildID) => {
+            if (countryCode) {
+                const guildCountries = new GuildCountries(guildID)
+                await guildCountries.decreaseCountryCount(this.countryCode, transaction)
+                await guildCountries.increaseCountryCount(countryCode, transaction)
+            }
+    
+            if (this.subdivisionCode) {
+                const oldGuildCountry = new GuildCountry(guildID, this.countryCode)
+                await oldGuildCountry.decreaseSubdivisionCount(this.subdivisionCode, transaction)
+            }
 
-        if (this.guildIDs) {
-            await Promise.all(this.guildIDs.map(guildID => {
-                return this.removeLocationFromGuild(guildID, transaction)
-            }))
-            
-            await Promise.all(guildIDs.map(guildID => {
-                return this.addLocationToGuild(guildID, transaction)
-            }))
-        }
-    }).catch(err => { throw new InternalServerError('Could not update your location.') })
+            if (!subdivisionCode) return
 
-    const guildCountries = new GuildCountries(guildID)
-    const guildCountry = this.subdivisionCode ? new GuildCountry(guildID, this.countryCode) : null
-
-    await sequelize.transaction(async (transaction) => {
-        await guildCountries.decreaseCountryCount(this.countryCode, transaction)
-        await this.update({ guildIDs: guildIDs.filter(id=> id !== guildID) }, { transaction })
-
-        if (guildCountry && this.subdivisionCode) {
-            await guildCountry.decreaseSubdivisionCount(this.subdivisionCode, transaction)
-        }
-    }).catch(err => {
-        throw new InternalServerError('Could not remove location from database.')
-    })
+            const newGuildCountry = new GuildCountry(guildID, this.countryCode)
+            await newGuildCountry.increaseSubdivisionCount(subdivisionCode, transaction)
+        }))
+        
+        await this.update({
+            countryCode: countryCode || this.countryCode,
+            subdivisionCode: subdivisionCode
+        }, { transaction })
+    }).catch(err => { console.log(err);throw new InternalServerError('Could not update your location.') })
 }
 
 User.prototype.delete = async function() {
