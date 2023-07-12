@@ -133,9 +133,14 @@ User.prototype.removeLocationFromGuild = async function(guildID, transaction, co
 }
 
 User.prototype.updateLocation = async function(countryCode: string | null, subdivisionCode: string | null) {
+    if (this.countryCode == countryCode || this.subdivisionCode == subdivisionCode) {
+        throw new BadRequestError('You have already set your country/subdivision to that.')
+    }
+
     if (subdivisionCode && !iso3166.data[countryCode || this.countryCode].sub[subdivisionCode]) {
         throw new BadRequestError('Country and subdivision codes are mismatched.')
     }
+
     // You need to sync outside of transaction otherwise the sqlite will throw "Error: SQLITE_BUSY: database is locked"
     const guildIDs = this.guildIDs || []
     const guildCountryArray = subdivisionCode ? guildIDs.map(guildID => new GuildCountry(guildID, this.countryCode)) : null
