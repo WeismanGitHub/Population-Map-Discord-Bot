@@ -27,9 +27,16 @@ export default {
         customID: CustomID<{ countryCode: string }>
     }) => {
         const countryCode = interaction.values[0]
+        
+        const user = await User.findOne({ where: { discordID: interaction.user.id } })
+        .catch(err => { throw new InternalServerError('An error occurred accessing the database..') })
 
-        User.upsert({ discordID: interaction.user.id, countryCode })
-        .catch(err => { throw new InternalServerError('Could not save your country.') })
+        if (!user) {
+            await User.create({ discordID: interaction.user.id, countryCode })
+            .catch(err => { throw new InternalServerError('Could not save your country.') })
+        } else {
+            await user.updateLocation(countryCode, null)
+        }
 
         const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
