@@ -172,7 +172,7 @@ User.prototype.updateLocation = async function(countryCode: string | null, subdi
             countryCode: countryCode || this.countryCode,
             subdivisionCode: subdivisionCode
         }, { transaction })
-    }).catch(err => { console.log(err);throw new InternalServerError('Could not update your location.') })
+    }).catch(err => { throw new InternalServerError('Could not update your location.') })
 }
 
 User.prototype.delete = async function() {
