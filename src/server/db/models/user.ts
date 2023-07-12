@@ -1,8 +1,8 @@
-// @ts-nocheck
 import { BadRequestError, InternalServerError } from "../../errors";
 import GuildCountries from "./guild-countries";
 import GuildCountry from "./guild-country";
 import sequelize from "../sequelize";
+import iso3166 from 'iso-3166-2'
 import {
     DataTypes,
     InferAttributes,
@@ -19,8 +19,8 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare role?: 'regular' | 'admin'
     declare guildIDs?: string[]
 
-    declare addLocationToGuild: (guildID: string, transaction?: Transaction) => Promise<void>
-    declare removeLocationFromGuild: (guildID: string, transaction?: Transaction, commit: boolean=true) => Promise<void>
+    declare addLocationToGuild: (guildID: string, commit: boolean, transaction?: Transaction) => Promise<void>
+    declare removeLocationFromGuild: (guildID: string, commit: boolean, transaction?: Transaction) => Promise<void>
     declare updateLocation: (countryCode: string | null, subdivisionCode: string | null) => Promise<void>
     declare delete: () => Promise<void>
 }
@@ -71,7 +71,7 @@ User.init({
     timestamps: false
 });
 
-User.prototype.addLocationToGuild = async function(guildID, transaction?: Transaction) {
+User.prototype.addLocationToGuild = async function(guildID, commit, transaction) {
     const guildIDs = this.guildIDs
 
     if (!guildIDs) {
@@ -96,14 +96,14 @@ User.prototype.addLocationToGuild = async function(guildID, transaction?: Transa
             await guildCountry.increaseSubdivisionCount(this.subdivisionCode, transaction)
         }
 
-        await transaction.commit()
+        if (commit) await transaction.commit()
     } catch(err) {
-        await transaction.rollback()
+        if (commit) await transaction.rollback()
         throw new InternalServerError('Could not save location to database.')
     }
 }
 
-User.prototype.removeLocationFromGuild = async function(guildID: string, transaction?: Transaction, commit: boolean=true) {
+User.prototype.removeLocationFromGuild = async function(guildID, commit=true, transaction) {
     const guildIDs = this.guildIDs
 
     if (!guildIDs || !guildIDs.includes(guildID)) {
@@ -132,22 +132,22 @@ User.prototype.removeLocationFromGuild = async function(guildID: string, transac
 }
 
 User.prototype.updateLocation = async function(countryCode: string | null, subdivisionCode: string | null) {
-    const guildIDs = this.guildIDs
-
-    if (!guildIDs) {
-        return
+    if (subdivisionCode && !iso3166.data[this.countryCode].sub[subdivisionCode]) {
+        throw new BadRequestError('Country and subdivision codes are mismatched.')
     }
-
+    
     await sequelize.transaction(async (transaction) => {
         await this.update({ countryCode }, { transaction })
-        
-        await Promise.all(guildIDs.map(guildID => {
-            return this.removeLocationFromGuild(guildID, transaction)
-        }))
-        
-        await Promise.all(guildIDs.map(guildID => {
-            return this.addLocationToGuild(guildID, transaction)
-        }))
+
+        if (this.guildIDs) {
+            await Promise.all(this.guildIDs.map(guildID => {
+                return this.removeLocationFromGuild(guildID, transaction)
+            }))
+            
+            await Promise.all(guildIDs.map(guildID => {
+                return this.addLocationToGuild(guildID, transaction)
+            }))
+        }
     }).catch(err => { throw new InternalServerError('Could not update your location.') })
 
     const guildCountries = new GuildCountries(guildID)
