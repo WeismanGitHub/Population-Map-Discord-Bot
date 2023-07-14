@@ -12,7 +12,7 @@
   <hr class="rounded">
 
   ## User Docs
-  You can delete your data with `/user-delete`. Your location is automatically removed from a server map if you are kicked/banned/leave the server.
+  You can delete your data with `/user-delete`. Your location should be automatically removed from a server map if you are kicked/banned/leave the server, but this will not work if the bot is offline. Use `/remove-location` if your location is not automatically removed.
 
   #### Location
   Save your location with the `/set-location` command. You must choose your country and optionally your subdivision (state, region, prefecture, etc). Your location is the same across all servers, and isn't shared with any servers automatically. You need to manually use `/add-location` in a server to add your location to the server's map. Use `/remove-location` anywhere to remove your location from any map.
