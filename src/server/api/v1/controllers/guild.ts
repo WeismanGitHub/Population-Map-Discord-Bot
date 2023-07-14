@@ -58,10 +58,10 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
     const locations = await (() => {
         if (mapCode === 'WORLD' || mapCode === 'CONTINENTS') {
             const guildCountries = new GuildCountries(guildID)
-            return guildCountries.getCountries()
+            return guildCountries.getCountries().catch(err => { throw new InternalServerError('Could not get data.' )})
         } else {
             const guildCountry = new GuildCountry(guildID, String(mapCode))
-            return guildCountry.getSubdivisions()
+            return guildCountry.getSubdivisions().catch(err => { throw new InternalServerError('Could not get country data.') })
         }
     })()
 
