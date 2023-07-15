@@ -11,6 +11,14 @@
 
   <hr class="rounded">
 
+  ## Example Images
+  ![World Map Example](/images/WORLD-example.jpg)
+  ![Help Command Example](/images/help-command-example.png)
+  ![USA Map Example](/images/US-example.png)
+  ![Italy Map Example](/images/IT-example.png)
+
+  <hr class="rounded">
+  
   ## User Docs
   You can delete your data with `/user-delete`. Your location should be automatically removed from a server map if you are kicked/banned/leave the server, but this will not work if the bot is offline. Use `/remove-location` if your location is not automatically removed.
 
@@ -37,14 +45,6 @@
   `visibility`: `member-restricted`
   `admin-role`: `null`
   `map-role`: `null`
-
-  <hr class="rounded">
-
-  ## Example Images
-  ![World Map Example](/images/WORLD-example.jpg)
-  ![Help Command Example](/images/help-command-example.png)
-  ![USA Map Example](/images/US-example.png)
-  ![Italy Map Example](/images/IT-example.png)
 
   <hr class="rounded">
 </div>
