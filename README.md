@@ -1,9 +1,6 @@
 <div align="center">
   
-  # Population Density Map Bot
-  ### [Bot Invite](https://discord.com/api/oauth2/authorize?client_id=1115149738614984764&permissions=414464657472&scope=bot)
-  ### [Website](localhost:5001/)
-  
+  # Population Density Map Bot  
   <hr class="rounded">
 
   ## Description
