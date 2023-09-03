@@ -48,9 +48,9 @@ function getOrderedCountries() {
 type Countries = ReturnType<typeof getOrderedCountries>
 
 export class CustomClient extends Client {
-    declare public countries: Countries
-    declare private commands: Collection<unknown, any>;
-    declare token: string;
+    public readonly countries: Countries
+    private readonly commands: Collection<unknown, any>;
+    public readonly token: string;
 
     constructor(clientOptions: ClientOptions) {
         super(clientOptions);

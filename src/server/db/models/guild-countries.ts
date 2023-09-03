@@ -14,9 +14,12 @@ class GuildCountry extends Model<InferAttributes<GuildCountry>, InferCreationAtt
 }
 
 class GuildCountries {
-    declare private model: typeof GuildCountry
+    private readonly model: typeof GuildCountry
+    public readonly guildID: string
 
     constructor(guildID: string) {
+        this.guildID = guildID
+
         this.model = GuildCountry.init({
             countryCode: {
                 type: DataTypes.STRING,

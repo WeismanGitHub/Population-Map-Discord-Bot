@@ -14,7 +14,7 @@ class CountrySubdivisions extends Model<InferAttributes<CountrySubdivisions>, In
 }
 
 class GuildCountry {
-    declare private model: typeof CountrySubdivisions
+    private readonly model: typeof CountrySubdivisions
 
     constructor(guildID: string, countryCode: string) {
         this.model = CountrySubdivisions.init({
