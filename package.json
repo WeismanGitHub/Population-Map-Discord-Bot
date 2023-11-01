@@ -25,6 +25,7 @@
     "sqlite3": "^5.1.6"
   },
   "scripts": {
+    "docker-build": "docker build . -t population-density-map-bot",
     "start": "react-app-rewired start",
     "build": "tsc & npm run copy-files & react-app-rewired build",
     "tsc": "tsc",
