@@ -11,7 +11,7 @@ async function getBotData(req: Request, res: Response): Promise<void> {
         botInviteURL: config.botInvite,
         supportServerInvite: config.supportServerInvite,
         githubURL: config.githubURL,
-        buyMeACoffeeURL: config.buyMeACoffeeURL,
+        // buyMeACoffeeURL: config.buyMeACoffeeURL,
     })
 }
 

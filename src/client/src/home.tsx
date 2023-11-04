@@ -7,7 +7,7 @@ interface BotAPIRes {
     botInviteURL: string
     supportServerInvite: string
     githubURL: string
-    buyMeACoffeeURL: string
+    // buyMeACoffeeURL: string
 }
 
 export default function Home() {
@@ -33,6 +33,6 @@ export default function Home() {
         <a href={res?.githubURL}>Github</a>
         <br/>
         <br/>
-        <a href={res?.buyMeACoffeeURL}>Buy Me a Coffee</a>
+        {/* <a href={res?.buyMeACoffeeURL}>Buy Me a Coffee</a> */}
     </div>)
 }

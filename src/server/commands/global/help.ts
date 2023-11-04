@@ -34,10 +34,10 @@ export default {
 			.setLabel('Github')
 			.setURL(config.githubURL)
 			.setStyle(ButtonStyle.Link),
-			new ButtonBuilder()
-			.setLabel('Buy Me a Coffee')
-			.setURL(config.buyMeACoffeeURL)
-			.setStyle(ButtonStyle.Link),
+		// 	new ButtonBuilder()
+		// 	.setLabel('Buy Me a Coffee')
+		// 	.setURL(config.buyMeACoffeeURL)
+		// 	.setStyle(ButtonStyle.Link),
 		])
 
 		const firstRow = new ActionRowBuilder<ButtonBuilder>()
