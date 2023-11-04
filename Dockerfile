@@ -1,6 +1,6 @@
 FROM node:alpine
 
-EXPOSE 5001
+EXPOSE 5001/tcp
 
 WORKDIR /usr/src/app
 
@@ -11,7 +11,5 @@ RUN npm install
 COPY . .
 
 RUN npm run build
-
-# RUN npm run commands
 
 CMD ["node", "./dist/server/index.js"]
