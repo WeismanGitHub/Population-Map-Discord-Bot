@@ -3,9 +3,6 @@
   # Population Density Map Bot  
   <hr class="rounded">
 
-  ### [Website](https://population-map-density-bot.fly.dev/)
-  ### [Bot Invite](https://discord.com/oauth2/authorize?client_id=1115149738614984764&permissions=414464657472&scope=bot)
-
   ## Description
   The Population Density Map Bot is a dynamic map generator capable of visualizing population data on a global, continental, or country level. Maps are generated based on self-reported locations provided by Discord server members, enabling users to explore population distributions with ease. The application facilitates efficient data processing and visualization, empowering users to gain valuable insights into population patterns across the world. Use `/help`for further information. `/map` can be used to get a map for a specific country. Countries and subdivisions are from [ISO 3166](https://www.iso.org/iso-3166-country-codes.html).
 
