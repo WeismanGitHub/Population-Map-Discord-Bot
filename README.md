@@ -2,7 +2,7 @@
   
   # Population Map Bot
 
-  ### [Website](https://population-map-density-bot.fly.dev/)
+  ### [Website](https://population-map-bot.fly.dev/)
   ### [Bot Invite](https://discord.com/oauth2/authorize?client_id=1115149738614984764&permissions=414464657472&scope=bot)
   <hr class="rounded">
 
