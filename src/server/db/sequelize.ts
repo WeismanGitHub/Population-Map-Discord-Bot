@@ -1,9 +1,12 @@
 import { Sequelize } from "sequelize";
-import SQLite from "sqlite3";
+import config from "../config";
 
 export default new Sequelize({
-    dialect: 'sqlite',
-    storage: 'sqlite3:///mnt/name/map-bot.sqlite',
-    dialectOptions: { mode: SQLite.OPEN_READWRITE | SQLite.OPEN_CREATE },
+    dialect: 'postgres',
+    host: config.pgHost,
+    port: config.pgPort,
+    username: config.pgUsername,
+    password: config.pgPassword,
+    database: config.pgDatabase,
     logging: () => {}
 });
