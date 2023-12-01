@@ -21,6 +21,12 @@ interface Configuration {
     websiteURL: string
     supportServerID: string
     personalServerIDs: string[]
+
+    pgHost: string,
+    pgPort: number,
+    pgUsername: string,
+    pgPassword: string,
+    pgDatabase: string,
 }
 
 const config: Configuration = {
@@ -49,6 +55,13 @@ const config: Configuration = {
     websiteURL: process.env.WEBSITE_URL!, // Example: http://localhost:5001
     supportServerID: process.env.SUPPORT_SERVER_ID!,
     personalServerIDs: [process.env.PERSONAL_SERVER_ID!, process.env.TEST_SERVER_ID!],
+
+    // Postgres
+    pgHost: process.env.PG_HOST!,
+    pgPort: Number(process.env.PG_PORT!),
+    pgUsername: process.env.PG_USERNAME!,
+    pgPassword: process.env.PG_PASSWORD!,
+    pgDatabase: process.env.PG_DATABASE!,
 }
 
 export default config
