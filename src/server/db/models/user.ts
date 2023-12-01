@@ -83,6 +83,7 @@ User.prototype.addLocationToGuild = async function(guildID, transaction, commit=
     }
 
     const guildCountries = new GuildCountries(guildID)
+    await guildCountries.sync()
     // You need to sync outside of transaction otherwise the sqlite will throw "Error: SQLITE_BUSY: database is locked"
     const guildCountry = this.subdivisionCode ? new GuildCountry(guildID, this.countryCode) : null
     if (guildCountry) await guildCountry.sync()
@@ -100,6 +101,7 @@ User.prototype.addLocationToGuild = async function(guildID, transaction, commit=
         if (commit) await transaction.commit()
     } catch(err) {
         if (commit) await transaction.rollback()
+        console.log(err)
         throw new InternalServerError('Could not save location to database.')
     }
 }
