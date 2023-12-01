@@ -27,7 +27,7 @@ class GuildCountries {
                 allowNull: false
             },
             count: {
-                type: DataTypes.NUMBER,
+                type: DataTypes.INTEGER,
                 allowNull: false,
             },
         }, {
