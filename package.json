@@ -23,8 +23,7 @@
     "react-router-dom": "^6.12.0",
     "react-scripts": "5.0.1",
     "react-toastify": "^9.1.3",
-    "sequelize": "^6.32.0",
-    "sqlite3": "^5.1.6"
+    "sequelize": "^6.32.0"
   },
   "scripts": {
     "docker-build": "docker build . -t population-density-map-bot",
