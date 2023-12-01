@@ -1,21 +1,27 @@
-# fly.toml app configuration file generated for population-map-density-bot on 2023-11-03T17:43:32-07:00
+# fly.toml app configuration file generated for population-map-bot on 2023-11-30T13:10:56-08:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "population-map-density-bot"
+app = "population-map-bot"
 primary_region = "lax"
 
 [build]
+
+[[mounts]]
+  source = "mapbot"
+  destination = "/mnt/mapbot"
+  auto_extend_size_threshold = 0
 
 [http_service]
   internal_port = 5001
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
-  min_machines_running = 0
+  min_machines_running = 1
   processes = ["app"]
 
-[mounts]
-  source="mapbot"
-  destination="/mnt/mapbot"
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 1024
