@@ -29,9 +29,9 @@ export default {
 		interaction.reply({
 			ephemeral: true,
 			embeds: [infoEmbed(
-				null,
-				`# Your location has been added!
-				## Server Settings
+				'Your location has been added!',
+				`
+				### Server Settings
 				\`visibility\`: \`${guild.visibility}\`
                 \`admin-role\`: ${guild.adminRoleID ? `<@&${guild.adminRoleID}>` : '`null`'}
                 \`map-role\`: ${guild.mapRoleID ? `<@&${guild.mapRoleID}>` : '`null`'}`
