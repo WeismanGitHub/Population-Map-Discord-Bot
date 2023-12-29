@@ -34,5 +34,24 @@ export default function Home() {
         <br/>
         <br/>
         {/* <a href={res?.buyMeACoffeeURL}>Buy Me a Coffee</a> */}
+        Example Images
+        <br/>
+        <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <img
+                src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/WORLD-example.jpg"
+                alt='example image of the world'
+                style={{ width: '500px', height: 'auto', marginRight: '5px' }}
+            />
+            <img
+                src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/US-example.png"
+                alt='example image of America'
+                style={{ width: '500px', height: 'auto', marginRight: '5px' }}
+            />
+            <img
+                src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/IT-example.png"
+                alt='example image of Italy'
+                style={{ width: '500px', height: 'auto' }}
+            />
+        </div>
     </div>)
 }
