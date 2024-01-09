@@ -40,7 +40,7 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
         }
 
         const guilds = await oauth.getUserGuilds(accessToken)
-        .catch(err => { throw new InternalServerError('Could not get user guilds.') })
+        .catch(err => { throw new InternalServerError('Could not get user servers.') })
 
         if (!guilds.some((guild) => guild.id === guildID)) {
             throw new ForbiddenError('You are not in this server.')
@@ -61,7 +61,7 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
             return guildCountries.getCountries().catch(err => { throw new InternalServerError('Could not get data.' )})
         } else {
             const guildCountry = new GuildCountry(guildID, String(mapCode))
-            return guildCountry.getSubdivisions().catch(err => { throw new InternalServerError('Could not get country data.') })
+            return guildCountry.getSubdivisions().catch(err => { throw new InternalServerError("Could not get country data. Please verify that you've set and added your location to this server.") })
         }
     })()
 
