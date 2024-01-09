@@ -10,7 +10,7 @@ import {
 export default {
 	data: new SlashCommandBuilder()
 		.setName('promote')
-		.setDescription("[Bot Owner Onky] Promote a user.")
+		.setDescription("[Bot Owner Only] Promote a user.")
 		.setDMPermission(false)
         .addStringOption(option => option
             .setName('user-id')
