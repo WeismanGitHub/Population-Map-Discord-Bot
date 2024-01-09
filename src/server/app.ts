@@ -11,6 +11,7 @@ import express, {
 
 const app: Application = express();
 
+app.set('trust proxy', 1)
 app.use(express.static(resolve(__dirname, '../client/build')))
 app.use('/api/v1/', v1Router)
 
