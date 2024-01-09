@@ -38,17 +38,22 @@ export default function Home() {
         <br/>
         <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
             <img
-                src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/WORLD-example.jpg"
+                src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/WORLD2-example.jpg"
                 alt='example image of the world'
                 style={{ width: '500px', height: 'auto', marginRight: '5px' }}
             />
             <img
-                src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/US-example.png"
+                src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/CONTINENTS-example.jpg"
+                alt='example image of the continents'
+                style={{ width: '500px', height: 'auto', marginRight: '5px' }}
+            />
+            <img
+                src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/US-example.jpg"
                 alt='example image of America'
                 style={{ width: '500px', height: 'auto', marginRight: '5px' }}
             />
             <img
-                src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/IT-example.png"
+                src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/IT-example.jpg"
                 alt='example image of Italy'
                 style={{ width: '500px', height: 'auto' }}
             />
