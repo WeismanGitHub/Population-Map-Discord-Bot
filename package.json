@@ -34,7 +34,9 @@
     "eject": "react-scripts eject",
     "clean": "rimraf dist/",
     "dev": "nodemon dist/server/index.js",
-    "commands": "node deploy-commands.js"
+    "commands": "node deploy-commands.js",
+    "disable": "fly scale count 0",
+    "enable": "fly scale count 1"
   },
   "eslintConfig": {
     "extends": [
