@@ -36,7 +36,7 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
     
     if (visibility !== 'public') {
         if (!accessToken || !userID) {
-            throw new UnauthorizedError('Unauthorized')
+            throw new UnauthorizedError('You must log in to see this map.')
         }
 
         const guilds = await oauth.getUserGuilds(accessToken)
