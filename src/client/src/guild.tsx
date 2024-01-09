@@ -1,10 +1,10 @@
+import { useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect } from 'react'
 import * as ChartGeo from "chartjs-chart-geo";
-import { useNavigate, useParams } from "react-router-dom";
 import { errorToast } from './toasts';
+import ky, { HTTPError } from 'ky';
 import NavBar from './nav-bar';
 import Map from "./map"
-import ky from 'ky'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -76,8 +76,6 @@ export default function Guild() {
                         // @ts-ignore
                         feature.count = feature.count ? feature.count + location.count : location.count || 0
                     })
-                    // @ts-ignore
-                    geojsonRes?.countryContinentMap[location.countryCode]
                 })
                 // @ts-ignore
                 setGeojson(geojsonRes.features)
@@ -96,10 +94,13 @@ export default function Guild() {
                     return feature
                 }))
             }
-        }).catch((err) => {
-            errorToast(err?.response?.statusText || err?.message || 'Something went wrong.')
+        }).catch(async (res: HTTPError) => {
+            const err: { error: string } = await res.response.json();
 
-            if (err.response.status == 401) {
+            errorToast(err.error || res.response.statusText || 'Something went wrong.')
+
+            if (res.response.status === 401) {
+                localStorage.removeItem("loggedIn")
                 navigate(`/discord/oauth2?guildID=${guildID}&mapCode=${mapCode}`)
             }
         })

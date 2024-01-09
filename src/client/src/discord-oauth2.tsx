@@ -1,9 +1,9 @@
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import { errorToast } from './toasts'
+import ky, { HTTPError } from 'ky';
 import NavBar from './nav-bar';
 import React from 'react'
-import ky from 'ky';
 
 function generateState() {
 	const randomNumber = Math.floor(Math.random() * 10);
@@ -33,10 +33,17 @@ export default function DiscordOAuth2() {
 			localStorage.setItem('guildID', guildID)
 		}
 
-		if (code && state && localStorage.getItem('auth-state') == atob(decodeURIComponent(state))) {
+		if (code && state && localStorage.getItem('auth-state') === atob(decodeURIComponent(state))) {
 			ky.post('/api/v1/auth/discord/oauth2', { json: { code } })
-			.then(res => setAuthorized(true))
-			.catch(err => errorToast(err.response.statusText || err.message));
+			.then(res => {
+				setAuthorized(true)
+				localStorage.setItem("loggedIn", "true");
+			})
+			.catch(async (res: HTTPError) => {
+				const err: { error: string } = await res.response.json();
+
+				errorToast(err.error || res.response.statusText || 'Something went wrong.')
+			});
 		} else {
 			localStorage.setItem('auth-state', randomString);
 		}

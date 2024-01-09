@@ -10,6 +10,7 @@ export default function NavBar() {
 
         ky.post('/api/v1/auth/logout')
         .then(res => {
+            localStorage.removeItem("loggedIn")
             successToast('Logged out!')
         })
         .catch(err => errorToast('Could not log out.'))
@@ -18,8 +19,11 @@ export default function NavBar() {
     return (<>
         <div className='navbar'>
             <a className='navbar-button' href="/">home</a>
-            <a className='navbar-button' href="/discord/oauth2">login</a>
-            <div className='navbar-button' onClick={logout}>logout</div>
+            {
+                localStorage.getItem("loggedIn") ?
+                <div className='navbar-button' onClick={logout}>logout</div> :
+                <a className='navbar-button' href="/discord/oauth2">login</a>
+            }
         </div>
     </>)
 }
