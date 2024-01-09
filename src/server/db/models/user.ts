@@ -135,8 +135,10 @@ User.prototype.removeLocationFromGuild = async function(guildID, transaction, co
 }
 
 User.prototype.updateLocation = async function(countryCode: string | null, subdivisionCode: string | null) {
-    if (this.countryCode === countryCode || this.subdivisionCode === subdivisionCode) {
-        throw new BadRequestError('You have already set your country/subdivision to that.')
+    if (this.countryCode === countryCode) {
+        throw new BadRequestError('You have already set your country to that.')
+    } else if ((this.subdivisionCode && subdivisionCode) && this.subdivisionCode === subdivisionCode) {
+        throw new BadRequestError('You have already set your subdivision to that.')
     }
 
     if (subdivisionCode && !iso3166.data[countryCode || this.countryCode].sub[subdivisionCode]) {
