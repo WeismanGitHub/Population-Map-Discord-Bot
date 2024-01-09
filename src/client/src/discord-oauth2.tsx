@@ -37,7 +37,6 @@ export default function DiscordOAuth2() {
 			ky.post('/api/v1/auth/discord/oauth2', { json: { code } })
 			.then(res => {
 				setAuthorized(true)
-				localStorage.setItem("loggedIn", "true");
 			})
 			.catch(async (res: HTTPError) => {
 				const err: { error: string } = await res.response.json();
@@ -52,6 +51,7 @@ export default function DiscordOAuth2() {
 	if (authorized) {
 		const [mapCode, guildID] = [localStorage.getItem('mapCode'), localStorage.getItem('guildID')]
 		localStorage.clear()
+		localStorage.setItem("loggedIn", "true");
 
 		navigate((mapCode && guildID) ? `/maps/${guildID}?mapCode=${mapCode}` : '/')
 	}
