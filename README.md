@@ -12,7 +12,8 @@
   <hr class="rounded">
 
   ## Example Images
-  ![World Map Example](/images/WORLD-example.jpg)
+  ![World Map Example](/images/WORLD-example.png)
+  ![Continents Map Example](/images/CONTINENTS-example.png)
   ![Help Command Example](/images/help-command-example.png)
   ![USA Map Example](/images/US-example.png)
   ![Italy Map Example](/images/IT-example.png)
