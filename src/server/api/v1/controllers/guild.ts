@@ -1,8 +1,7 @@
-import { Guild, GuildCountries, GuildCountry } from '../../../db/models';
+import { Guild, GuildLocation } from '../../../db/models';
 import { CustomClient } from '../../../custom-client';
 import { Request, Response } from 'express';
 import DiscordOauth2 from 'discord-oauth2'
-require('express-async-errors')
 import {
     BadRequestError,
     ForbiddenError,
@@ -11,11 +10,13 @@ import {
     UnauthorizedError
 } from '../../../errors';
 
+require('express-async-errors');
+
 async function getGuildData(req: Request, res: Response): Promise<void> {
     const client: CustomClient = req.app.get('discordClient')
     const { accessToken, userID } = req.session
+    const mapCode = req.query.mapCode as 'CONTINENTS' | 'WORLD' | string
     const guildID = req.params.guildID
-    const mapCode = req.query.mapCode
     const oauth = new DiscordOauth2()
 
     if (!guildID || !mapCode) {
@@ -23,7 +24,7 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
     }
 
     const guildData = await Guild.findOne({
-        where: { ID: guildID },
+        where: { guildID },
         attributes: ['visibility', 'adminRoleID', 'mapRoleID']
     }).catch(err => { throw new InternalServerError('Could not get server from database.') })
 
@@ -54,16 +55,12 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
             throw new ForbiddenError('Server map visibility is map role restricted.')
         }
     }
-
-    const locations = await (() => {
-        if (mapCode === 'WORLD' || mapCode === 'CONTINENTS') {
-            const guildCountries = new GuildCountries(guildID)
-            return guildCountries.getCountries().catch(err => { throw new InternalServerError('Could not get data.' )})
-        } else {
-            const guildCountry = new GuildCountry(guildID, String(mapCode))
-            return guildCountry.getSubdivisions().catch(err => { throw new InternalServerError("Could not get country data. Please verify that you've set and added your location to this server.") })
-        }
-    })()
+    
+    const filter = ['CONTINENTS', 'WORLD'].includes(mapCode) ? {} : { countryCode: mapCode }
+    const locations = await GuildLocation.findAll({ where: { guildID, ...filter }, attributes: ['countryCode', 'subdivisionCode'] })
+    .catch(() => { throw new InternalServerError(
+        "Could not get country data. Please verify that you've set and added your location to this server."
+    ) })
 
     res.status(200)
     .json({

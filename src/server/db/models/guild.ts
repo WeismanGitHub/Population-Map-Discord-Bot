@@ -7,14 +7,14 @@ import {
 } from 'sequelize'
 
 class Guild extends Model<InferAttributes<Guild>, InferCreationAttributes<Guild>> {
-    declare ID: string
+    declare guildID: string
     declare visibility?: 'public' | 'member-restricted' | 'map-role-restricted' | 'admin-role-restricted' | 'invisibile'
     declare mapRoleID: string | null
     declare adminRoleID: string | null
 }
 
 Guild.init({
-    ID: {
+    guildID: {
         type: DataTypes.STRING,
         allowNull: false,
         primaryKey: true,

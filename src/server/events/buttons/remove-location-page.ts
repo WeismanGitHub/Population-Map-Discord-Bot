@@ -1,5 +1,5 @@
-import { BadRequestError, InternalServerError } from "../../errors"
-import { User } from "../../db/models"
+import { GuildLocation } from "../../db/models"
+import { NotFoundError } from "../../errors"
 import {
     ActionRowBuilder,
     ButtonBuilder,
@@ -30,34 +30,36 @@ export default {
         interaction: ButtonInteraction,
         customID: CustomID<{ page: number }>
     }) => {
-        const user = await User.findOne({ where: { discordID: interaction.user.id } })
         const { page } = customID.data
 
-        if (!user || !user.guildIDs) {
-            throw new InternalServerError('Could not find you in database.')
+        const locations = await GuildLocation.findAll({
+            where: { userID: interaction.user.id },
+            attributes: ['guildID'],
+            limit: 25,
+            offset: page * 25
+        })
+
+        if (!locations.length) {
+            throw new NotFoundError("No more servers.")
         }
 
-        if (!user.guildIDs?.length) {
-			throw new BadRequestError('You have not saved your location in any servers.')
-		}
-
-        const guilds = await Promise.all(user.guildIDs.map(guildID => {
-			return interaction.client.guilds.fetch(guildID)
+		const guilds = await Promise.all(locations.map(location => {
+			return interaction.client.guilds.fetch(location.guildID)
 		}))
 
-		const guildsRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+		const guildsMenu = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId(JSON.stringify({
                     type: 'remove-location',
                     data: {}
                 }))
                 .setPlaceholder('Select a server!')
-                .addOptions(guilds.slice(page * 25, (page * 25) + 25).map(guild =>
+                .addOptions(guilds.map(guild =>
 					new StringSelectMenuOptionBuilder().setLabel(guild.name).setValue(guild.id)
 				))
         )
 
-		const pageButtonsRow = new ActionRowBuilder<ButtonBuilder>()
+		const pageButtons = new ActionRowBuilder<ButtonBuilder>()
 		.addComponents(
             new ButtonBuilder()
                 .setLabel('⏪')
@@ -78,7 +80,7 @@ export default {
         )
 
         interaction.update({
-            components: [guildsRow, pageButtonsRow]
+            components: [guildsMenu, pageButtons]
         })
     }
 }

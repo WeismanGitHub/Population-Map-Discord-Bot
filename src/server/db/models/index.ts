@@ -1,11 +1,9 @@
-import GuildCountries from './guild-countries'
-import GuildCountry from './guild-country'
-import Guild from './guild'
-import User from './user'
+import GuildLocation from "./guild-location"
+import Guild from "./guild"
+import User from "./user"
 
 export {
-    GuildCountries,
-    GuildCountry,
+    GuildLocation,
     Guild,
     User,
 }

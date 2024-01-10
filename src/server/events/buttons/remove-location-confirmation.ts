@@ -1,7 +1,7 @@
 import { Events, StringSelectMenuInteraction, Interaction } from "discord.js"
 import { InternalServerError } from "../../errors";
+import { GuildLocation } from "../../db/models";
 import { infoEmbed } from "../../utils/embeds";
-import { User } from "../../db/models";
 
 export default {
 	name: Events.InteractionCreate,
@@ -19,14 +19,11 @@ export default {
         interaction: StringSelectMenuInteraction,
         customID: CustomID<{ guildID: string }>
     }) => {
-        const user = await User.findOne({ where: { discordID: interaction.user.id } })
-        const { guildID } = customID.data
+        const deletedRows = await GuildLocation.destroy({ where: { guildID: customID.data.guildID, userID: interaction.user.id } })
 
-        if (!user) {
-            throw new InternalServerError('Could not find you in database.')
+        if (!deletedRows) {
+            throw new InternalServerError('Could not delete your data.')
         }
-
-        await user.removeLocationFromGuild(guildID)
 
         interaction.update({
             components: [],

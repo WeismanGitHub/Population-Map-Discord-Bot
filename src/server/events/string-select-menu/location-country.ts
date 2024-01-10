@@ -1,6 +1,6 @@
 import { InternalServerError } from "../../errors";
+import { GuildLocation, User } from "../../db/models";
 import { infoEmbed } from "../../utils/embeds";
-import { User } from "../../db/models";
 import {
     ActionRowBuilder,
     ButtonBuilder,
@@ -22,21 +22,22 @@ export default {
 
         return { customID, interaction }
     },
-    execute: async ({ interaction, customID }: {
+    execute: async ({ interaction }: {
         interaction: StringSelectMenuInteraction,
-        customID: CustomID<{ countryCode: string }>
+        customID: CustomID<{}>
     }) => {
         const countryCode = interaction.values[0]
-        
-        const user = await User.findOne({ where: { discordID: interaction.user.id } })
-        .catch(err => { throw new InternalServerError('An error occurred accessing the database..') })
 
-        if (!user) {
-            await User.create({ discordID: interaction.user.id, countryCode })
-            .catch(err => { throw new InternalServerError('Could not save your country.') })
-        } else {
-            await user.updateLocation(countryCode, null)
-        }
+        await User.upsert({ userID: interaction.user.id })
+        .catch(err => { throw new InternalServerError("Could not write to database.") })
+        
+        await GuildLocation.upsert({
+            guildID: interaction.guildId!,
+            userID: interaction.user.id,
+            countryCode,
+            subdivisionCode: null
+        })
+        .catch(err => { throw new InternalServerError('Could not save your country.') })
 
         const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
@@ -48,7 +49,7 @@ export default {
             }))
         )
 
-        interaction.update({
+        await interaction.update({
             embeds: [infoEmbed('Selected a country!', 'You can also optionally choose your subdivision (state, region, prefecture, etc).')],
             components: [row]
         })

@@ -18,7 +18,7 @@ export default {
 	,
 	guildIDs: [config.supportServerID, ...config.personalServerIDs],
 	async execute(interaction: CommandInteraction) {
-		const user = await User.findOne({ where: { discordID: interaction.user.id } })
+		const user = await User.findOne({ where: { userID: interaction.user.id } })
 
 		if (!user) {
 			throw new ForbiddenError('You are not in the database.')

@@ -1,5 +1,5 @@
-import { BadRequestError, NotFoundError } from '../../errors'
-import { Guild, User } from '../../db/models'
+import { GuildLocation } from '../../db/models'
+import { NotFoundError } from '../../errors'
 import {
 	SlashCommandBuilder,
 	ChatInputCommandInteraction,
@@ -17,28 +17,17 @@ export default {
 	,
 	guildIDs: null,
 	async execute(interaction: ChatInputCommandInteraction) {
-		const guildID = interaction.guildId!
-		const guild = await Guild.findOne({ where: { ID: guildID! } })
+		const locations = await GuildLocation.findAll({ where: { userID: interaction.user.id }, attributes: ['guildID'], limit: 25 })
 
-        if (!guild) {
-            throw new NotFoundError('This server is not in the database.')
+        if (!locations.length) {
+            throw new NotFoundError("You haven't set your location anywhere.")
         }
-		
-		const user = await User.findOne({ where: { discordID: interaction.user.id } })
 
-		if (!user) {
-			throw new NotFoundError('Could not find you in the database.')
-		}
-
-		if (!user.guildIDs?.length) {
-			throw new BadRequestError('You have not saved your location in any servers.')
-		}
-
-		const guilds = await Promise.all(user.guildIDs.map(guildID => {
-			return interaction.client.guilds.fetch(guildID)
+		const guilds = await Promise.all(locations.map(location => {
+			return interaction.client.guilds.fetch(location.guildID)
 		}))
 
-		const guildsRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+		const guildsMenu = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId(JSON.stringify({
                     type: 'remove-location',
@@ -50,7 +39,7 @@ export default {
 				))
         )
 
-		const pageButtonsRow = new ActionRowBuilder<ButtonBuilder>()
+		const pageButtons = new ActionRowBuilder<ButtonBuilder>()
 		.addComponents(
             new ButtonBuilder()
                 .setLabel('⏪')
@@ -69,7 +58,7 @@ export default {
 
 		interaction.reply({
 			ephemeral: true,
-			components: [guildsRow, pageButtonsRow],
+			components: [guildsMenu, pageButtons],
 		})
 	}
 }
