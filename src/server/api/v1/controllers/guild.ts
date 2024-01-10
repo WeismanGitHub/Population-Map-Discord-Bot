@@ -35,7 +35,7 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
     }
 
     const { visibility, adminRoleID, mapRoleID } = guildData;
-    const guild = await client.guilds.fetch(guildID);
+    const fullGuild = await client.guilds.fetch(guildID);
 
     if (visibility !== 'public') {
         if (!accessToken || !userID) {
@@ -46,22 +46,31 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
             throw new InternalServerError('Could not get user servers.');
         });
 
-        if (!guilds.some((guild) => guild.id === guildID)) {
+        const partialGuild = guilds.find(guild => guild.id === guildID)
+        console.log(partialGuild, fullGuild)
+
+        if (!partialGuild) {
             throw new ForbiddenError('You are not in this server.');
         }
-
-        if (visibility === 'invisibile') {
-            throw new ForbiddenError('Server map visibility is invisible.');
-        } else if (
-            visibility === 'admin-role-restricted' &&
-            (!adminRoleID || !guild.roles.cache.has(adminRoleID))
-        ) {
-            throw new ForbiddenError('Server map visibility is admin role restricted.');
-        } else if (
-            visibility === 'map-role-restricted' &&
-            (!mapRoleID || !guild.roles.cache.has(mapRoleID))
-        ) {
-            throw new ForbiddenError('Server map visibility is map role restricted.');
+        
+        if (!partialGuild?.owner) {
+            if (visibility === 'invisibile') {
+                throw new ForbiddenError('Server map visibility is invisible.');
+            }
+            
+            console.log(mapRoleID, adminRoleID)
+            throw new InternalServerError("Admin/Map-role restrictions are currently being worked on. Sorry!")
+            // if (
+            //     visibility === 'admin-role-restricted' &&
+            //     (!adminRoleID || !guild.roles.cache.has(adminRoleID))
+            // ) {
+            //     throw new ForbiddenError('Server map visibility is admin role restricted.');
+            // } else if (
+            //     visibility === 'map-role-restricted' &&
+            //     (!mapRoleID || !guild.roles.cache.has(mapRoleID))
+            // ) {
+            //     throw new ForbiddenError('Server map visibility is map role restricted.');
+            // }
         }
     }
 
@@ -77,9 +86,9 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
 
     res.status(200).json({
         locations: locations,
-        name: guild.name,
-        iconURL: guild.iconURL(),
-        guildMemberCount: guild.memberCount,
+        name: fullGuild.name,
+        iconURL: fullGuild.iconURL(),
+        guildMemberCount: fullGuild.memberCount,
     });
 }
 
