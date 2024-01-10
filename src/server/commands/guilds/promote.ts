@@ -26,7 +26,7 @@ export default {
             throw new ForbiddenError('You are not the bot owner.')
         }
 
-		const user = await User.findOne({ where: { discordID: interaction.options.getString('user-id')! } })
+		const user = await User.findOne({ where: { userID: interaction.options.getString('user-id')! } })
 
 		if (!user) {
 			throw new ForbiddenError('User is not in the database.')
