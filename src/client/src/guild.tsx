@@ -25,7 +25,7 @@ ChartJS.register(
 );
 
 interface GuildRes {
-    locations: { count: number, countryCode?: string, subdivisionCode?: string }[]
+    locations: { countryCode: string, subdivisionCode: string | null }[]
     name: string
     guildMemberCount: number
     iconURL: string
@@ -72,19 +72,21 @@ export default function Guild() {
                 guildRes.locations.forEach(location => {
                     geojsonRes.features.forEach(feature => {
                         // @ts-ignore
-                        if (feature.properties.isoCode !== geojsonRes?.countryContinentMap[location.countryCode]) return
+                        if (feature.properties.isoCode != geojsonRes?.countryContinentMap[location.countryCode]) return
                         // @ts-ignore
-                        feature.count = feature.count ? feature.count + location.count : location.count || 0
+                        feature.count = feature.count >= 0 ? feature.count + 1 : 1
+                        // @ts-ignore
                     })
                 })
                 // @ts-ignore
                 setGeojson(geojsonRes.features)
-            } else {
-                const locations = {}
+            } else if (mapCode === 'WORLD') {
+                const locations: Record<string, number> = {}
 
                 guildRes.locations.forEach(location => {
+                    const count = locations[location.countryCode]
                     // @ts-ignore
-                    locations[location.countryCode || location.subdivisionCode] = location.count
+                    locations[location.countryCode] = count >= 0 ? count + 1 : 1
                 })
 
                 // @ts-ignore
@@ -93,10 +95,26 @@ export default function Guild() {
                     feature.count = locations[feature.properties.isoCode] || 0
                     return feature
                 }))
+            } else {
+                const locations: Record<string, number> = {}
+
+                guildRes.locations.forEach(location => {
+                    const count = locations[location.subdivisionCode!]
+                    // @ts-ignore
+                    locations[location.countryCode] = count >= 0 ? count + 1 : 1
+                })
+
+                // @ts-ignore
+                setGeojson(geojsonRes.features.map((feature) => {
+                    // @ts-ignore
+                    feature.count = locations[feature.properties.isoCode] || 0
+                    return feature
+                }))
+
             }
         }).catch(async (res: HTTPError) => {
             const err: { error: string } = await res.response.json();
-
+            
             errorToast(err.error || res.response.statusText || 'Something went wrong.')
 
             if (res.response.status === 401) {
