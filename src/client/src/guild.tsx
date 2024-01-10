@@ -101,16 +101,16 @@ export default function Guild() {
                 guildRes.locations.forEach(location => {
                     const count = locations[location.subdivisionCode!]
                     // @ts-ignore
-                    locations[location.countryCode] = count >= 0 ? count + 1 : 1
+                    locations[location.subdivisionCode] = count >= 0 ? count + 1 : 1
                 })
 
                 // @ts-ignore
                 setGeojson(geojsonRes.features.map((feature) => {
                     // @ts-ignore
-                    feature.count = locations[feature.properties.isoCode] || 0
+                    // @ts-ignore
+                    feature.count = locations[feature.properties.isoCode] ?? 0
                     return feature
                 }))
-
             }
         }).catch(async (res: HTTPError) => {
             const err: { error: string } = await res.response.json();
