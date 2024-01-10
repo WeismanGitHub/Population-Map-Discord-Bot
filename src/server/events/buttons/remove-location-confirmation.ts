@@ -19,7 +19,7 @@ export default {
         interaction: StringSelectMenuInteraction,
         customID: CustomID<{ guildID: string }>
     }) => {
-        const deletedRows = await GuildLocation.destroy({ where: { guildID: customID.data.guildID } })
+        const deletedRows = await GuildLocation.destroy({ where: { guildID: customID.data.guildID, userID: interaction.user.id } })
 
         if (!deletedRows) {
             throw new InternalServerError('Could not delete your data.')

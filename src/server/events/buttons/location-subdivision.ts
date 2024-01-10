@@ -39,7 +39,7 @@ export default {
             new StringSelectMenuBuilder()
                 .setCustomId(JSON.stringify({
                     type: 'location-subdivision',
-                    data: {}
+                    data: { countryCode }
                 }))
                 .setPlaceholder('Select your subdivision!')
                 .addOptions(
