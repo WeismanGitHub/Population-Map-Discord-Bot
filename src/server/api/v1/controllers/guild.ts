@@ -46,20 +46,22 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
             throw new InternalServerError('Could not get user servers.');
         });
 
-        const partialGuild = guilds.find(guild => guild.id === guildID)
-        console.log(partialGuild, fullGuild)
+        const partialGuild = guilds.find((guild) => guild.id === guildID);
+        console.log(partialGuild, fullGuild);
 
         if (!partialGuild) {
             throw new ForbiddenError('You are not in this server.');
         }
-        
+
         if (!partialGuild?.owner) {
             if (visibility === 'invisibile') {
                 throw new ForbiddenError('Server map visibility is invisible.');
             }
-            
-            console.log(mapRoleID, adminRoleID)
-            throw new InternalServerError("Admin/Map-role restrictions are currently being worked on. Sorry!")
+
+            console.log(mapRoleID, adminRoleID);
+            throw new InternalServerError(
+                'Admin/Map-role restrictions are currently being worked on. Sorry!'
+            );
             // if (
             //     visibility === 'admin-role-restricted' &&
             //     (!adminRoleID || !guild.roles.cache.has(adminRoleID))
