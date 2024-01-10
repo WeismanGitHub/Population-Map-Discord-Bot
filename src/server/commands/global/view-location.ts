@@ -1,7 +1,8 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js'
+import { InternalServerError, NotFoundError } from '../../errors'
+import { CustomClient } from '../../custom-client'
 import { GuildLocation } from '../../db/models'
 import { infoEmbed } from '../../utils/embeds'
-import { NotFoundError } from '../../errors'
 
 export default {
 	data: new SlashCommandBuilder()
@@ -20,13 +21,23 @@ export default {
 			throw new NotFoundError("Could not find your location in the database.")
 		}
 
-		interaction.reply({
+        const client = interaction.client as CustomClient
+        const country = client.getCountry(location.countryCode)
+		const subdivision = country?.sub.find(sub => {
+			return sub.code == location.subdivisionCode
+		})
+
+		if (!country) {
+			throw new InternalServerError("Could not get country.");
+		}
+
+		await interaction.reply({
 			ephemeral: true,
 			embeds: [infoEmbed(
 				'Your location in this server:',
 				`
-				\`Country\`: \`${location.countryCode}\`
-                \`Subdivision\`: ${location.subdivisionCode}\`
+				\`Country\`: \`${country.name}\`
+                \`Subdivision\`: \`${subdivision?.name || null}\`
 				`
 			)]
 		})
