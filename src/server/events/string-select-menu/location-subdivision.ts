@@ -18,7 +18,6 @@ export default {
     execute: async ({ interaction, customID }: { interaction: StringSelectMenuInteraction, customID: CustomID<{ countryCode: string }> } ) => {
         const subdivisionCode = interaction.values[0]
         const countryCode = customID.data.countryCode
-        console.log(customID, subdivisionCode)
 
         await GuildLocation.upsert({
             guildID: interaction.guildId!,
