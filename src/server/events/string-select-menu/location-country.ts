@@ -1,5 +1,5 @@
 import { InternalServerError } from "../../errors";
-import { GuildLocation } from "../../db/models";
+import { GuildLocation, User } from "../../db/models";
 import { infoEmbed } from "../../utils/embeds";
 import {
     ActionRowBuilder,
@@ -27,6 +27,9 @@ export default {
         customID: CustomID<{}>
     }) => {
         const countryCode = interaction.values[0]
+
+        await User.upsert({ userID: interaction.user.id })
+        .catch(err => { throw new InternalServerError("Could not write to database.") })
         
         await GuildLocation.upsert({
             guildID: interaction.guildId!,
@@ -46,7 +49,7 @@ export default {
             }))
         )
 
-        interaction.update({
+        await interaction.update({
             embeds: [infoEmbed('Selected a country!', 'You can also optionally choose your subdivision (state, region, prefecture, etc).')],
             components: [row]
         })

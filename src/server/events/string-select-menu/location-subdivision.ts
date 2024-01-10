@@ -8,16 +8,17 @@ export default {
 	once: false,
     check: async (interaction: Interaction) => {
         if (!interaction.isStringSelectMenu()) return;
+        
+        const customID: CustomID<{ countryCode: string }> = JSON.parse(interaction.customId)
 
-        const { type }: CustomID<{ countryCode: string }> = JSON.parse(interaction.customId)
+        if (customID.type !== 'location-subdivision') return
 
-        if (type !== 'location-subdivision') return
-
-        return { customID: { type }, interaction }
+        return { customID, interaction }
     },
     execute: async ({ interaction, customID }: { interaction: StringSelectMenuInteraction, customID: CustomID<{ countryCode: string }> } ) => {
         const subdivisionCode = interaction.values[0]
         const countryCode = customID.data.countryCode
+        console.log(customID, subdivisionCode)
 
         await GuildLocation.upsert({
             guildID: interaction.guildId!,
