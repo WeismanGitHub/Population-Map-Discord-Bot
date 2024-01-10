@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction, GuildMemberManager } from 'discord.js'
-import { BadRequestError, ForbiddenError, InternalServerError } from '../../errors'
+import { ForbiddenError, InternalServerError, NotFoundError } from '../../errors'
 import { infoEmbed } from '../../utils/embeds'
 import { Guild } from '../../db/models'
 
@@ -68,36 +68,41 @@ export default {
             settings[removeRoleChoice as 'adminRoleID' | 'mapRoleID'] = null
         }
 
-        const guild = await Guild.findOne({ where: { guildID: interaction.guildId } })
+        let guild = await Guild.findOne({ where: { guildID: interaction.guildId } })
         const thereAreChanges = Boolean(Object.keys(settings).length)
+        
+        if (thereAreChanges || interaction.user.id === interaction.guild?.ownerId) {
+            if (interaction.user.id === interaction.guild?.ownerId) {
+                const res = await Guild.upsert({
+                    guildID: interaction.guildId!,
+                    ...settings
+                })
+                .catch(err => { throw new InternalServerError('Could not save server settings.') })
+
+                guild = res[0]
+            } else if (guild) {
+                const roles = (interaction.member.roles as unknown as GuildMemberManager).cache
+                const userIsAdmin = guild.adminRoleID ? roles.has(guild.adminRoleID) : false
+                
+                if (!userIsAdmin) {
+                    throw new ForbiddenError('Only admins and the owner can change server settings.')
+                }
+        
+                if (settings.adminRoleID !== undefined) {
+                    throw new ForbiddenError('Admins cannot edit the admin role.')
+                }
+        
+                await guild.update(settings)
+                .catch(err => {
+                    throw new InternalServerError('Could not save server settings.')
+                })
+            }
+        }
 
         if (!guild) {
-            throw new ForbiddenError("This server has not been set up. The server owner must use `/server-settings`.")
+            throw new NotFoundError("This server has not been set up. The server owner must use `/server-settings`.")
         }
-
-        if (interaction.user.id === interaction.guild?.ownerId && thereAreChanges) {
-            await guild.update(settings)
-            .catch(err => {
-                throw new InternalServerError('Could not save server settings.')
-            })
-        } else if (thereAreChanges) {
-            const roles = (interaction.member.roles as unknown as GuildMemberManager).cache
-            const userIsAdmin = guild.adminRoleID ? roles.has(guild.adminRoleID) : false
-            
-            if (!userIsAdmin) {
-                throw new BadRequestError('Only admins and the owner can change server settings.')
-            }
-    
-            if (settings.adminRoleID !== undefined) {
-                throw new BadRequestError('Admins cannot edit the admin role.')
-            }
-
-            await guild.update(settings)
-            .catch(err => {
-                throw new InternalServerError('Could not save server settings.')
-            })
-        }
-
+        
         return interaction.reply({
             ephemeral: true,
             embeds: [infoEmbed('Server Settings',
