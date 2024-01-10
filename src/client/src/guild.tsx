@@ -63,6 +63,7 @@ export default function Guild() {
             .then(([guildRes, geojsonRes]) => {
                 // @ts-ignore
                 geojsonRes.features = Object.values(geojsonRes.objects).map((feature) =>
+                    // @ts-ignore
                     ChartGeo.topojson.feature(geojsonRes, feature)
                 );
 
@@ -76,15 +77,15 @@ export default function Guild() {
                 if (mapCode === 'CONTINENTS') {
                     guildRes.locations.forEach((location) => {
                         geojsonRes.features.forEach((feature) => {
-                            // @ts-ignore
                             if (
+                                // @ts-ignore
                                 feature.properties.isoCode !=
+                                // @ts-ignore
                                 geojsonRes?.countryContinentMap[location.countryCode]
                             )
                                 return;
                             // @ts-ignore
                             feature.count = feature.count >= 0 ? feature.count + 1 : 1;
-                            // @ts-ignore
                         });
                     });
                     // @ts-ignore
@@ -98,8 +99,8 @@ export default function Guild() {
                         locations[location.countryCode] = count >= 0 ? count + 1 : 1;
                     });
 
-                    // @ts-ignore
                     setGeojson(
+                        // @ts-ignore
                         geojsonRes.features.map((feature) => {
                             // @ts-ignore
                             feature.count = locations[feature.properties.isoCode] || 0;
@@ -117,8 +118,8 @@ export default function Guild() {
 
                     // @ts-ignore
                     setGeojson(
+                        // @ts-ignore
                         geojsonRes.features.map((feature) => {
-                            // @ts-ignore
                             // @ts-ignore
                             feature.count = locations[feature.properties.isoCode] ?? 0;
                             return feature;
