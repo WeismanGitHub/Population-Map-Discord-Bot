@@ -1,4 +1,4 @@
-import CustomError from './custom-error'
+import CustomError from './custom-error';
 
 class ForbiddenError extends CustomError {
     constructor(message?: string) {
@@ -6,4 +6,4 @@ class ForbiddenError extends CustomError {
     }
 }
 
-export default ForbiddenError
+export default ForbiddenError;

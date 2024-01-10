@@ -1,13 +1,7 @@
-import { Chart as ReactChart } from "react-chartjs-2";
-import * as ChartGeo from "chartjs-chart-geo";
-import React, { useRef } from "react";
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    Tooltip,
-    Title,
-    Legend
-} from "chart.js";
+import { Chart as ReactChart } from 'react-chartjs-2';
+import * as ChartGeo from 'chartjs-chart-geo';
+import React, { useRef } from 'react';
+import { Chart as ChartJS, CategoryScale, Tooltip, Title, Legend } from 'chart.js';
 
 ChartJS.register(
     Title,
@@ -20,14 +14,13 @@ ChartJS.register(
     ChartGeo.GeoFeature
 );
 
-export default function Map(props: { geojson: {}[], projection: 'albers' | 'equalEarth' }) {
-    const geojson = props.geojson
+export default function Map(props: { geojson: {}[]; projection: 'albers' | 'equalEarth' }) {
+    const geojson = props.geojson;
     const chartRef = useRef();
-    
+
     return (
         <ReactChart
             style={{ backgroundColor: 'white' }}
-            
             ref={chartRef}
             type="choropleth"
             data={{
@@ -37,21 +30,21 @@ export default function Map(props: { geojson: {}[], projection: 'albers' | 'equa
                         outline: geojson,
                         data: geojson.map((d: any) => ({
                             feature: d,
-                            value: d.count || 0
+                            value: d.count || 0,
                         })),
-                    }
-                ]
+                    },
+                ],
             }}
             options={{
                 borderColor: 'black',
                 showOutline: true,
                 showGraticule: true,
                 plugins: {
-                    legend: { display: false }
+                    legend: { display: false },
                 },
                 scales: {
-                    xy: { projection: props.projection }
-                }
+                    xy: { projection: props.projection },
+                },
             }}
         />
     );

@@ -1,6 +1,6 @@
 interface CustomID<data> {
-    type: string
-    data: data
+    type: string;
+    data: data;
 }
 
 declare global {

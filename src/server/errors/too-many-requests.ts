@@ -1,4 +1,4 @@
-import CustomError from './custom-error'
+import CustomError from './custom-error';
 
 class TooManyRequestsError extends CustomError {
     constructor(message?: string) {
@@ -6,4 +6,4 @@ class TooManyRequestsError extends CustomError {
     }
 }
 
-export default TooManyRequestsError
+export default TooManyRequestsError;

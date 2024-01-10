@@ -1,35 +1,33 @@
-import sequelize from "../sequelize";
-import {
-    DataTypes,
-    InferAttributes,
-    InferCreationAttributes,
-    Model,
-} from 'sequelize'
+import sequelize from '../sequelize';
+import { DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
-    declare userID: string
-    declare role?: 'regular' | 'admin'
+    declare userID: string;
+    declare role?: 'regular' | 'admin';
 
-    declare getGuildIDs: () => Promise<string[]>
-    declare delete: () => Promise<void>
+    declare getGuildIDs: () => Promise<string[]>;
+    declare delete: () => Promise<void>;
 }
 
-User.init({
-    userID: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        primaryKey: true,
+User.init(
+    {
+        userID: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            primaryKey: true,
+        },
+        role: {
+            type: DataTypes.ENUM('regular', 'admin'),
+            defaultValue: 'regular',
+        },
     },
-    role: {
-        type: DataTypes.ENUM('regular', 'admin'),
-        defaultValue: 'regular'
+    {
+        sequelize: sequelize,
+        modelName: 'User',
+        timestamps: false,
     }
-}, {
-    sequelize: sequelize,
-    modelName: 'User',
-    timestamps: false
-});
+);
 
-User.sync()
+User.sync();
 
-export default User
+export default User;
