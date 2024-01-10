@@ -13,7 +13,7 @@ export default {
 		const deletedRows = await User.destroy({ where: { userID: interaction.user.id } })
 
 		if (deletedRows === 0) {
-			throw new NotFoundError('Could not find you in database.')
+			throw new NotFoundError('Could not find you in the database.')
 		}
 
         interaction.reply({

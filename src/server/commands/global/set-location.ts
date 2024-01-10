@@ -1,4 +1,6 @@
 import { CustomClient } from '../../custom-client'
+import { NotFoundError } from '../../errors'
+import { Guild } from '../../db/models'
 import {
     SlashCommandBuilder,
     CommandInteraction,
@@ -12,11 +14,16 @@ import {
 export default {
 	data: new SlashCommandBuilder()
 		.setName('set-location')
-		.setDescription("Set your country and optionally your subdivision (state, region, prefecture, etc).")
-        ,
+        .setDMPermission(false)
+		.setDescription("Set your country and optionally your subdivision (state, region, prefecture, etc)."),
     guildIDs: null,
 	async execute(interaction: CommandInteraction): Promise<void> {
         const client = interaction.client as CustomClient
+        const guild = await Guild.findOne({ where: { guildID: interaction.guildId! } })
+
+        if (!guild) {
+            throw new NotFoundError("This server hasn't been set up.")
+        }
 
         const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
