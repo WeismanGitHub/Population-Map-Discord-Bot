@@ -25,14 +25,10 @@ export default function NavBar() {
                 <a className="navbar-button" href="/">
                     home
                 </a>
-                {loggedIn ? (
+                {loggedIn && (
                     <div className="navbar-button" onClick={logout}>
                         logout
                     </div>
-                ) : (
-                    <a className="navbar-button" href="/discord/oauth2">
-                        login
-                    </a>
                 )}
             </div>
         </>
