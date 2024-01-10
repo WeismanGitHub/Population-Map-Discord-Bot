@@ -36,7 +36,9 @@
     "dev": "nodemon dist/server/index.js",
     "commands": "node deploy-commands.js",
     "disable": "fly scale count 0",
-    "enable": "fly scale count 1"
+    "enable": "fly scale count 1",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "prettier": "npx prettier --write src"
   },
   "eslintConfig": {
     "extends": [
