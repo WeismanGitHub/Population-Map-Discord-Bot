@@ -7,7 +7,7 @@
   <hr class="rounded">
 
   ## Description
-  The Population Map Bot is a dynamic map generator capable of visualizing population data on a global, continental, or country level. Maps are generated based on self-reported locations provided by Discord server members, enabling users to explore population distributions with ease. The application facilitates efficient data processing and visualization, empowering users to gain valuable insights into population patterns across the world. Use `/help` for further information. `/map` can be used to get a map for a specific country. Countries and subdivisions are from [ISO 3166](https://www.iso.org/iso-3166-country-codes.html).
+  The Population Map Bot is a dynamic map generator capable of visualizing population data on a global, continental, or country level. Maps are generated from self-reported locations provided by Discord server members, enabling users to explore population distributions with ease. The application facilitates efficient data processing and visualization, empowering users to gain valuable insights into population patterns across the world. Use `/help`for further information. `/map` can be used to get a map for a specific country. Countries and subdivisions are from [ISO 3166](https://www.iso.org/iso-3166-country-codes.html).
 
   <hr class="rounded">
 
@@ -21,13 +21,10 @@
   <hr class="rounded">
   
   ## User Docs
-  You can delete your data with `/user-delete`. Your location should be automatically removed from a server map if you are kicked/banned/leave the server, but this will not work if the bot is offline. Use `/remove-location` if your location is not automatically removed.
+  You can delete your data with `/user-delete`. Your location should be automatically removed from a server map if you leave or are kicked/banned, but this will not work if the bot is offline. Use `/remove-location` if your location is not automatically removed.
 
   #### Location
-  Save your location with the `/set-location` command. You must choose your country and optionally your subdivision (state, region, prefecture, etc). Your location is the same across all servers, and isn't shared with any servers automatically. You need to manually use `/add-location` in a server to add your location to the server's map. Use `/remove-location` anywhere to remove your location from any map.
-
-  #### User Settings
-  View your settings/location by using `/user-settings` with no options selected. To have your location automatically added when you join a server, use the `add-location-on-join` option in `/user-settings`. `add-location-on-join` is off by default.
+  Add your location to a server map with the `/set-location` command. Use `/remove-location` anywhere to remove your location from a server map. Use `/view-location` to see your location in a server.
 
   <hr class="rounded">
   
@@ -37,10 +34,10 @@
   #### Server Roles
   The admin role permits a server owner to authorizes members with a certain role to be able to change any server setting. Select a role to become the admin role with the `admin-role` option. Only the owner is allowed to change the admin role.
   
-  The map role allows admins/owners to restrict map access to members with a role. Set the map role with the `map-role` option. Remove the map or admin role with `remove-role`. `remove-role` does not delete the role from the server.
+  The map role allows admins/owners to restrict map access to members with a specific role. Set the map role with the `map-role` option. Remove the map or admin role with `remove-role`. `remove-role` does not delete the role from the server.
 
   #### Map Visibility
-  The `visibility` option allows admins/owners to change who can view the server map. Setting `visibility` to `public` allows anyone with a link to view the map. Setting it to `member-restricted` allows only server members to view the map. Choosing `map-role-restricted` restricts the map to the owner and members with the map role. The `admin-role-restricted` choice limits access to only the owner and members with the admin role. Selecting `invisible` blocks the map to everyone, including owners and admins.
+  The `visibility` option allows admins/owners to change who can view the server map. Setting `visibility` to `public` allows anyone with a link to view the map. Setting it to `member-restricted` allows only server members to view the map. Choosing `map-role-restricted` restricts the map to the owner and members with the map role. `admin-role-restricted` limits access to only the owner and members with the admin role. Selecting `invisible` hides the map from everyone (even admins), except the owner.
 
   #### Defaults
   `visibility`: `public`

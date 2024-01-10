@@ -1,5 +1,5 @@
-import { InternalServerError } from "../../errors"
-import { CustomClient } from "../../custom-client"
+import { InternalServerError } from '../../errors';
+import { CustomClient } from '../../custom-client';
 import {
     ActionRowBuilder,
     ButtonBuilder,
@@ -9,47 +9,54 @@ import {
     Interaction,
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
-} from "discord.js"
+} from 'discord.js';
 
 export default {
-	name: Events.InteractionCreate,
-	once: false,
+    name: Events.InteractionCreate,
+    once: false,
     check: async (interaction: Interaction) => {
         if (!interaction.isButton()) return;
 
-        const customID: CustomID<{ countryCode: string }> = JSON.parse(interaction.customId)
+        const customID: CustomID<{ countryCode: string }> = JSON.parse(interaction.customId);
 
-        if (customID.type !== 'location-subdivision') return
+        if (customID.type !== 'location-subdivision') return;
 
-        return { customID, interaction }
+        return { customID, interaction };
     },
-    execute: async ({ interaction, customID }: {
-        interaction: ButtonInteraction,
-        customID: CustomID<{ countryCode: string }>
+    execute: async ({
+        interaction,
+        customID,
+    }: {
+        interaction: ButtonInteraction;
+        customID: CustomID<{ countryCode: string }>;
     }) => {
-        const client = interaction.client as CustomClient
-        const { countryCode } = customID.data
-        const country = client.getCountry(countryCode)
+        const client = interaction.client as CustomClient;
+        const { countryCode } = customID.data;
+        const country = client.getCountry(countryCode);
 
         if (!country) {
-            throw new InternalServerError('Could not get country.')
+            throw new InternalServerError('Could not get country.');
         }
 
         const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
-                .setCustomId(JSON.stringify({
-                    type: 'location-subdivision',
-                    data: { countryCode }
-                }))
+                .setCustomId(
+                    JSON.stringify({
+                        type: 'location-subdivision',
+                        data: { countryCode },
+                    })
+                )
                 .setPlaceholder('Select your subdivision!')
                 .addOptions(
-                    country.sub.slice(0, 25).map(subdivision => 
-                        new StringSelectMenuOptionBuilder()
-                            .setLabel(subdivision.name)
-                            .setValue(subdivision.code)
-                    )
+                    country.sub
+                        .slice(0, 25)
+                        .map((subdivision) =>
+                            new StringSelectMenuOptionBuilder()
+                                .setLabel(subdivision.name)
+                                .setValue(subdivision.code)
+                        )
                 )
-        )
+        );
 
         const buttonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
@@ -61,12 +68,14 @@ export default {
                 .setLabel('⏩')
                 .setDisabled(country.sub.length < 25)
                 .setStyle(ButtonStyle.Primary)
-                .setCustomId(JSON.stringify({
-                    type: 'location-subdivision-page',
-                    data: { page: 1, countryCode }
-                }))
-        )
+                .setCustomId(
+                    JSON.stringify({
+                        type: 'location-subdivision-page',
+                        data: { page: 1, countryCode },
+                    })
+                )
+        );
 
-        interaction.update({ components: [menuRow, buttonsRow], embeds: [] })
-    }
-}
+        interaction.update({ components: [menuRow, buttonsRow], embeds: [] });
+    },
+};

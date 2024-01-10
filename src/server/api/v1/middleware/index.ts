@@ -1,5 +1,3 @@
-import session from "./session";
+import session from './session';
 
-export {
-    session
-}
+export { session };

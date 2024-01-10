@@ -1,32 +1,32 @@
-require("dotenv").config();
+require('dotenv').config();
 
 interface Configuration {
-    discordToken: string
-    mainAccountID: string
-    appPort: number
-    limiterWindowMs: number
-    botID: string
-    botInvite: string
+    discordToken: string;
+    mainAccountID: string;
+    appPort: number;
+    limiterWindowMs: number;
+    botID: string;
+    botInvite: string;
     // buyMeACoffeeURL: string
-    githubURL: string
-    limiterMax: number
-    limiterMessage: string
-    limiterStandardHeaders: boolean
-    limiterLegacyHeaders: boolean
-    botSecret: string
-    supportServerInvite: string
-    redirectURI: string
-    sessionSecret: string
-    mode: 'prod' | 'dev'
-    websiteURL: string
-    supportServerID: string
-    personalServerIDs: string[]
+    githubURL: string;
+    limiterMax: number;
+    limiterMessage: string;
+    limiterStandardHeaders: boolean;
+    limiterLegacyHeaders: boolean;
+    botSecret: string;
+    supportServerInvite: string;
+    redirectURI: string;
+    sessionSecret: string;
+    mode: 'prod' | 'dev';
+    websiteURL: string;
+    supportServerID: string;
+    personalServerIDs: string[];
 
-    pgHost: string,
-    pgPort: number,
-    pgUsername: string,
-    pgPassword: string,
-    pgDatabase: string,
+    pgHost: string;
+    pgPort: number;
+    pgUsername: string;
+    pgPassword: string;
+    pgDatabase: string;
 }
 
 const config: Configuration = {
@@ -45,7 +45,7 @@ const config: Configuration = {
     limiterMessage: 'Rate Limit: 30 requests per two seconds.',
     limiterStandardHeaders: true,
     limiterLegacyHeaders: false,
-    
+
     // Other
     // buyMeACoffeeURL: process.env.BUY_ME_A_COFFEE_URL!,
     githubURL: 'https://github.com/WeismanGitHub/Population-Density-Map-Discord-Bot',
@@ -62,6 +62,6 @@ const config: Configuration = {
     pgUsername: process.env.PG_USERNAME!,
     pgPassword: process.env.PG_PASSWORD!,
     pgDatabase: process.env.PG_DATABASE!,
-}
+};
 
-export default config
+export default config;
