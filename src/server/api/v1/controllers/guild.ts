@@ -37,7 +37,9 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
     const { visibility, adminRoleID, mapRoleID } = guildData;
     const fullGuild = await client.guilds.fetch(guildID);
 
-    if (visibility !== 'public') {
+    if (visibility === 'invisibile') {
+        throw new ForbiddenError('Server map visibility is invisible.');
+    } else if (visibility !== 'public') {
         if (!accessToken || !userID) {
             throw new UnauthorizedError('You must log in to see this map.');
         }
@@ -47,32 +49,27 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
         });
 
         const partialGuild = guilds.find((guild) => guild.id === guildID);
-        console.log(partialGuild, fullGuild);
 
         if (!partialGuild) {
             throw new ForbiddenError('You are not in this server.');
         }
 
-        if (!partialGuild?.owner) {
-            if (visibility === 'invisibile') {
-                throw new ForbiddenError('Server map visibility is invisible.');
-            }
+        if (!partialGuild.owner) {
+            const userID = (await oauth.getUser(accessToken)
+            .catch(err => {
+                throw new InternalServerError("Could not get user data.")
+            })).id
 
-            console.log(mapRoleID, adminRoleID);
-            throw new InternalServerError(
-                'Admin/Map-role restrictions are currently being worked on. Sorry!'
-            );
-            // if (
-            //     visibility === 'admin-role-restricted' &&
-            //     (!adminRoleID || !guild.roles.cache.has(adminRoleID))
-            // ) {
-            //     throw new ForbiddenError('Server map visibility is admin role restricted.');
-            // } else if (
-            //     visibility === 'map-role-restricted' &&
-            //     (!mapRoleID || !guild.roles.cache.has(mapRoleID))
-            // ) {
-            //     throw new ForbiddenError('Server map visibility is map role restricted.');
-            // }
+            const user = await fullGuild.members.fetch(userID)
+            .catch(err => {
+                throw new InternalServerError("Could not get user data.")
+            })
+
+            if (visibility === 'admin-role-restricted' && !user.roles.cache.some(role => role.id === adminRoleID)) {
+                throw new ForbiddenError("This map is restricted to members with the admin role.")
+            } else if (visibility === 'map-role-restricted' && !user.roles.cache.some(role => role.id === mapRoleID)) {
+                throw new ForbiddenError("This map is restricted to members with the map role.")
+            }
         }
     }
 
