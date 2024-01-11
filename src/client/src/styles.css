@@ -6,24 +6,6 @@ body {
     margin: 0 auto;
 }
 
-.guild {
-    float: left;
-    font-size: x-large;
-    display: inline;
-    position: relative;
-    object-fit: cover;
-    left: 12.5%;
-    width: 87.5%;
-    margin-bottom: 10px;
-}
-
-.map {
-    margin-left: 12.5%;
-    width: 75%;
-    border-radius: 5%;
-    height: 75%;
-}
-
 .navbar {
     border-radius: 0px;
     height: 6vh;
@@ -45,6 +27,7 @@ body {
     color: #a4a7aa;
     cursor: pointer;
     all: unset;
+    height: 25px;
 }
 
 .oauth2-button {

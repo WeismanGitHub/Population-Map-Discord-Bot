@@ -20,7 +20,7 @@ export default function Map(props: { geojson: {}[]; projection: 'albers' | 'equa
 
     return (
         <ReactChart
-            style={{ backgroundColor: 'white' }}
+            style={{ backgroundColor: 'white', borderRadius: '5px' }}
             ref={chartRef}
             type="choropleth"
             data={{
