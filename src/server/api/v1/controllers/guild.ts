@@ -55,20 +55,26 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
         }
 
         if (!partialGuild.owner) {
-            const userID = (await oauth.getUser(accessToken)
-            .catch(err => {
-                throw new InternalServerError("Could not get user data.")
-            })).id
+            const userID = (
+                await oauth.getUser(accessToken).catch((err) => {
+                    throw new InternalServerError('Could not get user data.');
+                })
+            ).id;
 
-            const user = await fullGuild.members.fetch(userID)
-            .catch(err => {
-                throw new InternalServerError("Could not get user data.")
-            })
+            const user = await fullGuild.members.fetch(userID).catch((err) => {
+                throw new InternalServerError('Could not get user data.');
+            });
 
-            if (visibility === 'admin-role-restricted' && !user.roles.cache.some(role => role.id === adminRoleID)) {
-                throw new ForbiddenError("This map is restricted to members with the admin role.")
-            } else if (visibility === 'map-role-restricted' && !user.roles.cache.some(role => role.id === mapRoleID)) {
-                throw new ForbiddenError("This map is restricted to members with the map role.")
+            if (
+                visibility === 'admin-role-restricted' &&
+                !user.roles.cache.some((role) => role.id === adminRoleID)
+            ) {
+                throw new ForbiddenError('This map is restricted to members with the admin role.');
+            } else if (
+                visibility === 'map-role-restricted' &&
+                !user.roles.cache.some((role) => role.id === mapRoleID)
+            ) {
+                throw new ForbiddenError('This map is restricted to members with the map role.');
             }
         }
     }
