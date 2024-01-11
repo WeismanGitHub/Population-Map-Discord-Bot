@@ -38,7 +38,7 @@
   The map role allows admins/owners to restrict map access to members with a specific role. Set the map role with the `map-role` option. Remove the map or admin role with `remove-role`. `remove-role` does not delete the role from the server.
 
   #### Map Visibility
-  The `visibility` option allows admins/owners to change who can view the server map. Setting `visibility` to `public` allows anyone with a link to view the map. Setting it to `member-restricted` allows only server members to view the map. Choosing `map-role-restricted` restricts the map to the owner and members with the map role. `admin-role-restricted` limits access to only the owner and members with the admin role. Selecting `invisible` hides the map from everyone (even admins), except the owner.
+  The `visibility` option allows admins/owners to change who can view the server map. Setting `visibility` to `public` allows anyone with a link to view the map. Setting it to `member-restricted` allows only server members to view the map. Choosing `map-role-restricted` restricts the map to the owner and members with the map role. `admin-role-restricted` limits access to only the owner and members with the admin role. Selecting `invisible` hides the map from everyone, including admins and the owner.
 
   #### Defaults
   `visibility`: `public`
