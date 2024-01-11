@@ -36,14 +36,11 @@ export default function Home() {
             <br />
             {/* <a href={res?.buyMeACoffeeURL}>Buy Me a Coffee</a> */}
             <div style={{ display: 'flex', justifyContent: 'center', overflowWrap: 'break-word' }}>
-                <div style={{ wordWrap: 'break-word', maxWidth: '800px', padding: '5px' }}>
-                    The Population Map Bot is a dynamic map generator capable of visualizing population data
-                    on a global, continental, or country level. Maps are generated based on self-reported
-                    locations provided by Discord server members, enabling users to explore population
-                    distributions with ease. The application facilitates efficient data processing and
-                    visualization, empowering users to gain valuable insights into population patterns across
-                    the world.{' '}
-                    <a href={`${res?.githubURL}?tab=readme-ov-file#population-map-bot`}>Read more here...</a>
+                <div style={{ wordWrap: 'break-word', maxWidth: '800px', padding: '8px' }}>
+                    The Population Map Bot is a dynamic map generator capable of visualizing population data on a global, continental, or country level. Maps are generated from self-reported locations provided by Discord server members, enabling users to explore population distributions with ease.
+                    <br />
+                    <br />
+                    This bot generates a unique map for each Discord server that can be accessed with <i>/map</i>. Server members use <i>/set-location</i> to add their location to the map. Locations can be any country and, optionally, a subdivision (state, region, prefecture, etc.) within that country. <a href={`${res?.githubURL}?tab=readme-ov-file#population-map-bot`}>Read more here...</a>
                 </div>
             </div>
             <br />
