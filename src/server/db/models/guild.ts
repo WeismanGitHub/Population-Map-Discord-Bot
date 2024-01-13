@@ -11,6 +11,7 @@ class Guild extends Model<InferAttributes<Guild>, InferCreationAttributes<Guild>
         | 'invisibile';
     declare mapRoleID: string | null;
     declare adminRoleID: string | null;
+    declare userRoleID: string | null;
 }
 
 Guild.init(
@@ -35,6 +36,10 @@ Guild.init(
             allowNull: true,
         },
         adminRoleID: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        userRoleID: {
             type: DataTypes.STRING,
             allowNull: true,
         },
