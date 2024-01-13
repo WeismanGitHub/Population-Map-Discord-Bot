@@ -22,7 +22,7 @@ interface GuildRes {
     locations: { countryCode: string; subdivisionCode: string | null }[];
     name: string;
     guildMemberCount: number;
-    iconURL: string;
+    icon: string | null;
 }
 
 interface GeojsonRes {
@@ -32,7 +32,7 @@ interface GeojsonRes {
 
 export default function Guild() {
     const [guildMemberCount, setGuildMemberCount] = useState(0);
-    const [guildIconURL, setGuildIconURL] = useState('');
+    const [icon, setIcon] = useState<string | null>(null);
     const [membersOnMap, setMembersOnMap] = useState(0);
     const [guildName, setGuildName] = useState('');
     const [geojson, setGeojson] = useState(null);
@@ -71,7 +71,7 @@ export default function Guild() {
 
                 setMembersOnMap(guildRes.locations.length);
                 setGuildMemberCount(guildRes.guildMemberCount);
-                setGuildIconURL(guildRes.iconURL);
+                setIcon(guildRes.icon);
                 setGuildName(guildRes.name);
 
                 if (mapCode === 'CONTINENTS') {
@@ -167,7 +167,7 @@ export default function Guild() {
                         <img
                             width={65}
                             height={65}
-                            src={guildIconURL}
+                            src={icon || '/discord.svg'}
                             alt="The icon of the Discord server."
                             style={{ borderRadius: '50%', marginRight: '2px' }}
                         />

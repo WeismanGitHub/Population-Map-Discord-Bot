@@ -92,7 +92,7 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
     res.status(200).json({
         locations: locations,
         name: fullGuild.name,
-        iconURL: fullGuild.iconURL(),
+        icon: fullGuild.iconURL(),
         guildMemberCount: fullGuild.memberCount,
     });
 }
