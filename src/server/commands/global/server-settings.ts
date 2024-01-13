@@ -12,6 +12,7 @@ interface GuildSettings {
         | 'invisibile';
     mapRoleID?: string | null;
     adminRoleID?: string | null;
+    userRoleID?: string | null;
 }
 
 export default {
@@ -31,13 +32,21 @@ export default {
                     'Server members with the map role can view the server map if visibility is set to map-role.'
                 )
         )
+        .addRoleOption((option) =>
+        option
+            .setName('user-role')
+            .setDescription(
+                'Users that have set their locations get this role. Use this role to require members set their locations to access your server.'
+            )
+        )
         .addStringOption((option) =>
             option
                 .setName('remove-role')
                 .setDescription('Remove the admin or map role. Does not delete the role from your server.')
                 .addChoices(
                     { name: 'admin-role', value: 'adminRoleID' },
-                    { name: 'map-role', value: 'mapRoleID' }
+                    { name: 'map-role', value: 'mapRoleID' },
+                    { name: 'user-role', value: 'userRoleID' },
                 )
         )
         .addStringOption((option) =>
@@ -61,6 +70,7 @@ export default {
             | null;
         const removeRoleChoice = interaction.options.getString('remove-role');
         const adminRoleChoice = interaction.options.getRole('admin-role');
+        const userRoleChoice = interaction.options.getRole('user-role');
         const mapRoleChoice = interaction.options.getRole('map-role');
         const settings: GuildSettings = {};
 
@@ -74,6 +84,10 @@ export default {
 
         if (mapRoleChoice) {
             settings.mapRoleID = mapRoleChoice.id;
+        }
+
+        if (userRoleChoice) {
+            settings.userRoleID = userRoleChoice.id
         }
 
         if (removeRoleChoice) {
@@ -124,7 +138,8 @@ export default {
                     'Server Settings',
                     `\`visibility\`: \`${guild.visibility}\`
                 \`admin-role\`: ${guild.adminRoleID ? `<@&${guild.adminRoleID}>` : '`null`'}
-                \`map-role\`: ${guild.mapRoleID ? `<@&${guild.mapRoleID}>` : '`null`'}`
+                \`map-role\`: ${guild.mapRoleID ? `<@&${guild.mapRoleID}>` : '`null`'}
+                \`user-role\`: ${guild.userRoleID ? `<@&${guild.userRoleID}>` : '`null`'}`
                 ),
             ],
         });
