@@ -4,9 +4,6 @@ import { DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequ
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare userID: string;
     declare role?: 'regular' | 'admin';
-
-    declare getGuildIDs: () => Promise<string[]>;
-    declare delete: () => Promise<void>;
 }
 
 User.init(
