@@ -33,11 +33,7 @@ export default {
                 )
         )
         .addRoleOption((option) =>
-        option
-            .setName('user-role')
-            .setDescription(
-                'Users that have set their locations get this role.'
-            )
+            option.setName('user-role').setDescription('Users that have set their locations get this role.')
         )
         .addStringOption((option) =>
             option
@@ -46,7 +42,7 @@ export default {
                 .addChoices(
                     { name: 'admin-role', value: 'adminRoleID' },
                     { name: 'map-role', value: 'mapRoleID' },
-                    { name: 'user-role', value: 'userRoleID' },
+                    { name: 'user-role', value: 'userRoleID' }
                 )
         )
         .addStringOption((option) =>
@@ -87,7 +83,7 @@ export default {
         }
 
         if (userRoleChoice) {
-            settings.userRoleID = userRoleChoice.id
+            settings.userRoleID = userRoleChoice.id;
         }
 
         if (removeRoleChoice) {
