@@ -1,10 +1,11 @@
-import { InternalServerError } from '../../errors';
-import { GuildLocation, User } from '../../db/models';
+import { ForbiddenError, InternalServerError, NotFoundError } from '../../errors';
+import { Guild, GuildLocation, User } from '../../db/models';
 import { infoEmbed } from '../../utils/embeds';
 import {
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
+    DiscordAPIError,
     Events,
     Interaction,
     StringSelectMenuInteraction,
@@ -28,20 +29,48 @@ export default {
         interaction: StringSelectMenuInteraction;
         customID: CustomID<{}>;
     }) => {
+        if (!interaction.inGuild()) return;
+
         const countryCode = interaction.values[0];
+
+        const guild = await Guild.findOne({ where: { guildID: interaction.guildId } }).catch((err) => {
+            throw new InternalServerError('Could not get this server.');
+        });
+
+        if (!guild) {
+            throw new InternalServerError('This server has not been set up.');
+        }
 
         await User.upsert({ userID: interaction.user.id }).catch((err) => {
             throw new InternalServerError('Could not write to database.');
         });
 
         await GuildLocation.upsert({
-            guildID: interaction.guildId!,
+            guildID: interaction.guildId,
             userID: interaction.user.id,
             countryCode,
             subdivisionCode: null,
         }).catch((err) => {
             throw new InternalServerError('Could not save your country.');
         });
+
+        if (guild.userRoleID) {
+            const member = await interaction.guild?.members.fetch(interaction.user.id);
+
+            await member?.roles.add(guild.userRoleID).catch(async (err: DiscordAPIError) => {
+                await GuildLocation.destroy({
+                    where: { userID: interaction.user.id, guildID: interaction.guildId },
+                });
+
+                if (err.status === 404) {
+                    throw new NotFoundError('Could not find user-role.');
+                } else if (err.status == 403) {
+                    throw new ForbiddenError('Missing permissions to add user-role.');
+                }
+
+                throw new InternalServerError('Could not add user-role.');
+            });
+        }
 
         const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
