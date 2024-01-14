@@ -36,7 +36,7 @@ export default {
         option
             .setName('user-role')
             .setDescription(
-                'Users that have set their locations get this role. Use this role to require members set their locations to access your server.'
+                'Users that have set their locations get this role.'
             )
         )
         .addStringOption((option) =>
@@ -91,7 +91,7 @@ export default {
         }
 
         if (removeRoleChoice) {
-            settings[removeRoleChoice as 'adminRoleID' | 'mapRoleID'] = null;
+            settings[removeRoleChoice as 'adminRoleID' | 'mapRoleID' | 'userRoleID'] = null;
         }
 
         let guild = await Guild.findOne({ where: { guildID: interaction.guildId } });
