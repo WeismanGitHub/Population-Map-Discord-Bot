@@ -51,6 +51,6 @@ Guild.init(
     }
 );
 
-Guild.sync();
+Guild.sync({ alter: true });
 
 export default Guild;
