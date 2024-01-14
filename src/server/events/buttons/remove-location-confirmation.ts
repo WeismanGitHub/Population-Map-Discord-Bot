@@ -1,6 +1,6 @@
-import { Events, StringSelectMenuInteraction, Interaction } from 'discord.js';
-import { InternalServerError } from '../../errors';
-import { GuildLocation } from '../../db/models';
+import { Events, StringSelectMenuInteraction, Interaction, DiscordAPIError } from 'discord.js';
+import { ForbiddenError, InternalServerError, NotFoundError } from '../../errors';
+import { Guild, GuildLocation } from '../../db/models';
 import { infoEmbed } from '../../utils/embeds';
 
 export default {
@@ -22,6 +22,32 @@ export default {
         interaction: StringSelectMenuInteraction;
         customID: CustomID<{ guildID: string }>;
     }) => {
+        const guild = await Guild.findOne({ where: { guildID: customID.data.guildID } }).catch((err) => {
+            throw new InternalServerError('Could not get this server.');
+        });
+
+        if (!guild) {
+            throw new NotFoundError('This server has not been set up.');
+        }
+
+        if (guild.userRoleID) {
+            const member = await interaction.guild?.members.fetch(interaction.user.id);
+
+            if (!member) {
+                throw new NotFoundError('Could not find member.');
+            }
+
+            await member.roles.remove(guild.userRoleID).catch(async (err: DiscordAPIError) => {
+                if (err.status === 404) {
+                    throw new NotFoundError('Could not find user-role.');
+                } else if (err.status == 403) {
+                    throw new ForbiddenError('Missing permissions to remove user-role.');
+                }
+
+                throw new InternalServerError('Could not remove user-role.');
+            });
+        }
+
         const deletedRows = await GuildLocation.destroy({
             where: { guildID: customID.data.guildID, userID: interaction.user.id },
         });
