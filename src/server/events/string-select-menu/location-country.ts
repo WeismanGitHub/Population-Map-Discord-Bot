@@ -57,7 +57,11 @@ export default {
         if (guild.userRoleID) {
             const member = await interaction.guild?.members.fetch(interaction.user.id);
 
-            await member?.roles.add(guild.userRoleID).catch(async (err: DiscordAPIError) => {
+            if (!member) {
+                throw new NotFoundError("Could not find member.")
+            }
+            
+            await member.roles.add(guild.userRoleID).catch(async (err: DiscordAPIError) => {
                 await GuildLocation.destroy({
                     where: { userID: interaction.user.id, guildID: interaction.guildId },
                 });
