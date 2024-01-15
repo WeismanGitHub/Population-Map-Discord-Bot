@@ -19,7 +19,7 @@ export default {
 
         const customID: CustomID<{}> = JSON.parse(interaction.customId);
 
-        if (customID.type !== 'location-country') return;
+        if (customID.type !== 'country-letter') return;
 
         return { customID, interaction };
     },
@@ -58,7 +58,7 @@ export default {
                 .setCustomId(
                     JSON.stringify({
                         type: 'country-page',
-                        data: { page: countryPage, countrySelectType: 'location-country' },
+                        data: { page: countryPage - 1, countrySelectType: 'location-country' },
                     })
                 )
                 .setDisabled(countryPage * 25 === 0),
@@ -69,7 +69,7 @@ export default {
                 .setCustomId(
                     JSON.stringify({
                         type: 'country-page',
-                        data: { page: countryPage, countrySelectType: 'location-country' },
+                        data: { page: countryPage + 1, countrySelectType: 'location-country' },
                     })
                 )
         );
