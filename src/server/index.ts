@@ -27,6 +27,8 @@ import app from './app';
         intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
     });
 
+    client.setMaxListeners(15)
+
     app.listen(config.appPort, (): void => console.log(`listening on port ${config.appPort}...`));
     app.set('discordClient', client);
 
