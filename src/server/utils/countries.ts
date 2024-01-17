@@ -2,7 +2,7 @@ import { InternalServerError } from '../errors';
 import iso from 'iso-3166-2';
 
 class ISO31662 {
-    public readonly countries: Record<CountryLetters, Country[]>
+    public readonly countries: Record<CountryLetter, Country[]>
 
     constructor() {
         const map: Record<string, Country[]> = {};
@@ -30,13 +30,13 @@ class ISO31662 {
             countries[data[0]] = data[1].sort((a, b) => a.name.localeCompare(b.name));
         });
 
-        this.countries = countries as Record<CountryLetters, Country[]>
+        this.countries = countries as Record<CountryLetter, Country[]>
     }
 
     // implement binary search instead of using countries. hash map?
     // Might not be worth it tho since its only like 250 countries in total.
     public getCountry(code: string) {
-        const countries: Country[] | undefined = this.countries[code.slice(0, 1) as CountryLetters]
+        const countries: Country[] | undefined = this.countries[code.slice(0, 1) as CountryLetter]
         let country: Country | undefined;
 
         if (countries) {

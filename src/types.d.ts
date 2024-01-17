@@ -31,7 +31,7 @@ type Subdivision = {
     code: string;
 }
 
-type CountryLetters =
+type CountryLetter =
     | 'A'
     | 'Å'
     | 'B'
