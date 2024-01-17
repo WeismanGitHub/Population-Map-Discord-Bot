@@ -1,4 +1,4 @@
-import { CustomClient } from '../../custom-client';
+import alphabet from '../../utils/letters';
 import config from '../../config';
 import {
     SlashCommandBuilder,
@@ -14,26 +14,41 @@ export default {
     data: new SlashCommandBuilder()
         .setName('map')
         .setDMPermission(false)
-        .setDescription('Get a server map for the world, continents, or a specific country.'),
+        .setDescription('Get the server map for the world, continents, or a specific country.'),
     guildIDs: null,
     async execute(interaction: CommandInteraction): Promise<void> {
-        const client = interaction.client as CustomClient;
-
         const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId(
                     JSON.stringify({
-                        type: 'map-country',
-                        data: {},
+                        type: 'country-letter',
+                        data: { commandType: 'map-country' },
                     })
                 )
-                .setPlaceholder('Select a country!')
+                .setPlaceholder('What letter does your country start with?')
                 .addOptions(
-                    client.countries
-                        .slice(0, 25)
-                        .map((country) =>
-                            new StringSelectMenuOptionBuilder().setLabel(country.name).setValue(country.code)
+                    alphabet
+                        .slice(0, 13)
+                        .map((letter) =>
+                            new StringSelectMenuOptionBuilder().setLabel(letter).setValue(letter)
                         )
+                )
+        );
+
+        const buttonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
+            new ButtonBuilder()
+                .setLabel('A-M')
+                .setStyle(ButtonStyle.Primary)
+                .setCustomId('0')
+                .setDisabled(true),
+            new ButtonBuilder()
+                .setLabel('N-Z')
+                .setStyle(ButtonStyle.Primary)
+                .setCustomId(
+                    JSON.stringify({
+                        type: 'country-letter-page',
+                        data: { page: 1, commandType: 'map-country' },
+                    })
                 )
         );
 
@@ -48,26 +63,9 @@ export default {
                 .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapCode=CONTINENTS`)
         );
 
-        const pageButtonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
-            new ButtonBuilder()
-                .setLabel('⏪')
-                .setStyle(ButtonStyle.Primary)
-                .setCustomId('0')
-                .setDisabled(true),
-            new ButtonBuilder()
-                .setLabel('⏩')
-                .setStyle(ButtonStyle.Primary)
-                .setCustomId(
-                    JSON.stringify({
-                        type: 'country-page',
-                        data: { page: 1, countrySelectType: 'map-country' },
-                    })
-                )
-        );
-
         interaction.reply({
             ephemeral: true,
-            components: [menuRow, pageButtonsRow, mapButtonsRow],
+            components: [menuRow, buttonsRow, mapButtonsRow],
         });
     },
 };

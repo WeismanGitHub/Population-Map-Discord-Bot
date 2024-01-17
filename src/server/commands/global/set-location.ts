@@ -54,7 +54,7 @@ export default {
                 .setCustomId(
                     JSON.stringify({
                         type: 'country-letter-page',
-                        data: { page: 1 },
+                        data: { page: 1, commandType: 'location-country' },
                     })
                 )
         );
