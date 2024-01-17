@@ -1,11 +1,11 @@
-import { CustomClient } from '../../custom-client';
-import { letterPageMap } from '../../utils/letters';
+import iso31662 from '../../utils/countries';
 import {
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
     Events,
     Interaction,
+    LinkButtonComponentData,
     StringSelectMenuBuilder,
     StringSelectMenuInteraction,
     StringSelectMenuOptionBuilder,
@@ -17,7 +17,7 @@ export default {
     check: async (interaction: Interaction) => {
         if (!interaction.isStringSelectMenu()) return;
 
-        const customID: CustomID<{}> = JSON.parse(interaction.customId);
+        const customID = JSON.parse(interaction.customId);
 
         if (customID.type !== 'country-letter') return;
 
@@ -25,26 +25,27 @@ export default {
     },
     execute: async ({
         interaction,
+        customID,
     }: {
         interaction: StringSelectMenuInteraction;
-        customID: CustomID<{}>;
+        customID: CustomID<{ commandType: string }>;
     }) => {
-        const client = interaction.client as CustomClient;
-        const letter = interaction.values[0];
-        const countryPage = letterPageMap[letter]
+        const letter = interaction.values[0] as CountryLetter;
+        const countries = iso31662.countries[letter];
+        const { commandType } = customID.data;
 
         const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId(
                     JSON.stringify({
-                        type: 'location-country',
-                        data: {},
+                        type: commandType,
+                        data: { commandType },
                     })
                 )
                 .setPlaceholder('Select a country!')
                 .addOptions(
-                    client.countries
-                        .slice(countryPage * 25, (countryPage * 25) + 25)
+                    countries
+                        .slice(0, 25)
                         .map((country) =>
                             new StringSelectMenuOptionBuilder().setLabel(country.name).setValue(country.code)
                         )
@@ -55,28 +56,35 @@ export default {
             new ButtonBuilder()
                 .setLabel('⏪')
                 .setStyle(ButtonStyle.Primary)
-                .setCustomId(
-                    JSON.stringify({
-                        type: 'country-page',
-                        data: { page: countryPage - 1, countrySelectType: 'location-country' },
-                    })
-                )
-                .setDisabled(countryPage * 25 === 0),
+                .setCustomId('0')
+                .setDisabled(true),
             new ButtonBuilder()
                 .setLabel('⏩')
                 .setStyle(ButtonStyle.Primary)
-                .setDisabled(client.countries.length - (countryPage * 25) <= 25)
+                .setDisabled(countries.length <= 25)
                 .setCustomId(
                     JSON.stringify({
                         type: 'country-page',
-                        data: { page: countryPage + 1, countrySelectType: 'location-country' },
+                        data: { page: 1, commandType, letter },
                     })
                 )
         );
 
-        interaction.reply({
-            ephemeral: true,
-            components: [menuRow, buttonsRow],
+        const mapButtonsRow = !interaction.message.components[2]
+        ? null
+        : new ActionRowBuilder<ButtonBuilder>().addComponents(
+              interaction.message.components[2].components.slice(0, 4).map(({ data }) => {
+                  const { label, url, style } = data as LinkButtonComponentData;
+
+                  return new ButtonBuilder()
+                      .setLabel(label || 'error')
+                      .setStyle(style)
+                      .setURL(url);
+              })
+          );
+
+        interaction.update({
+            components: mapButtonsRow ? [menuRow, buttonsRow, mapButtonsRow] : [menuRow, buttonsRow],
         });
     },
 };

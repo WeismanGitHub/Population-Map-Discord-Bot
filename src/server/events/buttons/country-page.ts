@@ -1,4 +1,4 @@
-import { CustomClient } from '../../custom-client';
+import iso31662 from '../../utils/countries';
 import {
     ActionRowBuilder,
     ButtonBuilder,
@@ -17,9 +17,7 @@ export default {
     check: async (interaction: Interaction) => {
         if (!interaction.isButton()) return;
 
-        const customID: CustomID<{ page: number; countrySelectType: string }> = JSON.parse(
-            interaction.customId
-        );
+        const customID = JSON.parse(interaction.customId);
 
         if (customID.type !== 'country-page') return;
 
@@ -30,22 +28,22 @@ export default {
         customID,
     }: {
         interaction: ButtonInteraction;
-        customID: CustomID<{ page: number; countrySelectType: string }>;
+        customID: CustomID<{ page: number; commandType: string; letter: CountryLetter }>;
     }) => {
-        const client = interaction.client as CustomClient;
-        const { page, countrySelectType } = customID.data;
+        const { page, commandType, letter } = customID.data;
+        const countries = iso31662.countries[letter];
 
         const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId(
                     JSON.stringify({
-                        type: countrySelectType,
+                        type: commandType,
                         data: {},
                     })
                 )
                 .setPlaceholder('Select a country!')
                 .addOptions(
-                    client.countries
+                    countries
                         .slice(page * 25, page * 25 + 25)
                         .map((country) =>
                             new StringSelectMenuOptionBuilder().setLabel(country.name).setValue(country.code)
@@ -61,17 +59,17 @@ export default {
                 .setCustomId(
                     JSON.stringify({
                         type: 'country-page',
-                        data: { page: page - 1, countrySelectType },
+                        data: { page: page - 1, commandType, letter },
                     })
                 ),
             new ButtonBuilder()
                 .setLabel('⏩')
                 .setStyle(ButtonStyle.Primary)
-                .setDisabled((page + 1) * 25 >= client.countries.length)
+                .setDisabled((page + 1) * 25 >= countries.length)
                 .setCustomId(
                     JSON.stringify({
                         type: 'country-page',
-                        data: { page: page + 1, countrySelectType },
+                        data: { page: page + 1, commandType, letter },
                     })
                 )
         );

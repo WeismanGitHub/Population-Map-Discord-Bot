@@ -1,5 +1,4 @@
-import { CustomClient } from '../../custom-client';
-import { InternalServerError } from '../../errors';
+import iso31662 from '../../utils/countries';
 import {
     ActionRowBuilder,
     ButtonBuilder,
@@ -33,13 +32,8 @@ export default {
         interaction: ButtonInteraction;
         customID: CustomID<{ page: number; countryCode: string }>;
     }) => {
-        const client = interaction.client as CustomClient;
         const { countryCode, page } = customID.data;
-        const country = client.getCountry(countryCode);
-
-        if (!country) {
-            throw new InternalServerError('Could not get country.');
-        }
+        const country = iso31662.getCountry(countryCode);
 
         const subdivisions = country.sub.slice(page * 25, page * 25 + 25);
 

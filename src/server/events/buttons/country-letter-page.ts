@@ -1,4 +1,4 @@
-import { alphabet } from '../../utils/letters';
+import alphabet from '../../utils/letters';
 import {
     ActionRowBuilder,
     ButtonBuilder,
@@ -6,6 +6,7 @@ import {
     ButtonStyle,
     Events,
     Interaction,
+    LinkButtonComponentData,
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
 } from 'discord.js';
@@ -16,9 +17,7 @@ export default {
     check: async (interaction: Interaction) => {
         if (!interaction.isButton()) return;
 
-        const customID: CustomID<{ page: number; }> = JSON.parse(
-            interaction.customId
-        );
+        const customID = JSON.parse(interaction.customId);
 
         if (customID.type !== 'country-letter-page') return;
 
@@ -29,21 +28,22 @@ export default {
         customID,
     }: {
         interaction: ButtonInteraction;
-        customID: CustomID<{ page: number }>;
+        customID: CustomID<{ page: number; commandType: string }>;
     }) => {
-        const { page } = customID.data;
+        const { page, commandType } = customID.data;
 
         const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId(
                     JSON.stringify({
                         type: 'country-letter',
-                        data: {},
+                        data: { commandType },
                     })
                 )
-                .setPlaceholder('Select a country!')
+                .setPlaceholder('Select a letter!')
                 .addOptions(
-                    alphabet.slice(page * 13, (page * 13) + 13)
+                    alphabet
+                        .slice(page * 13, page * 13 + 13)
                         .map((letter) =>
                             new StringSelectMenuOptionBuilder().setLabel(letter).setValue(letter)
                         )
@@ -58,9 +58,9 @@ export default {
                 .setCustomId(
                     JSON.stringify({
                         type: 'country-letter-page',
-                        data: { page: 0 },
-                    }
-                )),
+                        data: { page: 0, commandType },
+                    })
+                ),
             new ButtonBuilder()
                 .setLabel('N-Z')
                 .setStyle(ButtonStyle.Primary)
@@ -68,13 +68,26 @@ export default {
                 .setCustomId(
                     JSON.stringify({
                         type: 'country-letter-page',
-                        data: { page: 1 },
+                        data: { page: 1, commandType },
                     })
                 )
         );
 
+        const mapButtonsRow = !interaction.message.components[2]
+        ? null
+        : new ActionRowBuilder<ButtonBuilder>().addComponents(
+              interaction.message.components[2].components.slice(0, 4).map(({ data }) => {
+                  const { label, url, style } = data as LinkButtonComponentData;
+
+                  return new ButtonBuilder()
+                      .setLabel(label || 'error')
+                      .setStyle(style)
+                      .setURL(url);
+              })
+          );
+
         interaction.update({
-            components: [menuRow, buttonsRow],
+            components: mapButtonsRow ? [menuRow, buttonsRow, mapButtonsRow] : [menuRow, buttonsRow],
         });
     },
 };
