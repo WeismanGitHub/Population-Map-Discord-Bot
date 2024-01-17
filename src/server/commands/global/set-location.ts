@@ -1,4 +1,5 @@
 import { NotFoundError } from '../../errors';
+import alphabet from '../../utils/letters';
 import { Guild } from '../../db/models';
 import {
     SlashCommandBuilder,
@@ -9,7 +10,6 @@ import {
     ButtonBuilder,
     ButtonStyle,
 } from 'discord.js';
-import { alphabet } from '../../utils/letters';
 
 export default {
     data: new SlashCommandBuilder()
@@ -34,7 +34,8 @@ export default {
                 )
                 .setPlaceholder('What letter does your country start with?')
                 .addOptions(
-                    alphabet.slice(0, 13)
+                    alphabet
+                        .slice(0, 13)
                         .map((letter) =>
                             new StringSelectMenuOptionBuilder().setLabel(letter).setValue(letter)
                         )
