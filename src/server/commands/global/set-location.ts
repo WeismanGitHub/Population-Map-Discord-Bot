@@ -29,7 +29,7 @@ export default {
                 .setCustomId(
                     JSON.stringify({
                         type: 'country-letter',
-                        data: {},
+                        data: { commandType: 'location-country' },
                     })
                 )
                 .setPlaceholder('What letter does your country start with?')
