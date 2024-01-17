@@ -101,7 +101,7 @@ export default {
 
         interaction.reply({
             ephemeral: true,
-            embeds: !guilds.length ? [errorEmbed('Could not fetch server(s).')] : [],
+            embeds: guilds.length !== locations.length ? [errorEmbed('Could not fetch server(s).')] : [],
             components: !guilds.length ? [pageButtons] : [guildsMenu, pageButtons],
         });
     },
