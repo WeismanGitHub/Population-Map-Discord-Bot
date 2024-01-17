@@ -74,17 +74,17 @@ export default {
         );
 
         const mapButtonsRow = !interaction.message.components[2]
-        ? null
-        : new ActionRowBuilder<ButtonBuilder>().addComponents(
-              interaction.message.components[2].components.slice(0, 4).map(({ data }) => {
-                  const { label, url, style } = data as LinkButtonComponentData;
+            ? null
+            : new ActionRowBuilder<ButtonBuilder>().addComponents(
+                  interaction.message.components[2].components.slice(0, 4).map(({ data }) => {
+                      const { label, url, style } = data as LinkButtonComponentData;
 
-                  return new ButtonBuilder()
-                      .setLabel(label || 'error')
-                      .setStyle(style)
-                      .setURL(url);
-              })
-          );
+                      return new ButtonBuilder()
+                          .setLabel(label || 'error')
+                          .setStyle(style)
+                          .setURL(url);
+                  })
+              );
 
         interaction.update({
             components: mapButtonsRow ? [menuRow, buttonsRow, mapButtonsRow] : [menuRow, buttonsRow],
