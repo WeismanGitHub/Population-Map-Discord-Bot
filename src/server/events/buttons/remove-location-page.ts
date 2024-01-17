@@ -10,6 +10,7 @@ import {
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
 } from 'discord.js';
+import { errorEmbed } from '../../utils/embeds';
 
 export default {
     name: Events.InteractionCreate,
@@ -46,11 +47,16 @@ export default {
             throw new NotFoundError('No more servers.');
         }
 
-        const guilds = await Promise.all(
-            locations.map((location) => {
-                return interaction.client.guilds.fetch(location.guildID);
-            })
-        );
+        const isFulfilled = <T>(input: PromiseSettledResult<T>): input is PromiseFulfilledResult<T> =>
+            input.status === 'fulfilled';
+
+        const guilds = (
+            await Promise.allSettled(
+                locations.map((location) => {
+                    return interaction.client.guilds.fetch(location.guildID);
+                })
+            )
+        ).filter(isFulfilled);
 
         const guildsMenu = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
@@ -63,7 +69,9 @@ export default {
                 .setPlaceholder('Select a server!')
                 .addOptions(
                     guilds.map((guild) =>
-                        new StringSelectMenuOptionBuilder().setLabel(guild.name).setValue(guild.id)
+                        new StringSelectMenuOptionBuilder()
+                            .setLabel(guild.value.name)
+                            .setValue(guild.value.id)
                     )
                 )
         );
@@ -81,7 +89,7 @@ export default {
                 .setDisabled(page <= 0),
             new ButtonBuilder()
                 .setLabel('⏩')
-                .setDisabled(guilds.length < 25)
+                .setDisabled(locations.length < 25)
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(
                     JSON.stringify({
@@ -91,8 +99,10 @@ export default {
                 )
         );
 
-        interaction.update({
-            components: [guildsMenu, pageButtons],
+        interaction.reply({
+            ephemeral: true,
+            embeds: !guilds.length ? [errorEmbed('Could not fetch server(s).')] : [],
+            components: !guilds.length ? [pageButtons] : [guildsMenu, pageButtons],
         });
     },
 };

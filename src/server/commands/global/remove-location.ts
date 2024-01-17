@@ -9,11 +9,12 @@ import {
     ButtonBuilder,
     ButtonStyle,
 } from 'discord.js';
+import { errorEmbed } from '../../utils/embeds';
 
 export default {
     data: new SlashCommandBuilder()
         .setName('remove-location')
-        .setDescription('Use this command in a server to remove your location from a server map.'),
+        .setDescription('Remove your location from a server map.'),
     guildIDs: null,
     async execute(interaction: ChatInputCommandInteraction) {
         const locations = await GuildLocation.findAll({
@@ -26,11 +27,16 @@ export default {
             throw new NotFoundError("You haven't set your location anywhere.");
         }
 
-        const guilds = await Promise.all(
-            locations.map((location) => {
-                return interaction.client.guilds.fetch(location.guildID);
-            })
-        );
+        const isFulfilled = <T>(input: PromiseSettledResult<T>): input is PromiseFulfilledResult<T> =>
+            input.status === 'fulfilled';
+
+        const guilds = (
+            await Promise.allSettled(
+                locations.map((location) => {
+                    return interaction.client.guilds.fetch(location.guildID);
+                })
+            )
+        ).filter(isFulfilled);
 
         const guildsMenu = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
@@ -42,11 +48,11 @@ export default {
                 )
                 .setPlaceholder('Select a server!')
                 .addOptions(
-                    guilds
-                        .slice(0, 25)
-                        .map((guild) =>
-                            new StringSelectMenuOptionBuilder().setLabel(guild.name).setValue(guild.id)
-                        )
+                    guilds.map((guild) =>
+                        new StringSelectMenuOptionBuilder()
+                            .setLabel(guild.value.name)
+                            .setValue(guild.value.id)
+                    )
                 )
         );
 
@@ -58,7 +64,7 @@ export default {
                 .setDisabled(true),
             new ButtonBuilder()
                 .setLabel('⏩')
-                .setDisabled(guilds.length < 25)
+                .setDisabled(locations.length < 25)
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(
                     JSON.stringify({
@@ -70,7 +76,8 @@ export default {
 
         interaction.reply({
             ephemeral: true,
-            components: [guildsMenu, pageButtons],
+            embeds: !guilds.length ? [errorEmbed('Could not fetch server(s).')] : [],
+            components: !guilds.length ? [pageButtons] : [guildsMenu, pageButtons],
         });
     },
 };
