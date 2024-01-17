@@ -39,6 +39,7 @@ export default function Guild() {
     const navigate = useNavigate();
 
     const urlParams = new URLSearchParams(window.location.search);
+    const [status, setStatus] = useState('Loading...');
     const mapCode = urlParams.get('mapCode');
     const { guildID } = useParams();
 
@@ -49,12 +50,12 @@ export default function Guild() {
 
         (
             Promise.all([
-                ky.get(`/api/v1/guilds/${guildID}?mapCode=${mapCode}`).json(),
+                ky.get(`/api/v1/guilds/${guildID}?mapCode=${mapCode}`)?.json(),
                 ky
                     .get(
                         `https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/topojson/${mapCode}.json`
                     )
-                    .json()
+                    ?.json()
                     .catch((err) => {
                         throw new Error('Could not get map.');
                     }),
@@ -128,6 +129,7 @@ export default function Guild() {
                 }
             })
             .catch(async (res: HTTPError) => {
+                setStatus('Something went wrong!');
                 const err: { error: string } = await res.response.json();
 
                 errorToast(err.error || res.response.statusText || 'Something went wrong.');
@@ -145,14 +147,15 @@ export default function Guild() {
             {!geojson ? (
                 <div
                     style={{
-                        fontSize: 'xx-large',
                         display: 'flex',
-                        alignContent: 'center',
+                        flexDirection: 'column',
+                        height: '94vh',
                         justifyContent: 'center',
                         alignItems: 'center',
+                        fontSize: 'xx-large',
                     }}
                 >
-                    loading...
+                    {status}
                 </div>
             ) : (
                 <div

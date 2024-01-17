@@ -1,5 +1,5 @@
-import { CustomClient } from '../../custom-client';
 import { NotFoundError } from '../../errors';
+import alphabet from '../../utils/letters';
 import { Guild } from '../../db/models';
 import {
     SlashCommandBuilder,
@@ -18,7 +18,6 @@ export default {
         .setDescription('Set your country and optionally your subdivision (state, region, prefecture, etc).'),
     guildIDs: null,
     async execute(interaction: CommandInteraction): Promise<void> {
-        const client = interaction.client as CustomClient;
         const guild = await Guild.findOne({ where: { guildID: interaction.guildId! } });
 
         if (!guild) {
@@ -29,33 +28,33 @@ export default {
             new StringSelectMenuBuilder()
                 .setCustomId(
                     JSON.stringify({
-                        type: 'location-country',
+                        type: 'country-letter',
                         data: {},
                     })
                 )
-                .setPlaceholder('Select a country!')
+                .setPlaceholder('What letter does your country start with?')
                 .addOptions(
-                    client.countries
-                        .slice(0, 25)
-                        .map((country) =>
-                            new StringSelectMenuOptionBuilder().setLabel(country.name).setValue(country.code)
+                    alphabet
+                        .slice(0, 13)
+                        .map((letter) =>
+                            new StringSelectMenuOptionBuilder().setLabel(letter).setValue(letter)
                         )
                 )
         );
 
         const buttonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
-                .setLabel('⏪')
+                .setLabel('A-M')
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId('0')
                 .setDisabled(true),
             new ButtonBuilder()
-                .setLabel('⏩')
+                .setLabel('N-Z')
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(
                     JSON.stringify({
-                        type: 'country-page',
-                        data: { page: 1, countrySelectType: 'location-country' },
+                        type: 'country-letter-page',
+                        data: { page: 1, commandType: 'location-country' },
                     })
                 )
         );

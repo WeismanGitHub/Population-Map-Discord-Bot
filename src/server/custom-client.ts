@@ -1,10 +1,9 @@
+import { Client, Collection, ClientOptions, ActivityType, Presence, Events } from 'discord.js';
 import { errorEmbed } from './utils/embeds';
 import { readdirSync, statSync } from 'fs';
 import { CustomError } from './errors';
-import iso31662 from 'iso-3166-2';
 import config from './config';
 import { join } from 'path';
-import { Client, Collection, ClientOptions, ActivityType, Presence, Events } from 'discord.js';
 
 function getPaths(dir: string): string[] {
     const paths = readdirSync(dir);
@@ -27,24 +26,7 @@ function getPaths(dir: string): string[] {
     return filePaths;
 }
 
-function getOrderedCountries() {
-    return Object.entries(iso31662.data)
-        .map((data) => {
-            const sortedSub = Object.entries(data[1].sub)
-                .map((sub) => {
-                    return { code: sub[0], ...sub[1] };
-                })
-                .sort((a, b) => a.name.localeCompare(b.name));
-
-            return { name: data[1].name, sub: sortedSub, code: data[0] };
-        })
-        .sort((a, b) => a.name.localeCompare(b.name));
-}
-
-type Countries = ReturnType<typeof getOrderedCountries>;
-
 export class CustomClient extends Client {
-    public readonly countries: Countries;
     private readonly commands: Collection<unknown, any>;
     public readonly token: string;
 
@@ -53,47 +35,11 @@ export class CustomClient extends Client {
 
         this.token = config.discordToken;
         this.commands = new Collection();
-        this.setMaxListeners(14);
-        this.countries = getOrderedCountries().filter((country) => {
-            // These are countries that I don't have geojson for. I didn't look very hard though.
-            const countriesWithoutGeoJSON = [
-                'AQ',
-                'AW',
-                'BV',
-                'CC',
-                'CW',
-                'CX',
-                'FK',
-                'GI',
-                'GS',
-                'HK',
-                'HM',
-                'IO',
-                'KI',
-                'MC',
-                'MF',
-                'MO',
-                'MV',
-                'NF',
-                'NU',
-                'PN',
-                'SX',
-                'VA',
-            ];
-
-            return !countriesWithoutGeoJSON.includes(country.code);
-        });
 
         this.login(this.token).then(async () => {
             this.loadEventListeners();
             this.loadCommands();
         });
-    }
-
-    // implement binary search instead of using countries.find() or like make it more efficient idk. hash map?
-    // Might not be worth it tho since its only like 250 countries in total.
-    public getCountry(code: string) {
-        return this.countries.find((country) => country.code === code) || null;
     }
 
     private async loadCommands() {

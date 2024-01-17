@@ -1,5 +1,5 @@
 import { InternalServerError } from '../../errors';
-import { CustomClient } from '../../custom-client';
+import iso31662 from '../../utils/countries';
 import {
     ActionRowBuilder,
     ButtonBuilder,
@@ -30,9 +30,8 @@ export default {
         interaction: ButtonInteraction;
         customID: CustomID<{ countryCode: string }>;
     }) => {
-        const client = interaction.client as CustomClient;
         const { countryCode } = customID.data;
-        const country = client.getCountry(countryCode);
+        const country = iso31662.getCountry(countryCode);
 
         if (!country) {
             throw new InternalServerError('Could not get country.');
