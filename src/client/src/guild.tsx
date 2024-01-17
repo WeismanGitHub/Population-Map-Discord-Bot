@@ -37,9 +37,9 @@ export default function Guild() {
     const [guildName, setGuildName] = useState('');
     const [geojson, setGeojson] = useState(null);
     const navigate = useNavigate();
-    
+
     const urlParams = new URLSearchParams(window.location.search);
-    const [status, setStatus] = useState('Loading...')
+    const [status, setStatus] = useState('Loading...');
     const mapCode = urlParams.get('mapCode');
     const { guildID } = useParams();
 
@@ -129,7 +129,7 @@ export default function Guild() {
                 }
             })
             .catch(async (res: HTTPError) => {
-                setStatus('Something went wrong!')
+                setStatus('Something went wrong!');
                 const err: { error: string } = await res.response.json();
 
                 errorToast(err.error || res.response.statusText || 'Something went wrong.');
