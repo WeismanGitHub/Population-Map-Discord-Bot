@@ -5,6 +5,7 @@ import BadRequestError from './bad-request';
 import CustomError from './custom-error';
 import ForbiddenError from './forbidden';
 import NotFoundError from './not-found';
+import ConflictError from './conflict';
 
 export {
     TooManyRequestsError,
@@ -12,6 +13,7 @@ export {
     UnauthorizedError,
     BadRequestError,
     ForbiddenError,
-    CustomError,
+    ConflictError,
     NotFoundError,
+    CustomError,
 };
