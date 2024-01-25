@@ -1,4 +1,4 @@
-import { GuildLocation } from '../db/models';
+import { Guild as GuildModel } from '../db/models';
 import { Events, Guild } from 'discord.js';
 
 export default {
@@ -6,6 +6,6 @@ export default {
     once: false,
     check: async (guild: Guild) => guild,
     execute: async (guild: Guild) => {
-        await GuildLocation.destroy({ where: { guildID: guild.id } });
+        await GuildModel.destroy({ where: { guildID: guild.id } });
     },
 };
