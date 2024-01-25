@@ -4,10 +4,8 @@ import { Events, Guild } from 'discord.js';
 export default {
     name: Events.GuildDelete,
     once: false,
-    check: async (guild: Guild) => {
-        return { guild };
-    },
-    execute: async ({ guild }: { guild: Guild }) => {
+    check: async (guild: Guild) => guild,
+    execute: async (guild: Guild) => {
         await GuildLocation.destroy({ where: { guildID: guild.id } });
     },
 };
