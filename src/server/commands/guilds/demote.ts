@@ -1,8 +1,8 @@
+import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
+import { ConflictError, ForbiddenError, NotFoundError } from '../../errors';
 import { infoEmbed } from '../../utils/embeds';
-import { ForbiddenError } from '../../errors';
 import { User } from '../../db/models';
 import config from '../../config';
-import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
 
 export default {
     data: new SlashCommandBuilder()
@@ -26,11 +26,11 @@ export default {
         const user = await User.findOne({ where: { userID: interaction.options.getString('user-id')! } });
 
         if (!user) {
-            throw new ForbiddenError('User is not in the database.');
+            throw new NotFoundError('User is not in the database.');
         }
 
         if (user.role === 'regular') {
-            throw new ForbiddenError('They are already a regular user.');
+            throw new ConflictError('They are already a regular user.');
         }
 
         await user.update({ role: 'regular' });

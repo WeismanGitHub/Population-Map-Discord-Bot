@@ -1,5 +1,5 @@
+import { ForbiddenError, NotFoundError } from '../../errors';
 import { guildEmbed } from '../../utils/embeds';
-import { ForbiddenError } from '../../errors';
 import { User } from '../../db/models';
 import config from '../../config';
 import {
@@ -20,7 +20,7 @@ export default {
         const user = await User.findOne({ where: { userID: interaction.user.id } });
 
         if (!user) {
-            throw new ForbiddenError('You are not in the database.');
+            throw new NotFoundError('You are not in the database.');
         }
 
         if (user.role !== 'admin') {
