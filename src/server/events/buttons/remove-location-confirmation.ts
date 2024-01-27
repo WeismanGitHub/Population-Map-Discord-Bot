@@ -31,7 +31,7 @@ export default {
         }
 
         if (guild.userRoleID && !interaction.guild?.members.me?.permissions.has(PermissionFlagsBits.ManageRoles)) {
-            throw new ForbiddenError('Missing permissions to add `user-role`.');
+            throw new ForbiddenError('Missing permissions to remove `user-role`.');
         }
 
         if (guild.userRoleID) {
@@ -43,12 +43,12 @@ export default {
 
             await member.roles.remove(guild.userRoleID).catch(async (err: DiscordAPIError) => {
                 if (err.status === 404) {
-                    throw new NotFoundError('Could not find user-role.');
+                    throw new NotFoundError('Could not find `user-role`.');
                 } else if (err.status == 403) {
                     throw new ForbiddenError('Missing permissions to remove `user-role`.');
                 }
 
-                throw new InternalServerError('Could not remove user-role.');
+                throw new InternalServerError('Could not remove `user-role`.');
             });
         }
 

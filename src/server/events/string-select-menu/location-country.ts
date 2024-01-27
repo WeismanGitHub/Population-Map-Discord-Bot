@@ -8,6 +8,7 @@ import {
     DiscordAPIError,
     Events,
     Interaction,
+    PermissionFlagsBits,
     StringSelectMenuInteraction,
 } from 'discord.js';
 
@@ -41,6 +42,10 @@ export default {
             throw new InternalServerError('This server has not been set up.');
         }
 
+        if (guild.userRoleID && !interaction.guild?.members.me?.permissions.has(PermissionFlagsBits.ManageRoles)) {
+            throw new ForbiddenError('Missing permissions to add `user-role`.');
+        }
+
         await User.upsert({ userID: interaction.user.id }).catch((err) => {
             throw new InternalServerError('Could not write to database.');
         });
@@ -67,12 +72,12 @@ export default {
                 });
 
                 if (err.status === 404) {
-                    throw new NotFoundError('Could not find user-role.');
+                    throw new NotFoundError('Could not find `user-role`.');
                 } else if (err.status == 403) {
-                    throw new ForbiddenError('Missing permissions to add user-role.');
+                    throw new ForbiddenError('Missing permissions to add `user-role`.');
                 }
 
-                throw new InternalServerError('Could not add user-role.');
+                throw new InternalServerError('Could not add `user-role`.');
             });
         }
 

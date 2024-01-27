@@ -61,12 +61,12 @@ export default {
                 });
 
                 if (err.status === 404) {
-                    throw new NotFoundError('Could not find user-role.');
+                    throw new NotFoundError('Could not find `user-role`.');
                 } else if (err.status == 403) {
                     throw new ForbiddenError('Missing permissions to add `user-role`.');
                 }
 
-                throw new InternalServerError('Could not add user-role.');
+                throw new InternalServerError('Could not add `user-role`.');
             });
         }
 
