@@ -1,6 +1,6 @@
-import { DiscordAPIError, Events, Interaction, StringSelectMenuInteraction } from 'discord.js';
-import { Guild, GuildLocation } from '../../db/models';
+import { DiscordAPIError, Events, Interaction, PermissionFlagsBits, StringSelectMenuInteraction } from 'discord.js';
 import { ForbiddenError, InternalServerError, NotFoundError } from '../../errors';
+import { Guild, GuildLocation } from '../../db/models';
 import { infoEmbed } from '../../utils/embeds';
 
 export default {
@@ -30,6 +30,10 @@ export default {
 
         if (!guild) {
             throw new InternalServerError('This server has not been set up.');
+        }
+
+        if (guild.userRoleID && !interaction.guild?.members.me?.permissions.has(PermissionFlagsBits.ManageRoles)) {
+            throw new ForbiddenError('Missing permissions to add `user-role`.');
         }
 
         const subdivisionCode = interaction.values[0];

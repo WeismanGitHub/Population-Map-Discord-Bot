@@ -1,4 +1,4 @@
-import { Events, StringSelectMenuInteraction, Interaction, DiscordAPIError } from 'discord.js';
+import { Events, StringSelectMenuInteraction, Interaction, DiscordAPIError, PermissionFlagsBits } from 'discord.js';
 import { ForbiddenError, InternalServerError, NotFoundError } from '../../errors';
 import { Guild, GuildLocation } from '../../db/models';
 import { infoEmbed } from '../../utils/embeds';
@@ -28,6 +28,10 @@ export default {
 
         if (!guild) {
             throw new NotFoundError('This server has not been set up.');
+        }
+
+        if (guild.userRoleID && !interaction.guild?.members.me?.permissions.has(PermissionFlagsBits.ManageRoles)) {
+            throw new ForbiddenError('Missing permissions to add `user-role`.');
         }
 
         if (guild.userRoleID) {
