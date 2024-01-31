@@ -63,7 +63,7 @@ export default {
                 if (err.status === 404) {
                     throw new NotFoundError('Could not find `user-role`.');
                 } else if (err.status == 403) {
-                    throw new ForbiddenError('Missing permissions to add `user-role`.');
+                    throw new ForbiddenError('Missing permissions to add `user-role`. Make sure the `Population Map Bot` role is above the `user-role` in the server settings.');
                 }
 
                 throw new InternalServerError('Could not add `user-role`.');
