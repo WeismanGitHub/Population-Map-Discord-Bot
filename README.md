@@ -1,5 +1,13 @@
 <div align="center">
-  
+    <style>
+    .image {
+      width: 40%;
+      min-width: 350px;
+      height: auto;
+      margin: 5px;
+    }
+  </style>
+
   # Population Map Bot
 
   ### [Website](https://population-map-bot.fly.dev/) - [Bot Invite](https://discord.com/oauth2/authorize?client_id=1115149738614984764&permissions=414464657472&scope=bot)
@@ -10,13 +18,12 @@
 
   This bot generates a unique map for each Discord server that can be accessed with `/map`. Server members use `/set-location` to add their location to the map. Locations can be any country and, optionally, a subdivision (state, region, prefecture, etc.) within that country. Server admins can also make it so only members who share their location can access the server.
 
-  <hr class="rounded">
-
-  ## Example Images
-  ![World Map Example](/images/WORLD-example.jpg)
-  ![Continents Map Example](/images/CONTINENTS-example.jpg)
-  ![USA Map Example](/images/US-example.jpg)
-  ![Italy Map Example](/images/IT-example.jpg)
+  <div class="container image-container">
+    <img src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/WORLD2-example.jpg" alt="World Example" class="image" />
+    <img src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/CONTINENTS-example.jpg" alt="Continents Example" class="image" />
+    <img src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/US-example.jpg" alt="USA Example" class="image" />
+    <img src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/IT-example.jpg" alt="USA Example" class="image" />
+  </div>
 
   <hr class="rounded">
   
