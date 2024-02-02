@@ -1,28 +1,20 @@
 <div align="center">
-    <style>
-    .image {
-      width: 40%;
-      min-width: 350px;
-      height: auto;
-      margin: 5px;
-    }
-  </style>
-
+    
   # Population Map Bot
 
-  ### [Website](https://population-map-bot.fly.dev/) - [Bot Invite](https://discord.com/oauth2/authorize?client_id=1115149738614984764&permissions=414464657472&scope=bot)
+  ### [Website](https://population-map-bot.fly.dev/) - [Bot Invite](https://discord.com/api/oauth2/authorize?client_id=1115149738614984764&permissions=268451840&scope=bot)
   <hr class="rounded">
-
-  ## Description
   The Population Map Bot is a dynamic map generator capable of visualizing population data on a global, continental, or country level. Maps are generated from self-reported locations provided by Discord server members, enabling users to explore population distributions with ease.
-
+  <br/>
+  <br/>
   This bot generates a unique map for each Discord server that can be accessed with `/map`. Server members use `/set-location` to add their location to the map. Locations can be any country and, optionally, a subdivision (state, region, prefecture, etc.) within that country. Server admins can also make it so only members who share their location can access the server.
-
-  <div class="container image-container">
-    <img src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/WORLD2-example.jpg" alt="World Example" class="image" />
-    <img src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/CONTINENTS-example.jpg" alt="Continents Example" class="image" />
-    <img src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/US-example.jpg" alt="USA Example" class="image" />
-    <img src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/IT-example.jpg" alt="USA Example" class="image" />
+  <br/>
+  <br/>
+  <div style="display: flex;justify-content: center;overflow-wrap: break-word;text-align: center;flex-wrap: wrap;">
+    <img src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/WORLD2-example.jpg" alt="World Example" style="width: 40%;min-width: 350px;height: auto;margin: 5px;"/>
+    <img src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/CONTINENTS-example.jpg" alt="Continents Example" style="width: 40%;min-width: 350px;height: auto;margin: 5px;" />
+    <img src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/US-example.jpg" alt="USA Example" style="width: 40%;min-width: 350px;height: auto;margin: 5px;" />
+    <img src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/IT-example.jpg" alt="USA Example" style="width: 40%;min-width: 350px;height: auto;margin: 5px;" />
   </div>
 
   <hr class="rounded">
