@@ -3,7 +3,6 @@
   # Population Map Bot
 
   ### [Website](https://population-map-bot.fly.dev/) - [Bot Invite](https://discord.com/api/oauth2/authorize?client_id=1115149738614984764&permissions=268451840&scope=bot)
-  <hr class="rounded">
   The Population Map Bot is a dynamic map generator capable of visualizing population data on a global, continental, or country level. Maps are generated from self-reported locations provided by Discord server members, enabling users to explore population distributions with ease.
   <br/>
   <br/>
