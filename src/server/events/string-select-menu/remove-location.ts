@@ -44,7 +44,7 @@ export default {
 
         const guildEmbed = new EmbedBuilder()
             .setTitle(guild.name)
-            .setColor('#8F00FF') // Purple
+            .setColor('#2d7dbc') // Blue
             .setImage(guild.iconURL())
             .setFooter({ text: `ID: ${guildID}` });
 
