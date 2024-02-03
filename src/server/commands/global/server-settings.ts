@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction, GuildMemberManager } from 'discord.js';
 import { ForbiddenError, InternalServerError, NotFoundError } from '../../errors';
-import { infoEmbed } from '../../utils/embeds';
+import { InfoEmbed } from '../../utils/embeds';
 import { Guild } from '../../db/models';
 
 interface GuildSettings {
@@ -130,7 +130,7 @@ export default {
         return interaction.reply({
             ephemeral: true,
             embeds: [
-                infoEmbed(
+                new InfoEmbed(
                     'Server Settings',
                     `\`visibility\`: \`${guild.visibility}\`
                 \`admin-role\`: ${guild.adminRoleID ? `<@&${guild.adminRoleID}>` : '`null`'}

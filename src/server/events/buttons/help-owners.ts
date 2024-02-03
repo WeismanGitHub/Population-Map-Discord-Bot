@@ -1,5 +1,5 @@
 import { Events, ButtonInteraction, Interaction } from 'discord.js';
-import { infoEmbed } from '../../utils/embeds';
+import { InfoEmbed } from '../../utils/embeds';
 
 export default {
     name: Events.InteractionCreate,
@@ -33,7 +33,7 @@ export default {
 
         interaction.reply({
             embeds: [
-                infoEmbed(
+                new InfoEmbed(
                     null,
                     `# Server Owner Docs\n${serverOwnerDocs}\n### Server Roles\n${serverRoles}\n### Map Visibility\n${mapVisibility}\n### Defaults\n${defaults}
             `

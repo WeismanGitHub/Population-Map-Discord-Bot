@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
 import { ConflictError, ForbiddenError, NotFoundError } from '../../errors';
-import { infoEmbed } from '../../utils/embeds';
+import { InfoEmbed } from '../../utils/embeds';
 import { User } from '../../db/models';
 import config from '../../config';
 
@@ -37,7 +37,7 @@ export default {
 
         interaction.reply({
             ephemeral: true,
-            embeds: [infoEmbed('Promoted the user.')],
+            embeds: [new InfoEmbed('Promoted the user.')],
         });
     },
 };

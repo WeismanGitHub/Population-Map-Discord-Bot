@@ -1,4 +1,5 @@
 import { GuildLocation } from '../../db/models';
+import { InfoEmbed } from '../../utils/embeds';
 import { NotFoundError } from '../../errors';
 import {
     ActionRowBuilder,
@@ -10,7 +11,6 @@ import {
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
 } from 'discord.js';
-import { errorEmbed } from '../../utils/embeds';
 
 export default {
     name: Events.InteractionCreate,
@@ -104,7 +104,7 @@ export default {
             embeds:
                 guilds.length !== locations.length
                     ? [
-                          errorEmbed(
+                          new InfoEmbed(
                               `Could not fetch \`${locations.length - guilds.length}\` server${locations.length - guilds.length > 1 ? 's' : ''}.`
                           ),
                       ]

@@ -1,5 +1,5 @@
 import { Client, Collection, ClientOptions, ActivityType, Presence, Events } from 'discord.js';
-import { errorEmbed } from './utils/embeds';
+import { ErrorEmbed } from './utils/embeds';
 import { readdirSync, statSync } from 'fs';
 import { CustomError } from './errors';
 import config from './config';
@@ -71,7 +71,7 @@ export class CustomClient extends Client {
                 if (!(err instanceof CustomError)) console.log(err);
 
                 const embed =
-                    err instanceof CustomError ? errorEmbed(err.message, err.statusCode) : errorEmbed();
+                    err instanceof CustomError ? new ErrorEmbed(err.message, err.statusCode) : new ErrorEmbed();
 
                 if (interaction.replied || interaction.deferred) {
                     interaction.followUp({ embeds: [embed], ephemeral: true });
@@ -104,8 +104,8 @@ export class CustomClient extends Client {
 
                         const embed =
                             err instanceof CustomError
-                                ? errorEmbed(err.message, err.statusCode)
-                                : errorEmbed();
+                                ? new ErrorEmbed(err.message, err.statusCode)
+                                : new ErrorEmbed();
                         const interaction = args[0];
 
                         if (interaction.replied || interaction.deferred) {

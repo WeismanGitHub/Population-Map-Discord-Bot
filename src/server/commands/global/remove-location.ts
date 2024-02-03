@@ -1,4 +1,5 @@
 import { GuildLocation } from '../../db/models';
+import { ErrorEmbed } from '../../utils/embeds';
 import { NotFoundError } from '../../errors';
 import {
     SlashCommandBuilder,
@@ -9,7 +10,6 @@ import {
     ButtonBuilder,
     ButtonStyle,
 } from 'discord.js';
-import { errorEmbed } from '../../utils/embeds';
 
 export default {
     data: new SlashCommandBuilder()
@@ -79,7 +79,7 @@ export default {
             embeds:
                 guilds.length !== locations.length
                     ? [
-                          errorEmbed(
+                          new ErrorEmbed(
                               `Could not fetch \`${locations.length - guilds.length}\` server${locations.length - guilds.length > 1 ? 's' : ''}.`
                           ),
                       ]

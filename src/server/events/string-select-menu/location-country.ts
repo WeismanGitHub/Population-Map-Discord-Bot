@@ -1,6 +1,6 @@
 import { ForbiddenError, InternalServerError, NotFoundError } from '../../errors';
 import { Guild, GuildLocation, User } from '../../db/models';
-import { infoEmbed } from '../../utils/embeds';
+import { InfoEmbed } from '../../utils/embeds';
 import {
     ActionRowBuilder,
     ButtonBuilder,
@@ -42,7 +42,10 @@ export default {
             throw new InternalServerError('This server has not been set up.');
         }
 
-        if (guild.userRoleID && !interaction.guild?.members.me?.permissions.has(PermissionFlagsBits.ManageRoles)) {
+        if (
+            guild.userRoleID &&
+            !interaction.guild?.members.me?.permissions.has(PermissionFlagsBits.ManageRoles)
+        ) {
             throw new ForbiddenError('Missing permissions to add `user-role`.');
         }
 
@@ -74,7 +77,9 @@ export default {
                 if (err.status === 404) {
                     throw new NotFoundError('Could not find `user-role`.');
                 } else if (err.status == 403) {
-                    throw new ForbiddenError('Missing permissions to add `user-role`. Make sure the `Population Map Bot` role is above the `user-role` in the server settings.');
+                    throw new ForbiddenError(
+                        'Missing permissions to add `user-role`. Make sure the `Population Map Bot` role is above the `user-role` in the server settings.'
+                    );
                 }
 
                 throw new InternalServerError('Could not add `user-role`.');
@@ -95,7 +100,7 @@ export default {
 
         await interaction.update({
             embeds: [
-                infoEmbed(
+                new InfoEmbed(
                     'Selected a country!',
                     'You can also optionally choose your subdivision (state, region, prefecture, etc).'
                 ),

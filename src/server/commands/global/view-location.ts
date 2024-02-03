@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
 import { InternalServerError, NotFoundError } from '../../errors';
 import { GuildLocation } from '../../db/models';
-import { infoEmbed } from '../../utils/embeds';
+import { InfoEmbed } from '../../utils/embeds';
 import iso31662 from '../../utils/countries';
 
 export default {
@@ -34,7 +34,7 @@ export default {
         await interaction.reply({
             ephemeral: true,
             embeds: [
-                infoEmbed(
+                new InfoEmbed(
                     'Your location in this server:',
                     `
 				\`Country\`: \`${country.name}\`

@@ -1,5 +1,5 @@
 import { ForbiddenError, NotFoundError } from '../../errors';
-import { guildEmbed } from '../../utils/embeds';
+import { GuildEmbed } from '../../utils/embeds';
 import { User } from '../../db/models';
 import config from '../../config';
 import {
@@ -27,7 +27,7 @@ export default {
             throw new ForbiddenError('You are not an admin.');
         }
 
-        const guildEmbeds = interaction.client.guilds.cache.first(10).map((guild) => guildEmbed(guild));
+        const guildEmbeds = interaction.client.guilds.cache.first(10).map((guild) => new GuildEmbed(guild));
 
         const buttonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()

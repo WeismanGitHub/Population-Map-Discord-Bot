@@ -1,7 +1,13 @@
-import { Events, StringSelectMenuInteraction, Interaction, DiscordAPIError, PermissionFlagsBits } from 'discord.js';
 import { ForbiddenError, InternalServerError, NotFoundError } from '../../errors';
 import { Guild, GuildLocation } from '../../db/models';
-import { infoEmbed } from '../../utils/embeds';
+import { InfoEmbed } from '../../utils/embeds';
+import {
+    Events,
+    StringSelectMenuInteraction,
+    Interaction,
+    DiscordAPIError,
+    PermissionFlagsBits,
+} from 'discord.js';
 
 export default {
     name: Events.InteractionCreate,
@@ -30,7 +36,10 @@ export default {
             throw new NotFoundError('This server has not been set up.');
         }
 
-        if (guild.userRoleID && !interaction.guild?.members.me?.permissions.has(PermissionFlagsBits.ManageRoles)) {
+        if (
+            guild.userRoleID &&
+            !interaction.guild?.members.me?.permissions.has(PermissionFlagsBits.ManageRoles)
+        ) {
             throw new ForbiddenError('Missing permissions to remove `user-role`.');
         }
 
@@ -62,7 +71,7 @@ export default {
 
         interaction.update({
             components: [],
-            embeds: [infoEmbed('Removed location!')],
+            embeds: [new InfoEmbed('Removed location!')],
         });
     },
 };

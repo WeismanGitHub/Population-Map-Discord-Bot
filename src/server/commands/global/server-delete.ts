@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
 import { ForbiddenError, NotFoundError } from '../../errors';
-import { infoEmbed } from '../../utils/embeds';
+import { InfoEmbed } from '../../utils/embeds';
 import { Guild } from '../../db/models';
 
 export default {
@@ -22,7 +22,7 @@ export default {
 
         interaction.reply({
             ephemeral: true,
-            embeds: [infoEmbed('The server data has been deleted.')],
+            embeds: [new InfoEmbed('The server data has been deleted.')],
         });
     },
 };

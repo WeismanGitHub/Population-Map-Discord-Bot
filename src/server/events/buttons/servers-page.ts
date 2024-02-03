@@ -1,4 +1,4 @@
-import { guildEmbed } from '../../utils/embeds';
+import { GuildEmbed } from '../../utils/embeds';
 import {
     ActionRowBuilder,
     ButtonBuilder,
@@ -33,7 +33,7 @@ export default {
         const guilds = new Collection(
             Array.from(interaction.client.guilds.cache).slice(page * 10, 10 + page * 10)
         );
-        const guildEmbeds = guilds.map((guild) => guildEmbed(guild));
+        const guildEmbeds = guilds.map((guild) => new GuildEmbed(guild));
 
         const buttonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()

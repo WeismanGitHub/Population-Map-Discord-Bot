@@ -24,7 +24,6 @@ export default {
     },
     execute: async ({
         interaction,
-        customID,
     }: {
         interaction: StringSelectMenuInteraction;
         customID: CustomID<{}>;

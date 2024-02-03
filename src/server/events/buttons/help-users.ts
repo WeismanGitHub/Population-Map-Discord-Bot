@@ -1,5 +1,5 @@
 import { Events, ButtonInteraction, Interaction } from 'discord.js';
-import { infoEmbed } from '../../utils/embeds';
+import { InfoEmbed } from '../../utils/embeds';
 
 export default {
     name: Events.InteractionCreate,
@@ -27,7 +27,7 @@ export default {
             'Add your location to a server map with the `/set-location` command. Use `/remove-location` anywhere to remove your location from a server map. Use `/view-location` to see your location in a server.';
 
         interaction.reply({
-            embeds: [infoEmbed(null, `# User Docs\n${userDocs}\n### Location\n${location}`)],
+            embeds: [ new InfoEmbed(null, `# User Docs\n${userDocs}\n### Location\n${location}`)],
             ephemeral: true,
         });
     },

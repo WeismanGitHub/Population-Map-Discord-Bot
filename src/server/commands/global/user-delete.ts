@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
-import { infoEmbed } from '../../utils/embeds';
-import { User } from '../../db/models';
+import { InfoEmbed } from '../../utils/embeds';
 import { NotFoundError } from '../../errors';
+import { User } from '../../db/models';
 
 export default {
     data: new SlashCommandBuilder().setName('user-delete').setDescription('Delete all your data.'),
@@ -15,7 +15,7 @@ export default {
 
         interaction.reply({
             ephemeral: true,
-            embeds: [infoEmbed('Your data has been deleted.')],
+            embeds: [new InfoEmbed('Your data has been deleted.')],
         });
     },
 };
