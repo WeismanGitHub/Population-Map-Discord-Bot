@@ -1,6 +1,14 @@
 import { EmbedBuilder, Guild } from 'discord.js';
 
-class ErrorEmbed extends EmbedBuilder {
+class CustomEmbed extends EmbedBuilder {
+    constructor() {
+        super()
+
+        this.setColor('#8F00FF') // Purple
+    }
+}
+
+class ErrorEmbed extends CustomEmbed {
     constructor(description: string | null = null, statusCode: number | null = null) {
         super();
 
@@ -11,18 +19,17 @@ class ErrorEmbed extends EmbedBuilder {
     }
 }
 
-class InfoEmbed extends EmbedBuilder {
+class InfoEmbed extends CustomEmbed {
     constructor(title: string | null, description: null | string = null, footer: null | string = null) {
         super();
 
         this.setTitle(title)
-            .setColor('#8F00FF') // Purple
             .setDescription(description)
             .setFooter(footer ? { text: footer } : null);
     }
 }
 
-class GuildEmbed extends EmbedBuilder {
+class GuildEmbed extends CustomEmbed {
     constructor(guild: Guild) {
         super();
 
@@ -34,7 +41,6 @@ class GuildEmbed extends EmbedBuilder {
         });
 
         this.setTitle(guild.name)
-            .setColor('#8F00FF') // Purple
             .setImage(guild.iconURL())
             .setFooter({ text: `Joined: ${joinedDate}` });
     }
