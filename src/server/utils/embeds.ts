@@ -2,9 +2,9 @@ import { EmbedBuilder, Guild } from 'discord.js';
 
 class CustomEmbed extends EmbedBuilder {
     constructor() {
-        super()
+        super();
 
-        this.setColor('#2d7dbc') // Bluey
+        this.setColor('#2d7dbc'); // Bluey
     }
 }
 
