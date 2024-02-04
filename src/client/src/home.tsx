@@ -53,8 +53,7 @@ export default function Home() {
                     </strong>{' '}
                     to add their location to the map. Locations can be any country and, optionally, a
                     subdivision (state, region, prefecture, etc.) within that country. Server admins can also
-                    make it so only members who share their location can access the server.
-                    <br />
+                    make it so only members who share their location can access the server.{' '}
                     <a href={`${res?.githubURL}?tab=readme-ov-file#user-docs`}>Read more here...</a>
                 </div>
             </div>
