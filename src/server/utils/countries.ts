@@ -33,9 +33,8 @@ class ISO31662 {
         this.countries = countries as Record<CountryLetter, Country[]>;
     }
 
-    // implement binary search instead of using countries. hash map?
-    // Might not be worth it tho since its only like 250 countries in total.
     public getCountry(code: string) {
+        // Sometimes codes don't start with the same letter as the country.
         const countries: Country[] | undefined = this.countries[code.slice(0, 1) as CountryLetter];
         let country: Country | undefined;
 
@@ -53,14 +52,14 @@ class ISO31662 {
 
         Object.entries(this.countries).forEach(([letter, countries]) => {
             if (letter == code.slice(0, 1)) {
-                return;
+                return; // Return because we've already checked this earlier.
             }
 
             countries.forEach((c) => {
                 if (c.code === code) {
                     country = c;
                 }
-            });
+            }); 
         });
 
         if (!country) {
