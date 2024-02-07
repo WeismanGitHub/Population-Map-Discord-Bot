@@ -42,6 +42,7 @@ class GuildEmbed extends CustomEmbed {
 
         this.setTitle(guild.name)
             .setImage(guild.iconURL())
+            .setDescription(`members: ${guild.memberCount}`)
             .setFooter({ text: `Joined: ${joinedDate}` });
     }
 }
