@@ -59,7 +59,7 @@ class ISO31662 {
                 if (c.code === code) {
                     country = c;
                 }
-            }); 
+            });
         });
 
         if (!country) {
