@@ -58,8 +58,7 @@ export default {
                 )
         );
 
-        interaction.reply({
-            ephemeral: true,
+        interaction.update({
             embeds: guildEmbeds,
             components: [buttonsRow],
         });
