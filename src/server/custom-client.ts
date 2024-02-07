@@ -95,8 +95,8 @@ export class CustomClient extends Client {
                 continue;
             }
 
-            // Check is run first, then if res is not undefined, you log and execute.
-            // Check is supposed to verify that this is the correct file.
+            // Check is run first, then if res is not undefined you execute.
+            // Check is supposed to verify that this is the correct event.
             this.on(event.name, (...args) => {
                 event.check(...args).then((res: any) => {
                     if (!res) return;
