@@ -2,7 +2,11 @@
     --discord-bg: #36393f;
     --discord-text: #DBDEE1;
     --discord-accent: #7289da;
-    --discord-btn: #b5bac1;
+    --discord-dark: #232428;
+}
+
+a {
+    color: #00A8FC; /* Change to your desired color */
 }
 
 body {
@@ -12,7 +16,7 @@ body {
 }
 
 .navbar {
-    background-color: #232428;
+    background-color: var(--discord-dark);
     color: var(--discord-text);
 }
 
@@ -41,12 +45,24 @@ body {
     background-color: #2b2d31;
 }
 
-/* .btn {
-    color: #383a40;
-    background-color: var(--discord-btn);
+.btn-custom {
+    border: none;
+    color: var(--discord-text);
+    background-color: var(--discord-dark);
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s, color 0.3s;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-custom:hover, .btn-custom:active, .btn-custom:focus {
+    filter: brightness(0.8);
 }
 
 .btn-xl {
     padding: 40px 80px;
     font-size: 48px;
-} */
+}

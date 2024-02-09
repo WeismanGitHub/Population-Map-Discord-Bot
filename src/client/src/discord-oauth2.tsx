@@ -75,7 +75,7 @@ export default function DiscordOAuth2() {
                 <NavBar />
                 <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <a
-                        className="oauth2-button"
+                        className="btn-custom btn-xl"
                         href={process.env.REACT_APP_OAUTH_URL + `&state=${btoa(randomString)}`}
                     >
                         Login
