@@ -12,7 +12,7 @@ import {
 export default {
     data: new SlashCommandBuilder()
         .setName('servers')
-        .setDescription('[Privileged Users Only] See the servers this bot is in.')
+        .setDescription('See the servers this bot is in.')
         .setDMPermission(false)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     guildIDs: [config.supportServerID],
