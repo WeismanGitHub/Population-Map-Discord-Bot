@@ -62,22 +62,46 @@ export default function Home() {
                 <img
                     src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/WORLD2-example.jpg"
                     alt="World Example"
-                    style={{ width: '40%', minWidth: '350px', height: 'auto', margin: '3px', borderRadius: '5px 0px 0px 0px' }}
+                    style={{
+                        width: '40%',
+                        minWidth: '350px',
+                        height: 'auto',
+                        margin: '3px',
+                        borderRadius: '5px 0px 0px 0px',
+                    }}
                 />
                 <img
                     src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/CONTINENTS-example.jpg"
                     alt="Continents Example"
-                    style={{ width: '40%', minWidth: '350px', height: 'auto', margin: '3px', borderRadius: '0px 5px 0px 0px' }}
+                    style={{
+                        width: '40%',
+                        minWidth: '350px',
+                        height: 'auto',
+                        margin: '3px',
+                        borderRadius: '0px 5px 0px 0px',
+                    }}
                 />
                 <img
                     src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/US-example.jpg"
                     alt="USA Example"
-                    style={{ width: '40%', minWidth: '350px', height: 'auto', margin: '3px', borderRadius: '0px 0px 0px 5px' }}
+                    style={{
+                        width: '40%',
+                        minWidth: '350px',
+                        height: 'auto',
+                        margin: '3px',
+                        borderRadius: '0px 0px 0px 5px',
+                    }}
                 />
                 <img
                     src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/IT-example.jpg"
                     alt="Italy Example"
-                    style={{ width: '40%', minWidth: '350px', height: 'auto', margin: '3px', borderRadius: '0px 0px 5px 0px' }}
+                    style={{
+                        width: '40%',
+                        minWidth: '350px',
+                        height: 'auto',
+                        margin: '3px',
+                        borderRadius: '0px 0px 5px 0px',
+                    }}
                 />
             </div>
         </div>
