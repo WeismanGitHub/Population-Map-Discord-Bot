@@ -1,6 +1,4 @@
-import { ForbiddenError, NotFoundError } from '../../errors';
 import { GuildEmbed } from '../../utils/embeds';
-import { User } from '../../db/models';
 import config from '../../config';
 import {
     SlashCommandBuilder,
@@ -8,25 +6,17 @@ import {
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
+    PermissionFlagsBits,
 } from 'discord.js';
 
 export default {
     data: new SlashCommandBuilder()
         .setName('servers')
         .setDescription('[Privileged Users Only] See the servers this bot is in.')
-        .setDMPermission(false),
+        .setDMPermission(false)
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     guildIDs: [config.supportServerID],
     async execute(interaction: CommandInteraction) {
-        const user = await User.findOne({ where: { userID: interaction.user.id } });
-
-        if (!user) {
-            throw new NotFoundError('You are not in the database.');
-        }
-
-        if (user.role !== 'admin') {
-            throw new ForbiddenError('You are not an admin.');
-        }
-
         const guildEmbeds = interaction.client.guilds.cache.first(10).map((guild) => new GuildEmbed(guild));
 
         const buttonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
