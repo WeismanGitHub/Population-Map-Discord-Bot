@@ -1,6 +1,8 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import React from 'react';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 
 import DiscordOAuth2 from './discord-oauth2';
