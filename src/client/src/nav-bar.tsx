@@ -50,16 +50,20 @@ export default function NavBar() {
                     </Toast.Header>
                 </Toast>
             </ToastContainer>
-            <div className="navbar">
-                <a className="navbar-button" href="/">
-                    home
+            <nav className="navbar navbar-expand ps-2 pe-2 justify-content-between py-1">
+                <a className="navbar-brand" href="/">
+                    <img src="/icon.png" width="50" height="50" alt="icon" className="me-2 rounded-5" />
+                    Population Map Bot
                 </a>
-                {loggedIn && (
-                    <div className="navbar-button" onClick={logout}>
-                        logout
-                    </div>
-                )}
-            </div>
+
+                <div className="justify-content-start navbar-nav">
+                    {loggedIn && (
+                        <a className="nav-item" onClick={logout}>
+                            logout
+                        </a>
+                    )}
+                </div>
+            </nav>
         </>
     );
 }
