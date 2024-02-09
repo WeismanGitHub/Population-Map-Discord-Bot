@@ -1,6 +1,6 @@
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { ToastContainer, Toast } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
-import { errorToast } from './toasts';
 import ky, { HTTPError } from 'ky';
 import NavBar from './nav-bar';
 import React from 'react';
@@ -17,6 +17,7 @@ function generateState() {
 }
 
 export default function DiscordOAuth2() {
+    const [error, setError] = useState<string | null>(null);
     const [authorized, setAuthorized] = useState(false);
     const [searchParams] = useSearchParams();
     const randomString = generateState();
@@ -40,8 +41,7 @@ export default function DiscordOAuth2() {
                 })
                 .catch(async (res: HTTPError) => {
                     const err: { error: string } = await res.response.json();
-
-                    errorToast(err.error || res.response.statusText || 'Something went wrong.');
+                    setError(err.error || res.response.statusText || 'Something went wrong.');
                 });
         } else {
             localStorage.setItem('auth-state', randomString);
@@ -57,16 +57,31 @@ export default function DiscordOAuth2() {
     }
 
     return (
-        <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column' }}>
-            <NavBar />
-            <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <a
-                    className="oauth2-button"
-                    href={process.env.REACT_APP_OAUTH_URL + `&state=${btoa(randomString)}`}
+        <>
+            <ToastContainer position="top-end">
+                <Toast
+                    onClose={() => setError(null)}
+                    show={error !== null}
+                    autohide={true}
+                    className="d-inline-block m-1"
+                    bg={'danger'}
                 >
-                    Login
-                </a>
+                    <Toast.Header>
+                        <strong className="me-auto">{error}</strong>
+                    </Toast.Header>
+                </Toast>
+            </ToastContainer>
+            <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column' }}>
+                <NavBar />
+                <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <a
+                        className="oauth2-button"
+                        href={process.env.REACT_APP_OAUTH_URL + `&state=${btoa(randomString)}`}
+                    >
+                        Login
+                    </a>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

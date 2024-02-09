@@ -1,10 +1,11 @@
+import { Chart as ChartJS, CategoryScale, Tooltip, Title, Legend } from 'chart.js';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ToastContainer, Toast } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react';
 import * as ChartGeo from 'chartjs-chart-geo';
 import ky, { HTTPError } from 'ky';
 import NavBar from './nav-bar';
 import Map from './map';
-import { Chart as ChartJS, CategoryScale, Tooltip, Title, Legend } from 'chart.js';
 
 ChartJS.register(
     Title,
@@ -32,6 +33,7 @@ interface GeojsonRes {
 export default function Guild() {
     const [countryCodes, setCountryCodes] = useState<Record<string, string> | null>(null);
     const [guildMemberCount, setGuildMemberCount] = useState(0);
+    const [error, setError] = useState<string | null>(null);
     const [icon, setIcon] = useState<string | null>(null);
     const [membersOnMap, setMembersOnMap] = useState(0);
     const [guildName, setGuildName] = useState('');
@@ -45,7 +47,7 @@ export default function Guild() {
 
     useEffect(() => {
         if (!mapCode || !guildID) {
-            return errorToast('Missing mapCode or guildID');
+            return setError('Missing mapCode or guildID');
         }
 
         (
@@ -73,7 +75,7 @@ export default function Guild() {
                     ChartGeo.topojson.feature(geojsonRes, feature)
                 );
 
-                if (!geojsonRes?.features) return errorToast('Invalid map code.');
+                if (!geojsonRes?.features) return setError('Invalid map code.');
 
                 setMembersOnMap(guildRes.locations.length);
                 setCountryCodes(countryCodes);
@@ -138,7 +140,7 @@ export default function Guild() {
                 setStatus('Something went wrong!');
                 const err: { error: string } = await res.response.json();
 
-                errorToast(err.error || res.response.statusText || 'Something went wrong.');
+                setError(err.error || res.response.statusText || 'Something went wrong.');
 
                 if (res.response.status === 401) {
                     localStorage.removeItem('loggedIn');
@@ -149,6 +151,20 @@ export default function Guild() {
 
     return (
         <>
+            <ToastContainer position="top-end">
+                <Toast
+                    onClose={() => setError(null)}
+                    show={error !== null}
+                    autohide={true}
+                    className="d-inline-block m-1"
+                    bg={'danger'}
+                >
+                    <Toast.Header>
+                        <strong className="me-auto">{error}</strong>
+                    </Toast.Header>
+                </Toast>
+            </ToastContainer>
+
             <NavBar />
             {!geojson ? (
                 <div
@@ -187,9 +203,7 @@ export default function Guild() {
                         <Map
                             geojson={geojson}
                             projection={
-                                mapCode === 'WORLD' || mapCode === 'CONTINENTS'
-                                    ? 'equalEarth'
-                                    : 'albers'
+                                mapCode === 'WORLD' || mapCode === 'CONTINENTS' ? 'equalEarth' : 'albers'
                             }
                         />
                     </div>
@@ -205,25 +219,19 @@ export default function Guild() {
                         >
                             <div>
                                 {mapCode !== 'WORLD' && (
-                                    <a
-                                        className="navbar-button"
-                                        href={`/maps/${guildID}?mapCode=WORLD`}
-                                    >
+                                    <a className="navbar-button" href={`/maps/${guildID}?mapCode=WORLD`}>
                                         View World
                                     </a>
                                 )}
                                 {mapCode !== 'CONTINENTS' && (
-                                    <a
-                                        className="navbar-button"
-                                        href={`/maps/${guildID}?mapCode=CONTINENTS`}
-                                    >
+                                    <a className="navbar-button" href={`/maps/${guildID}?mapCode=CONTINENTS`}>
                                         View Continents
                                     </a>
                                 )}
                             </div>
                             <br />
                         </div>
-                        <div style={{ overflowY: 'scroll', height: '94vh'}}>
+                        <div style={{ overflowY: 'scroll', height: '94vh' }}>
                             {countryCodes &&
                                 Object.entries(countryCodes).map(([name, code]) => {
                                     return <div onClick={() => console.log(code)}>{name}</div>;
