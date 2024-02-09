@@ -6,7 +6,12 @@
 }
 
 a {
-    color: #00A8FC; /* Change to your desired color */
+    text-decoration: none;
+    color: #00a8fc; /* Change to your desired color */
+}
+
+a:hover {
+    text-decoration: underline;
 }
 
 body {
