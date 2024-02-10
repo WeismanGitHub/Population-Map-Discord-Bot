@@ -55,7 +55,7 @@ export default function Home() {
                         <a href={`${res?.githubURL}?tab=readme-ov-file#user-docs`}>Read more here...</a>
                     </div>
                     <div className="col-md-12 col-lg-6 d-flex justify-content-center align-items-center">
-                        <Carousel interval={2000} className="carousel-dark">
+                        <Carousel interval={3000} className="carousel-dark">
                             <Carousel.Item>
                                 <img
                                     src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/WORLD2-example.jpg"

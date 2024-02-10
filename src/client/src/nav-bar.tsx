@@ -52,7 +52,13 @@ export default function NavBar() {
             </ToastContainer>
             <nav className="navbar navbar-expand ps-2 pe-2 justify-content-between py-1">
                 <a className="navbar-brand" href="/">
-                    <img src="/icon.png" width="50" height="50" alt="icon" className="me-2 rounded-5" />
+                    <img
+                        src="/icon.svg"
+                        width="50"
+                        height="50"
+                        alt="icon"
+                        className="me-2 rounded-5 bg-white"
+                    />
                     Population Map Bot
                 </a>
 
