@@ -7,11 +7,7 @@
 
 a {
     text-decoration: none;
-    color: #00a8fc; /* Change to your desired color */
-}
-
-a:hover {
-    text-decoration: underline;
+    color: var(--discord-text);
 }
 
 body {
@@ -22,7 +18,8 @@ body {
 
 .navbar {
     background-color: var(--discord-dark);
-    color: var(--discord-text);
+    color: var(--discord-text) !important;
+    text-decoration: none !important;
 }
 
 .navbar-brand {
@@ -46,6 +43,7 @@ body {
     text-decoration: none;
     display: inline-block;
     text-align: center;
+    margin-right: 7px;
 }
 
 .nav-item:hover {

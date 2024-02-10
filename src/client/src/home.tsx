@@ -25,19 +25,7 @@ export default function Home() {
     return (
         <div style={{ textAlign: 'center', fontSize: 'x-large' }}>
             <NavBar />
-            In {res?.guildCount} Servers
-            <div className="flex-row justify-content-around">
-                <a className="btn-custom" href={res?.botInviteURL}>
-                    Invite
-                </a>
-                <a className="btn-custom" href={res?.supportServerInvite}>
-                    Server
-                </a>
-                <a className="btn-custom" href={res?.githubURL}>
-                    Github
-                </a>
-                {/* <a href={res?.buyMeACoffeeURL}>Buy Me a Coffee</a> */}
-            </div>
+            Used by {res?.guildCount} Servers
             <div className="container">
                 <div className="row">
                     <div className="col-md-12 col-lg-6">

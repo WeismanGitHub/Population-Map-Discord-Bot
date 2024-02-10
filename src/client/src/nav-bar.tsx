@@ -50,24 +50,49 @@ export default function NavBar() {
                     </Toast.Header>
                 </Toast>
             </ToastContainer>
-            <nav className="navbar navbar-expand ps-2 pe-2 justify-content-between py-1">
-                <a className="navbar-brand" href="/">
-                    <img
-                        src="/icon.svg"
-                        width="50"
-                        height="50"
-                        alt="icon"
-                        className="me-2 rounded-5 bg-white"
-                    />
-                    Population Map Bot
-                </a>
-
-                <div className="justify-content-start navbar-nav">
-                    {loggedIn && (
-                        <a className="nav-item" onClick={logout}>
-                            logout
-                        </a>
-                    )}
+            <nav className="navbar navbar-expand-lg py-1 ps-2 pe-2 navbar-dark bg-dark">
+                <div className="container-fluid">
+                    <a className="navbar-brand" href="/">
+                        <img
+                            src="/icon.svg"
+                            width="50"
+                            height="50"
+                            alt="icon"
+                            className="me-2 rounded-5 bg-white"
+                        />
+                        Population Map Bot
+                    </a>{' '}
+                    <button
+                        className="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav"
+                        aria-controls="navbarNav"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    >
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
+                        <ul className="navbar-nav">
+                            <li className="nav-item">
+                                <a href={process.env.REACT_APP_BOT_INVITE}>Invite</a>
+                            </li>
+                            <li className="nav-item">
+                                <a href={process.env.REACT_APP_SUPPORT_SERVER_INVITE}>Server</a>
+                            </li>
+                            <li className="nav-item">
+                                <a href="https://github.com/WeismanGitHub/Population-Map-Discord-Bot">
+                                    Github
+                                </a>
+                            </li>
+                            {loggedIn && (
+                                <li className="nav-item">
+                                    <a onClick={logout}>Logout</a>
+                                </li>
+                            )}
+                        </ul>
+                    </div>
                 </div>
             </nav>
         </>
