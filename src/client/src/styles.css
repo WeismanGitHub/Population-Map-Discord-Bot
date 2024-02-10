@@ -82,3 +82,11 @@ body {
     border-radius: 5px;
     overflow: hidden;
 }
+
+code {
+    padding: 2.72px;
+    background-color: #2b2d31;
+    color: #dbdee1;
+    margin: -2.72px;
+    border-radius: 3px;
+}
