@@ -1,6 +1,6 @@
 :root {
     --discord-bg: #36393f;
-    --discord-text: #DBDEE1;
+    --discord-text: #dbdee1;
     --discord-accent: #7289da;
     --discord-dark: #232428;
 }
@@ -31,7 +31,7 @@ body {
 }
 
 .navbar-brand:hover {
-    color: #FFF
+    color: #fff;
 }
 
 .nav-item {
@@ -40,7 +40,9 @@ body {
     cursor: pointer;
     padding: 0.5rem 1rem;
     border-radius: 0.25rem;
-    transition: background-color 0.3s, color 0.3s;
+    transition:
+        background-color 0.3s,
+        color 0.3s;
     text-decoration: none;
     display: inline-block;
     text-align: center;
@@ -57,13 +59,17 @@ body {
     cursor: pointer;
     padding: 0.5rem 1rem;
     border-radius: 0.25rem;
-    transition: background-color 0.3s, color 0.3s;
+    transition:
+        background-color 0.3s,
+        color 0.3s;
     text-decoration: none;
     display: inline-block;
     text-align: center;
 }
 
-.btn-custom:hover, .btn-custom:active, .btn-custom:focus {
+.btn-custom:hover,
+.btn-custom:active,
+.btn-custom:focus {
     filter: brightness(0.8);
 }
 
