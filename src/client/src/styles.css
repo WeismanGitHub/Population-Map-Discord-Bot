@@ -77,3 +77,8 @@ body {
     padding: 40px 80px;
     font-size: 48px;
 }
+
+.carousel {
+    border-radius: 5px;
+    overflow: hidden;
+}
