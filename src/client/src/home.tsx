@@ -40,7 +40,7 @@ export default function Home() {
             </div>
             <div className="container">
                 <div className="row">
-                    <div className="col">
+                    <div className="col-md-12 col-lg-6">
                         The Population Map Bot is a dynamic map generator capable of visualizing population
                         data on a global, continental, or country level. Maps are generated from self-reported
                         locations provided by Discord server members, enabling users to explore population
@@ -60,7 +60,7 @@ export default function Home() {
                         also make it so only members who share their location can access the server.{' '}
                         <a href={`${res?.githubURL}?tab=readme-ov-file#user-docs`}>Read more here...</a>
                     </div>
-                    <div className="col d-flex justify-content-center align-items-center" style={{ minWidth: '50vw' }}>
+                    <div className="col-md-12 col-lg-6 d-flex justify-content-center align-items-center">
                         <Carousel interval={2000} className="carousel-dark">
                             <Carousel.Item>
                                 <img
