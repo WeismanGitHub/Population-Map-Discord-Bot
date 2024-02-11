@@ -24,7 +24,7 @@ export default function Home() {
             <div className="container">
                 <div className="row">
                     <div className="col-md-12 d-flex col-lg-6 flex-column justify-content-center align-items-center order-md-1 order-lg-2">
-                        <code className='m-1'>Active in {res?.guildCount} Servers</code>
+                        <code className="m-1">Active in {res?.guildCount} Servers</code>
                         <Carousel interval={3000} className="carousel-dark">
                             <Carousel.Item>
                                 <img
@@ -85,7 +85,14 @@ export default function Home() {
                         to the map. A location can be any country and, optionally, a subdivision (state,
                         region, prefecture, etc.) within that country. Server admins can also make it so only
                         members who share their location can access the server.{' '}
-                        <a className='link' href={'https://github.com/WeismanGitHub/Population-Map-Discord-Bot?tab=readme-ov-file#user-docs'}>Read more here...</a>
+                        <a
+                            className="link"
+                            href={
+                                'https://github.com/WeismanGitHub/Population-Map-Discord-Bot?tab=readme-ov-file#user-docs'
+                            }
+                        >
+                            Read more here...
+                        </a>
                     </div>
                 </div>
             </div>

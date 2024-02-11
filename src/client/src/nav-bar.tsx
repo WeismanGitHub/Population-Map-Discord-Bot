@@ -100,53 +100,52 @@ export default function NavBar() {
                 </div>
             </nav> */}
             <nav className="navbar navbar-expand-md py-1 ps-2 pe-2 navbar-dark bg-dark">
-    <div className="container-fluid">
-        <a className="navbar-brand" href="/">
-            <img
-                src="/icon.svg"
-                width="50"
-                height="50"
-                alt="icon"
-                className="me-2 rounded-5 bg-white"
-            />
-            <span className="d-block d-sm-inline-block">Population Map Bot</span>
-        </a>
-        <button
-            className="navbar-toggler"
-            type="button"
-            onClick={() => setIsNavOpen(!isNavOpen)}
-            aria-controls="navbarNav"
-            aria-expanded={isNavOpen ? 'true' : 'false'}
-            aria-label="Toggle navigation"
-        >
-            <span className="navbar-toggler-icon"></span>
-        </button>
-        <div
-            className={`justify-content-end collapse navbar-collapse${isNavOpen ? ' show' : ''}`}
-            id="navbarNav"
-        >
-            <ul className="navbar-nav d-flex justify-content-center align-items-center">
-                <li className={`nav-item w-75 m-1 ${isNavOpen ? ' mb-2' : ''}`}>
-                    <a href={process.env.REACT_APP_BOT_INVITE}>Invite</a>
-                </li>
-                <li className={`nav-item w-75 m-1 ${isNavOpen ? ' mb-2' : ''}`}>
-                    <a href={process.env.REACT_APP_SUPPORT_SERVER_INVITE}>Server</a>
-                </li>
-                <li className={`nav-item w-75 m-1 ${isNavOpen ? ' mb-2' : ''}`}>
-                    <a href="https://github.com/WeismanGitHub/Population-Map-Discord-Bot">
-                        Github
+                <div className="container-fluid">
+                    <a className="navbar-brand" href="/">
+                        <img
+                            src="/icon.svg"
+                            width="50"
+                            height="50"
+                            alt="icon"
+                            className="me-2 rounded-5 bg-white"
+                        />
+                        <span className="d-block d-sm-inline-block">Population Map Bot</span>
                     </a>
-                </li>
-                {loggedIn && (
-                    <li className={`nav-item w-75 m-1 ${isNavOpen ? ' mb-2' : ''}`}>
-                        <a onClick={logout}>Logout</a>
-                    </li>
-                )}
-            </ul>
-        </div>
-    </div>
-</nav>
-
+                    <button
+                        className="navbar-toggler"
+                        type="button"
+                        onClick={() => setIsNavOpen(!isNavOpen)}
+                        aria-controls="navbarNav"
+                        aria-expanded={isNavOpen ? 'true' : 'false'}
+                        aria-label="Toggle navigation"
+                    >
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <div
+                        className={`justify-content-end collapse navbar-collapse${isNavOpen ? ' show' : ''}`}
+                        id="navbarNav"
+                    >
+                        <ul className="navbar-nav d-flex justify-content-center align-items-center">
+                            <li className={`nav-item w-75 m-1 ${isNavOpen ? ' mb-2' : ''}`}>
+                                <a href={process.env.REACT_APP_BOT_INVITE}>Invite</a>
+                            </li>
+                            <li className={`nav-item w-75 m-1 ${isNavOpen ? ' mb-2' : ''}`}>
+                                <a href={process.env.REACT_APP_SUPPORT_SERVER_INVITE}>Server</a>
+                            </li>
+                            <li className={`nav-item w-75 m-1 ${isNavOpen ? ' mb-2' : ''}`}>
+                                <a href="https://github.com/WeismanGitHub/Population-Map-Discord-Bot">
+                                    Github
+                                </a>
+                            </li>
+                            {loggedIn && (
+                                <li className={`nav-item w-75 m-1 ${isNavOpen ? ' mb-2' : ''}`}>
+                                    <a onClick={logout}>Logout</a>
+                                </li>
+                            )}
+                        </ul>
+                    </div>
+                </div>
+            </nav>
         </>
     );
 }
