@@ -83,7 +83,7 @@ export default {
                   })
               );
 
-        interaction.update({
+        await interaction.update({
             components: mapButtonsRow ? [menuRow, buttonsRow, mapButtonsRow] : [menuRow, buttonsRow],
         });
     },

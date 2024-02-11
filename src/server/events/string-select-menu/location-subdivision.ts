@@ -81,7 +81,7 @@ export default {
             });
         }
 
-        interaction.update({
+        await interaction.update({
             embeds: [new InfoEmbed('Selected a country and subdivision!')],
             components: [],
         });

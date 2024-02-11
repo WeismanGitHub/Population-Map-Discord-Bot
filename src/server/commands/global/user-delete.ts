@@ -13,7 +13,7 @@ export default {
             throw new NotFoundError('Could not find you in the database.');
         }
 
-        interaction.reply({
+        await interaction.reply({
             ephemeral: true,
             embeds: [new InfoEmbed('Your data has been deleted.')],
         });

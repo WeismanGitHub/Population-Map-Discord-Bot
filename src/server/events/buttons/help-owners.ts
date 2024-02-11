@@ -31,7 +31,7 @@ export default {
 
         const defaults = '`visibility`: `public`\n`admin-role`: `null`\n`map-role`: `null`';
 
-        interaction.reply({
+        await interaction.reply({
             embeds: [
                 new InfoEmbed(
                     null,

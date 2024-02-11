@@ -59,7 +59,7 @@ export default {
                 )
         );
 
-        interaction.reply({
+        await interaction.reply({
             ephemeral: true,
             components: [menuRow, buttonsRow],
         });

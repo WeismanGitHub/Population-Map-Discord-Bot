@@ -26,7 +26,7 @@ export default {
         const location =
             'Add your location to a server map with the `/set-location` command. Use `/remove-location` anywhere to remove your location from a server map. Use `/view-location` to see your location in a server.';
 
-        interaction.reply({
+        await interaction.reply({
             embeds: [new InfoEmbed(null, `# User Docs\n${userDocs}\n### Location\n${location}`)],
             ephemeral: true,
         });

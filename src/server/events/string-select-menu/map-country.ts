@@ -47,7 +47,7 @@ export default {
                 .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapCode=${interaction.values[0]}`)
         );
 
-        interaction.update({
+        await interaction.update({
             components: [interaction.message.components[0], interaction.message.components[1], mapButtons],
         });
     },

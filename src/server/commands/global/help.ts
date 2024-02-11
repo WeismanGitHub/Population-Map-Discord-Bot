@@ -66,7 +66,7 @@ export default {
                 .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapCode=CONTINENTS`)
         );
 
-        interaction.reply({
+        await interaction.reply({
             embeds: [embed],
             components: interaction.guild ? [firstRow, linksRow, mapButtonsRow] : [firstRow, linksRow],
             ephemeral: true,

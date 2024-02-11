@@ -58,7 +58,7 @@ export default {
                 )
         );
 
-        interaction.update({
+        await interaction.update({
             embeds: guildEmbeds,
             components: [buttonsRow],
         });

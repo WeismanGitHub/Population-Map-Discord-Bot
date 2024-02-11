@@ -37,7 +37,7 @@ export default {
                 )
         );
 
-        interaction.reply({
+        await interaction.reply({
             ephemeral: true,
             embeds: guildEmbeds,
             components: [buttonsRow],
