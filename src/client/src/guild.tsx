@@ -1,11 +1,11 @@
+import { Chart as ChartJS, CategoryScale, Tooltip, Title, Legend } from 'chart.js';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ToastContainer, Toast } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react';
 import * as ChartGeo from 'chartjs-chart-geo';
-import { errorToast } from './toasts';
 import ky, { HTTPError } from 'ky';
 import NavBar from './nav-bar';
 import Map from './map';
-import { Chart as ChartJS, CategoryScale, Tooltip, Title, Legend } from 'chart.js';
 
 ChartJS.register(
     Title,
@@ -31,7 +31,9 @@ interface GeojsonRes {
 }
 
 export default function Guild() {
+    const [countryCodes, setCountryCodes] = useState<Record<string, string> | null>(null);
     const [guildMemberCount, setGuildMemberCount] = useState(0);
+    const [error, setError] = useState<string | null>(null);
     const [icon, setIcon] = useState<string | null>(null);
     const [membersOnMap, setMembersOnMap] = useState(0);
     const [guildName, setGuildName] = useState('');
@@ -45,7 +47,7 @@ export default function Guild() {
 
     useEffect(() => {
         if (!mapCode || !guildID) {
-            return errorToast('Missing mapCode or guildID');
+            return setError('Missing mapCode or guildID');
         }
 
         (
@@ -59,18 +61,24 @@ export default function Guild() {
                     .catch((err) => {
                         throw new Error('Could not get map.');
                     }),
-            ]) as Promise<unknown> as Promise<[GuildRes, GeojsonRes]>
+                ky
+                    .get(
+                        'https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/countries.json'
+                    )
+                    .json(),
+            ]) as Promise<unknown> as Promise<[GuildRes, GeojsonRes, Record<string, string>]>
         )
-            .then(([guildRes, geojsonRes]) => {
+            .then(([guildRes, geojsonRes, countryCodes]) => {
                 // @ts-ignore
                 geojsonRes.features = Object.values(geojsonRes.objects).map((feature) =>
                     // @ts-ignore
                     ChartGeo.topojson.feature(geojsonRes, feature)
                 );
 
-                if (!geojsonRes?.features) return errorToast('Invalid map code.');
+                if (!geojsonRes?.features) return setError('Invalid map code.');
 
                 setMembersOnMap(guildRes.locations.length);
+                setCountryCodes(countryCodes);
                 setGuildMemberCount(guildRes.guildMemberCount);
                 setIcon(guildRes.icon);
                 setGuildName(guildRes.name);
@@ -132,7 +140,7 @@ export default function Guild() {
                 setStatus('Something went wrong!');
                 const err: { error: string } = await res.response.json();
 
-                errorToast(err.error || res.response.statusText || 'Something went wrong.');
+                setError(err.error || res.response.statusText || 'Something went wrong.');
 
                 if (res.response.status === 401) {
                     localStorage.removeItem('loggedIn');
@@ -142,7 +150,21 @@ export default function Guild() {
     }, []);
 
     return (
-        <div>
+        <>
+            <ToastContainer position="top-end">
+                <Toast
+                    onClose={() => setError(null)}
+                    show={error !== null}
+                    autohide={true}
+                    className="d-inline-block m-1"
+                    bg={'danger'}
+                >
+                    <Toast.Header>
+                        <strong className="me-auto">{error}</strong>
+                    </Toast.Header>
+                </Toast>
+            </ToastContainer>
+
             <NavBar />
             {!geojson ? (
                 <div
@@ -158,53 +180,26 @@ export default function Guild() {
                     {status}
                 </div>
             ) : (
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                >
-                    <div style={{ fontSize: 'x-large', display: 'flex', marginBottom: '2px' }}>
-                        <img
-                            width={65}
-                            height={65}
-                            src={icon || '/discord.svg'}
-                            alt="The icon of the Discord server."
-                            style={{ borderRadius: '50%', marginRight: '2px' }}
-                        />
-                        <div>
-                            {guildName}
-                            <br />
-                            <div style={{ fontSize: 'medium', marginLeft: '8px' }}>
-                                Total Members: {guildMemberCount}
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                    <div style={{}}>
+                        <div style={{ fontSize: 'x-large', display: 'flex', marginBottom: '2px' }}>
+                            <img
+                                width={65}
+                                height={65}
+                                src={icon || '/discord.svg'}
+                                alt="server icon"
+                                style={{ borderRadius: '50%', marginRight: '2px' }}
+                            />
+                            <div>
+                                {guildName}
                                 <br />
-                                Members on Map: {membersOnMap}
+                                <div style={{ fontSize: 'medium', marginLeft: '8px' }}>
+                                    Total Members: {guildMemberCount}
+                                    <br />
+                                    Members on Map: {membersOnMap}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            marginBottom: '2px',
-                            flexWrap: 'wrap',
-                            alignContent: 'center',
-                        }}
-                    >
-                        {mapCode !== 'WORLD' && (
-                            <a className="navbar-button" href={`/maps/${guildID}?mapCode=WORLD`}>
-                                View World
-                            </a>
-                        )}
-                        {mapCode !== 'CONTINENTS' && (
-                            <a className="navbar-button" href={`/maps/${guildID}?mapCode=CONTINENTS`}>
-                                View Continents
-                            </a>
-                        )}
-                    </div>
-                    <div style={{ width: '75%' }}>
                         <Map
                             geojson={geojson}
                             projection={
@@ -212,8 +207,39 @@ export default function Guild() {
                             }
                         />
                     </div>
+                    <div style={{}}>
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                marginBottom: '2px',
+                                flexWrap: 'wrap',
+                                alignContent: 'center',
+                            }}
+                        >
+                            <div>
+                                {mapCode !== 'WORLD' && (
+                                    <a className="navbar-button" href={`/maps/${guildID}?mapCode=WORLD`}>
+                                        View World
+                                    </a>
+                                )}
+                                {mapCode !== 'CONTINENTS' && (
+                                    <a className="navbar-button" href={`/maps/${guildID}?mapCode=CONTINENTS`}>
+                                        View Continents
+                                    </a>
+                                )}
+                            </div>
+                            <br />
+                        </div>
+                        <div style={{ overflowY: 'scroll', height: '94vh' }}>
+                            {countryCodes &&
+                                Object.entries(countryCodes).map(([name, code]) => {
+                                    return <div onClick={() => console.log(code)}>{name}</div>;
+                                })}
+                        </div>
+                    </div>
                 </div>
             )}
-        </div>
+        </>
     );
 }

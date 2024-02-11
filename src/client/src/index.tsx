@@ -1,8 +1,8 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
 import { createRoot } from 'react-dom/client';
-import 'react-toastify/dist/ReactToastify.css';
 import React from 'react';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 
 import DiscordOAuth2 from './discord-oauth2';
@@ -18,17 +18,5 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')!).render(
     <>
         <RouterProvider router={router} />
-        <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="colored"
-        />
     </>
 );
