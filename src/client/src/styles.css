@@ -88,3 +88,12 @@ code {
     margin: -2.72px;
     border-radius: 3px;
 }
+
+.link {
+    text-decoration: none;
+    color: #00a8fc;
+}
+
+.link:hover {
+    text-decoration: underline;
+}

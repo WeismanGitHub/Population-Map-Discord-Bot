@@ -36,7 +36,7 @@ export default function Home() {
                         to the map. A location can be any country and, optionally, a subdivision (state,
                         region, prefecture, etc.) within that country. Server admins can also make it so only
                         members who share their location can access the server.{' '}
-                        <a href={'https://github.com/WeismanGitHub/Population-Map-Discord-Bot?tab=readme-ov-file#user-docs'}>Read more here...</a>
+                        <a className='link' href={'https://github.com/WeismanGitHub/Population-Map-Discord-Bot?tab=readme-ov-file#user-docs'}>Read more here...</a>
                     </div>
                     <div className="col-md-12 col-lg-6 d-flex justify-content-center align-items-center">
                         <Carousel interval={3000} className="carousel-dark">
