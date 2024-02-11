@@ -48,7 +48,7 @@ export default {
             .setImage(guild.iconURL())
             .setFooter({ text: `ID: ${guildID}` });
 
-        interaction.update({
+        await interaction.update({
             embeds: [guildEmbed],
             components: [confirmationButtonRow],
         });

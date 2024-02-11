@@ -78,6 +78,6 @@ export default {
                 )
         );
 
-        interaction.update({ components: [menuRow, buttonsRow] });
+        await interaction.update({ components: [menuRow, buttonsRow] });
     },
 };

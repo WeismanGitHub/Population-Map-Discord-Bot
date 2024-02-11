@@ -69,7 +69,7 @@ export default {
             throw new InternalServerError('Could not delete your data.');
         }
 
-        interaction.update({
+        await interaction.update({
             components: [],
             embeds: [new InfoEmbed('Removed location!')],
         });

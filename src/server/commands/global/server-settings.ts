@@ -127,7 +127,7 @@ export default {
             );
         }
 
-        return interaction.reply({
+        await interaction.reply({
             ephemeral: true,
             embeds: [
                 new InfoEmbed(

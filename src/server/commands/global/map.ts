@@ -63,7 +63,7 @@ export default {
                 .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapCode=CONTINENTS`)
         );
 
-        interaction.reply({
+        await interaction.reply({
             ephemeral: true,
             components: [menuRow, buttonsRow, mapButtonsRow],
         });

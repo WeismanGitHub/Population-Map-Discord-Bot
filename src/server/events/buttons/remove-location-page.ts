@@ -99,7 +99,7 @@ export default {
                 )
         );
 
-        interaction.reply({
+        await interaction.reply({
             ephemeral: true,
             embeds:
                 guilds.length !== locations.length

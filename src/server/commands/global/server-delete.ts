@@ -20,7 +20,7 @@ export default {
             throw new NotFoundError('Could not find this server in the database.');
         }
 
-        interaction.reply({
+        await interaction.reply({
             ephemeral: true,
             embeds: [new InfoEmbed('The server data has been deleted.')],
         });

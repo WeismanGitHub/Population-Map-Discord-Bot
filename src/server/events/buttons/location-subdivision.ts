@@ -75,6 +75,6 @@ export default {
                 )
         );
 
-        interaction.update({ components: [menuRow, buttonsRow], embeds: [] });
+        await interaction.update({ components: [menuRow, buttonsRow], embeds: [] });
     },
 };
