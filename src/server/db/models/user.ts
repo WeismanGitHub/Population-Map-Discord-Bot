@@ -3,7 +3,6 @@ import { DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequ
 
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare userID: string;
-    declare role?: 'regular' | 'admin';
 }
 
 User.init(
@@ -13,10 +12,6 @@ User.init(
             allowNull: false,
             primaryKey: true,
         },
-        role: {
-            type: DataTypes.ENUM('regular', 'admin'),
-            defaultValue: 'regular',
-        },
     },
     {
         sequelize: sequelize,
@@ -25,6 +20,6 @@ User.init(
     }
 );
 
-User.sync();
+User.sync({ alter: true });
 
 export default User;
