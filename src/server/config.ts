@@ -34,10 +34,10 @@ const config: Configuration = {
     discordToken: process.env.DISCORD_TOKEN!,
     botID: process.env.BOT_ID!,
     mainAccountID: process.env.MAIN_ACCOUNT_ID!,
-    botInvite: process.env.BOT_INVITE!,
+    botInvite: process.env.REACT_APP_BOT_INVITE!,
     botSecret: process.env.BOT_SECRET!,
     redirectURI: process.env.REDIRECT_URI!,
-    supportServerInvite: process.env.SUPPORT_SERVER_INVITE!,
+    supportServerInvite: process.env.REACT_APP_SUPPORT_SERVER_INVITE!,
 
     // Rate Limiter
     limiterWindowMs: 2000,
