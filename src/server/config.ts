@@ -7,7 +7,6 @@ interface Configuration {
     limiterWindowMs: number;
     botID: string;
     botInvite: string;
-    // buyMeACoffeeURL: string
     githubURL: string;
     limiterMax: number;
     limiterMessage: string;
@@ -47,7 +46,6 @@ const config: Configuration = {
     limiterLegacyHeaders: false,
 
     // Other
-    // buyMeACoffeeURL: process.env.BUY_ME_A_COFFEE_URL!,
     githubURL: 'https://github.com/WeismanGitHub/Population-Density-Map-Discord-Bot',
     appPort: 5001,
     sessionSecret: process.env.JWT_SECRET!,
