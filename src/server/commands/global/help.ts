@@ -27,7 +27,7 @@ export default {
 
         const linksRow = new ActionRowBuilder<ButtonBuilder>().addComponents([
             new ButtonBuilder().setLabel('Website').setURL(config.websiteURL).setStyle(ButtonStyle.Link),
-            new ButtonBuilder().setLabel('Github').setURL(config.githubURL).setStyle(ButtonStyle.Link),
+            new ButtonBuilder().setLabel('GitHub').setURL(config.githubURL).setStyle(ButtonStyle.Link),
             // 	new ButtonBuilder()
             // 	.setLabel('Buy Me a Coffee')
             // 	.setURL(config.buyMeACoffeeURL)

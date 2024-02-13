@@ -87,7 +87,7 @@ export default function NavBar() {
                             </li>
                             <li className={`nav-item w-75 m-1 ${isNavOpen ? ' mb-2' : ''}`}>
                                 <a href="https://github.com/WeismanGitHub/Population-Map-Discord-Bot">
-                                    Github
+                                    GitHub
                                 </a>
                             </li>
                             {loggedIn && (
