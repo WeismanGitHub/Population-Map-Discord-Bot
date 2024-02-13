@@ -160,8 +160,11 @@ export default function Guild() {
                     bg={'danger'}
                 >
                     <Toast.Header>
-                        <strong className="me-auto">{error}</strong>
+                        Something went wrong!
                     </Toast.Header>
+                    <Toast.Body>
+                        <strong className="me-auto">{error}</strong>
+                    </Toast.Body>
                 </Toast>
             </ToastContainer>
 
