@@ -97,3 +97,17 @@ code {
 .link:hover {
     text-decoration: underline;
 }
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #1a1b1e;
+    border-radius: 50px;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 50px;
+    background-color: #2b2d31;
+}
