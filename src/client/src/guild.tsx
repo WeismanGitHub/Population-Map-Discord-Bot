@@ -215,7 +215,7 @@ export default function Guild() {
                                 />
                             </div>
                         </div>
-                        <div className="col-lg-2 d-flex justify-content-center">
+                        <div className="col-lg-2 d-flex justify-content-center justify-content-lg-end">
                             <div style={{ width: '150px' }}>
                                 <div>
                                     <a
