@@ -14,9 +14,12 @@ export default {
     data: new SlashCommandBuilder().setName('help').setDescription('Information about this bot.'),
     guildIDs: null,
     async execute(interaction: CommandInteraction): Promise<void> {
-        const attachment = new AttachmentBuilder(resolve(__dirname, '../../../../images/WORLD2-example.jpg'), {
-            name: 'world-example.jpg',
-        });
+        const attachment = new AttachmentBuilder(
+            resolve(__dirname, '../../../../images/WORLD2-example.jpg'),
+            {
+                name: 'world-example.jpg',
+            }
+        );
 
         const embed = new InfoEmbed(
             null,
@@ -27,12 +30,8 @@ export default {
 
         const linksRow = new ActionRowBuilder<ButtonBuilder>().addComponents([
             new ButtonBuilder().setLabel('Website').setURL(config.websiteURL).setStyle(ButtonStyle.Link),
-            new ButtonBuilder().setLabel('Github').setURL(config.githubURL).setStyle(ButtonStyle.Link),
-            new ButtonBuilder().setLabel('Server').setURL(config.supportServerInvite).setStyle(ButtonStyle.Link),
-            // 	new ButtonBuilder()
-            // 	.setLabel('Buy Me a Coffee')
-            // 	.setURL(config.buyMeACoffeeURL)
-            // 	.setStyle(ButtonStyle.Link),
+            new ButtonBuilder().setLabel('GitHub').setURL(config.githubURL).setStyle(ButtonStyle.Link),
+            new ButtonBuilder().setLabel('Server').setURL(config.serverInvite).setStyle(ButtonStyle.Link),
         ]);
 
         const firstRow = new ActionRowBuilder<ButtonBuilder>().addComponents(

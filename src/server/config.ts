@@ -7,14 +7,13 @@ interface Configuration {
     limiterWindowMs: number;
     botID: string;
     botInvite: string;
-    // buyMeACoffeeURL: string
     githubURL: string;
     limiterMax: number;
     limiterMessage: string;
     limiterStandardHeaders: boolean;
     limiterLegacyHeaders: boolean;
     botSecret: string;
-    supportServerInvite: string;
+    serverInvite: string;
     redirectURI: string;
     sessionSecret: string;
     mode: 'prod' | 'dev';
@@ -37,7 +36,7 @@ const config: Configuration = {
     botInvite: process.env.REACT_APP_BOT_INVITE!,
     botSecret: process.env.BOT_SECRET!,
     redirectURI: process.env.REDIRECT_URI!,
-    supportServerInvite: process.env.REACT_APP_SUPPORT_SERVER_INVITE!,
+    serverInvite: process.env.REACT_APP_SUPPORT_SERVER_INVITE!,
 
     // Rate Limiter
     limiterWindowMs: 2000,
@@ -47,7 +46,6 @@ const config: Configuration = {
     limiterLegacyHeaders: false,
 
     // Other
-    // buyMeACoffeeURL: process.env.BUY_ME_A_COFFEE_URL!,
     githubURL: 'https://github.com/WeismanGitHub/Population-Density-Map-Discord-Bot',
     appPort: 5001,
     sessionSecret: process.env.JWT_SECRET!,

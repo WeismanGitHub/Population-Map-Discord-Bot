@@ -52,7 +52,10 @@ export default function NavBar() {
                     <Toast.Body>{success}</Toast.Body>
                 </Toast>
             </ToastContainer>
-            <nav className="navbar navbar-expand-md py-1 ps-2 pe-2 navbar-dark bg-dark">
+            <nav
+                className="navbar navbar-expand-md py-1 ps-2 pe-2 navbar-dark bg-dark"
+                style={{ textAlign: 'center', fontSize: 'x-large' }}
+            >
                 <div className="container-fluid">
                     <a className="navbar-brand" href="/">
                         <img
@@ -87,7 +90,7 @@ export default function NavBar() {
                             </li>
                             <li className={`nav-item w-75 m-1 ${isNavOpen ? ' mb-2' : ''}`}>
                                 <a href="https://github.com/WeismanGitHub/Population-Map-Discord-Bot">
-                                    Github
+                                    GitHub
                                 </a>
                             </li>
                             {loggedIn && (

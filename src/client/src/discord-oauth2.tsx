@@ -71,8 +71,8 @@ export default function DiscordOAuth2() {
                     </Toast.Header>
                 </Toast>
             </ToastContainer>
+            <NavBar />
             <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column' }}>
-                <NavBar />
                 <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <a
                         className="btn-custom btn-xl"
