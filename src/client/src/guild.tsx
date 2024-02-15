@@ -182,7 +182,7 @@ export default function Guild() {
                 </div>
             ) : (
                 <div className="container p-1">
-                    <div className="row">
+                    <div className="d-flex justify-content-center m-0 col-lg-10">
                         <div style={{ fontSize: 'x-large', display: 'flex', marginBottom: '2px' }}>
                             <img
                                 width={65}
@@ -195,9 +195,9 @@ export default function Guild() {
                                 {guildName}
                                 <br />
                                 <div style={{ fontSize: 'medium', marginLeft: '8px' }}>
-                                    Total Members: {guildMemberCount}
+                                    {guildMemberCount} total members
                                     <br />
-                                    Members on Map: {membersOnMap}
+                                    {membersOnMap} members on map
                                 </div>
                             </div>
                         </div>
@@ -215,7 +215,7 @@ export default function Guild() {
                                 />
                             </div>
                         </div>
-                        <div className="col-lg-2 d-flex justify-content-center justify-content-lg-end">
+                        <div className="col-lg-2 d-flex justify-content-center justify-content-lg-end mt-2 mt-lg-0">
                             <div style={{ width: '150px' }}>
                                 <div>
                                     <a
