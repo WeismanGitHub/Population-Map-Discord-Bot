@@ -29,7 +29,8 @@ export default {
         const mapVisibility =
             'The `visibility` option allows admins/owners to change who can view the server map. Setting `visibility` to `public` allows anyone with a link to view the map. Setting it to `member-restricted` allows only server members to view the map. Choosing `map-role-restricted` restricts the map to the owner and members with the map role. `admin-role-restricted` limits access to only the owner and members with the admin role. Selecting `invisible` everyone, including admins and the owner.';
 
-        const defaults = '`visibility`: `public`\n`admin-role`: `null`\n`map-role`: `null`\n`user-role`: `null`';
+        const defaults =
+            '`visibility`: `public`\n`admin-role`: `null`\n`map-role`: `null`\n`user-role`: `null`';
 
         await interaction.reply({
             embeds: [
