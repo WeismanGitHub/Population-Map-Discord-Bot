@@ -45,4 +45,6 @@
   `admin-role`: `null`
   <br/>
   `map-role`: `null`
+  <br/>
+  `user-role`: `null`
 </div>
