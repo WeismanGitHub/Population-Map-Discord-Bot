@@ -1,6 +1,6 @@
 import { Chart as ChartJS, CategoryScale, Tooltip, Title, Legend } from 'chart.js';
+import { ToastContainer, Toast, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ToastContainer, Toast } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react';
 import * as ChartGeo from 'chartjs-chart-geo';
 import ky, { HTTPError } from 'ky';
@@ -159,9 +159,7 @@ export default function Guild() {
                     className="d-inline-block m-1"
                     bg={'danger'}
                 >
-                    <Toast.Header>
-                        Something went wrong!
-                    </Toast.Header>
+                    <Toast.Header>Something went wrong!</Toast.Header>
                     <Toast.Body>
                         <strong className="me-auto">{error}</strong>
                     </Toast.Body>
@@ -183,8 +181,8 @@ export default function Guild() {
                     {status}
                 </div>
             ) : (
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <div style={{}}>
+                <div className="container p-1">
+                    <div className="row">
                         <div style={{ fontSize: 'x-large', display: 'flex', marginBottom: '2px' }}>
                             <img
                                 width={65}
@@ -203,42 +201,53 @@ export default function Guild() {
                                 </div>
                             </div>
                         </div>
-                        <Map
-                            geojson={geojson}
-                            projection={
-                                mapCode === 'WORLD' || mapCode === 'CONTINENTS' ? 'equalEarth' : 'albers'
-                            }
-                        />
                     </div>
-                    <div style={{}}>
-                        <div
-                            style={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                marginBottom: '2px',
-                                flexWrap: 'wrap',
-                                alignContent: 'center',
-                            }}
-                        >
-                            <div>
-                                {mapCode !== 'WORLD' && (
-                                    <a className="navbar-button" href={`/maps/${guildID}?mapCode=WORLD`}>
+                    <div className="row" style={{ height: '450px' }}>
+                        <div className="col-lg-10">
+                            <div style={{ maxHeight: '450px' }}>
+                                <Map
+                                    geojson={geojson}
+                                    projection={
+                                        mapCode === 'WORLD' || mapCode === 'CONTINENTS'
+                                            ? 'equalEarth'
+                                            : 'albers'
+                                    }
+                                />
+                            </div>
+                        </div>
+                        <div className="col-lg-2 d-flex justify-content-center">
+                            <div style={{ width: '150px' }}>
+                                <div>
+                                    <a
+                                        className="btn-custom mb-1"
+                                        style={{ color: '#ffffff', width: '150px' }}
+                                        href={`/maps/${guildID}?mapCode=WORLD`}
+                                    >
                                         View World
                                     </a>
-                                )}
-                                {mapCode !== 'CONTINENTS' && (
-                                    <a className="navbar-button" href={`/maps/${guildID}?mapCode=CONTINENTS`}>
+                                    <br />
+                                    <a
+                                        className="btn-custom mb-1"
+                                        style={{ color: '#ffffff', width: '150px' }}
+                                        href={`/maps/${guildID}?mapCode=CONTINENTS`}
+                                    >
                                         View Continents
                                     </a>
-                                )}
+                                </div>
+                                <ListGroup
+                                    className="flex-grow-1"
+                                    style={{ height: '362px', overflowY: 'auto', width: '150px' }}
+                                >
+                                    {countryCodes &&
+                                        Object.entries(countryCodes).map(([name, code]) => {
+                                            return (
+                                                <ListGroupItem key={code} className="btn-custom mb-1 me-1">
+                                                    <a href={`/maps/${guildID}?mapCode=${code}`}>{name}</a>
+                                                </ListGroupItem>
+                                            );
+                                        })}
+                                </ListGroup>
                             </div>
-                            <br />
-                        </div>
-                        <div style={{ overflowY: 'scroll', height: '94vh' }}>
-                            {countryCodes &&
-                                Object.entries(countryCodes).map(([name, code]) => {
-                                    return <div onClick={() => console.log(code)}>{name}</div>;
-                                })}
                         </div>
                     </div>
                 </div>
