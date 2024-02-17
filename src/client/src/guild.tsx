@@ -183,7 +183,7 @@ export default function Guild() {
             ) : (
                 <div className="container p-1">
                     <div className="d-flex justify-content-center m-0 col-lg-10">
-                        <div style={{ fontSize: 'x-large', display: 'flex', marginBottom: '2px' }}>
+                        <div style={{ fontSize: 'x-large', display: 'flex', marginBottom: '3px' }}>
                             <img
                                 width={65}
                                 height={65}
@@ -195,9 +195,7 @@ export default function Guild() {
                                 {guildName}
                                 <br />
                                 <div style={{ fontSize: 'medium', marginLeft: '8px' }}>
-                                    {guildMemberCount} total members
-                                    <br />
-                                    {membersOnMap} members on map
+                                    {membersOnMap} / {guildMemberCount} members {`(${Math.round((membersOnMap / guildMemberCount) * 100)}%)`}
                                 </div>
                             </div>
                         </div>
