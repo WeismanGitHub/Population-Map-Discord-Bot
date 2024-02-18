@@ -1,6 +1,6 @@
 {
     "watch": [
-        "dist/server/*"
+        "src/server/dist/server*"
     ],
     "delay": "100"
 }
