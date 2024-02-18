@@ -13,12 +13,7 @@ export default {
 
         return { customID: { type }, interaction };
     },
-    execute: async ({
-        interaction,
-    }: {
-        interaction: ButtonInteraction;
-        customID: CustomID<{}>;
-    }) => {
+    execute: async ({ interaction }: { interaction: ButtonInteraction; customID: CustomID<{}> }) => {
         const userDocs =
             'You can delete your data with `/user-delete`. Your location should be automatically removed from a server map if you leave or are kicked/banned, but this will not work if the bot is offline. Use `/remove-location` if your location is not automatically removed.';
 

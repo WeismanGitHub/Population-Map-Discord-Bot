@@ -13,12 +13,7 @@ export default {
 
         return { customID: { type }, interaction };
     },
-    execute: async ({
-        interaction,
-    }: {
-        interaction: ButtonInteraction;
-        customID: CustomID<{}>;
-    }) => {
+    execute: async ({ interaction }: { interaction: ButtonInteraction; customID: CustomID<{}> }) => {
         const serverOwnerDocs =
             "Set a server's settings with `/server-settings`. Using `/server-settings` for the first time without any options selected will save the defaults. Before the server owner uses `/server-settings`, the map is unavailable.";
 

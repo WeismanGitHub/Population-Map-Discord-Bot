@@ -195,7 +195,8 @@ export default function Guild() {
                                 {guildName}
                                 <br />
                                 <div style={{ fontSize: 'medium', marginLeft: '8px' }}>
-                                    {membersOnMap} / {guildMemberCount} members {`(${Math.round((membersOnMap / guildMemberCount) * 100)}%)`}
+                                    {membersOnMap} / {guildMemberCount} members{' '}
+                                    {`(${Math.round((membersOnMap / guildMemberCount) * 100)}%)`}
                                 </div>
                             </div>
                         </div>

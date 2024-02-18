@@ -1,27 +1,27 @@
 {
-  "scripts": {
-    "build": "tsc"
-  },
-  "devDependencies": {
-    "@types/compression": "^1.7.5",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
-    "@types/express-session": "^1.17.10",
-    "@types/iso-3166-2": "^1.0.3",
-    "@types/node": "^20.11.19",
-    "typescript": "^5.3.3"
-  },
-  "dependencies": {
-    "compression": "^1.7.4",
-    "discord-oauth2": "^2.12.1",
-    "discord.js": "^14.14.1",
-    "express-async-errors": "^3.1.1",
-    "express-rate-limit": "^7.1.5",
-    "express-session": "^1.18.0",
-    "fetch-metadata": "^1.0.0",
-    "helmet": "^7.1.0",
-    "iso-3166-2": "^1.0.0",
-    "pg": "^8.11.3",
-    "sequelize": "^6.37.1"
-  }
+    "scripts": {
+        "build": "tsc"
+    },
+    "devDependencies": {
+        "@types/compression": "^1.7.5",
+        "@types/cors": "^2.8.17",
+        "@types/express": "^4.17.21",
+        "@types/express-session": "^1.17.10",
+        "@types/iso-3166-2": "^1.0.3",
+        "@types/node": "^20.11.19",
+        "typescript": "^5.3.3"
+    },
+    "dependencies": {
+        "compression": "^1.7.4",
+        "discord-oauth2": "^2.12.1",
+        "discord.js": "^14.14.1",
+        "express-async-errors": "^3.1.1",
+        "express-rate-limit": "^7.1.5",
+        "express-session": "^1.18.0",
+        "fetch-metadata": "^1.0.0",
+        "helmet": "^7.1.0",
+        "iso-3166-2": "^1.0.0",
+        "pg": "^8.11.3",
+        "sequelize": "^6.37.1"
+    }
 }
