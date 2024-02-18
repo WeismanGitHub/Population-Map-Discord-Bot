@@ -12,4 +12,4 @@ COPY . .
 
 RUN npm run build
 
-CMD ["node", "./dist/server/index.js"]
+CMD ["node", "./src/server/dist/server/index.js"]
