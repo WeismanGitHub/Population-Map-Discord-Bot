@@ -26,7 +26,7 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
     const guildData = await Guild.findOne({
         where: { guildID },
         attributes: ['visibility', 'adminRoleID', 'mapRoleID'],
-    }).catch((err) => {
+    }).catch(() => {
         throw new InternalServerError('Could not get server from database.');
     });
 
@@ -44,7 +44,7 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
             throw new UnauthorizedError('You must log in to see this map.');
         }
 
-        const guilds = await oauth.getUserGuilds(accessToken).catch((err) => {
+        const guilds = await oauth.getUserGuilds(accessToken).catch(() => {
             throw new InternalServerError('Could not get user servers.');
         });
 
@@ -56,12 +56,12 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
 
         if (!partialGuild.owner) {
             const userID = (
-                await oauth.getUser(accessToken).catch((err) => {
+                await oauth.getUser(accessToken).catch(() => {
                     throw new InternalServerError('Could not get user data.');
                 })
             ).id;
 
-            const user = await fullGuild.members.fetch(userID).catch((err) => {
+            const user = await fullGuild.members.fetch(userID).catch(() => {
                 throw new InternalServerError('Could not get user data.');
             });
 

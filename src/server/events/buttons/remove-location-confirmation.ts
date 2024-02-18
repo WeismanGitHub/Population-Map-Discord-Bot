@@ -28,7 +28,7 @@ export default {
         interaction: StringSelectMenuInteraction;
         customID: CustomID<{ guildID: string }>;
     }) => {
-        const guild = await Guild.findOne({ where: { guildID: customID.data.guildID } }).catch((err) => {
+        const guild = await Guild.findOne({ where: { guildID: customID.data.guildID } }).catch(() => {
             throw new InternalServerError('Could not get this server.');
         });
 

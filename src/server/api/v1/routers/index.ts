@@ -18,7 +18,7 @@ const limiter = rateLimit({
     max: config.limiterMax,
     standardHeaders: true,
     legacyHeaders: false,
-    handler: (req, res, next, options) => {
+    handler: (_req, _res, _next, _options) => {
         throw new TooManyRequestsError(config.limiterMessage);
     },
 });
@@ -30,7 +30,7 @@ v1Router.use(
         disallowedNavigationRequests: ['frame', 'iframe'],
         errorStatusCode: 403,
         allowedPaths: [],
-        onError: (req, res, next, options) => {
+        onError: (_req, res, _next, options) => {
             res.statusCode = options.errorStatusCode;
             res.end();
         },

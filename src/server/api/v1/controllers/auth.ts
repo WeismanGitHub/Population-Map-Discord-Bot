@@ -23,13 +23,13 @@ async function discordOAuth2(req: Request, res: Response): Promise<void> {
                 grantType: 'authorization_code',
                 redirectUri: config.redirectURI,
             })
-            .catch((err) => {
+            .catch(() => {
                 throw new InternalServerError('Could not get user token');
             })
     ).access_token;
 
     const userID = (
-        await oauth.getUser(accessToken).catch((err) => {
+        await oauth.getUser(accessToken).catch(() => {
             throw new InternalServerError('Could not get user ID.');
         })
     ).id;

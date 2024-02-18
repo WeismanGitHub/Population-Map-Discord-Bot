@@ -19,7 +19,7 @@ import app from './app';
         throw new InternalServerError('Mode must be equal to "prod" or "dev".');
     }
 
-    await sequelize.authenticate().catch((err) => {
+    await sequelize.authenticate().catch(() => {
         throw new InternalServerError('Could not connect to database.');
     });
 

@@ -30,7 +30,7 @@ export default {
     }) => {
         if (!interaction.inGuild()) return;
 
-        const guild = await Guild.findOne({ where: { guildID: interaction.guildId } }).catch((err) => {
+        const guild = await Guild.findOne({ where: { guildID: interaction.guildId } }).catch(() => {
             throw new InternalServerError('Could not get this server.');
         });
 
@@ -53,7 +53,7 @@ export default {
             userID: interaction.user.id,
             subdivisionCode,
             countryCode,
-        }).catch((err) => {
+        }).catch(() => {
             throw new InternalServerError('Could not save your subdivision.');
         });
 

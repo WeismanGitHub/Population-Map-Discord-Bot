@@ -98,7 +98,7 @@ export default {
                 const res = await Guild.upsert({
                     guildID: interaction.guildId!,
                     ...settings,
-                }).catch((err) => {
+                }).catch(() => {
                     throw new InternalServerError('Could not save server settings.');
                 });
 
@@ -115,7 +115,7 @@ export default {
                     throw new ForbiddenError('Admins cannot edit the admin role.');
                 }
 
-                await guild.update(settings).catch((err) => {
+                await guild.update(settings).catch(() => {
                     throw new InternalServerError('Could not save server settings.');
                 });
             }

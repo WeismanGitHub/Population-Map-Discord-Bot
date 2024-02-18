@@ -34,7 +34,7 @@ export default {
 
         const countryCode = interaction.values[0];
 
-        const guild = await Guild.findOne({ where: { guildID: interaction.guildId } }).catch((err) => {
+        const guild = await Guild.findOne({ where: { guildID: interaction.guildId } }).catch(() => {
             throw new InternalServerError('Could not get this server.');
         });
 
@@ -49,7 +49,7 @@ export default {
             throw new ForbiddenError('Missing permissions to add `user-role`.');
         }
 
-        await User.upsert({ userID: interaction.user.id }).catch((err) => {
+        await User.upsert({ userID: interaction.user.id }).catch(() => {
             throw new InternalServerError('Could not write to database.');
         });
 
@@ -58,7 +58,7 @@ export default {
             userID: interaction.user.id,
             countryCode,
             subdivisionCode: null,
-        }).catch((err) => {
+        }).catch(() => {
             throw new InternalServerError('Could not save your country.');
         });
 
