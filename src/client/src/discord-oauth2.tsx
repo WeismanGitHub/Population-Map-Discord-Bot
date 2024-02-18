@@ -75,7 +75,8 @@ export default function DiscordOAuth2() {
                 <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <a
                         className="btn-custom btn-xl"
-                        href={process.env.REACT_APP_OAUTH_URL + `&state=${btoa(randomString)}`}
+                        /* @ts-ignore */
+                        href={import.meta.env.VITE_OAUTH_URL + `&state=${btoa(randomString)}`}
                     >
                         Login
                     </a>

@@ -83,10 +83,12 @@ export default function NavBar() {
                     >
                         <ul className="navbar-nav d-flex justify-content-center align-items-center">
                             <li className={`nav-item w-75 m-1 ${isNavOpen ? ' mb-2' : ''}`}>
-                                <a href={process.env.REACT_APP_BOT_INVITE}>Invite</a>
+                                {/* @ts-ignore */}
+                                <a href={import.meta.env.VITE_BOT_INVITE}>Invite</a>
                             </li>
                             <li className={`nav-item w-75 m-1 ${isNavOpen ? ' mb-2' : ''}`}>
-                                <a href={process.env.REACT_APP_SUPPORT_SERVER_INVITE}>Server</a>
+                                {/* @ts-ignore */}
+                                <a href={import.meta.env.VITE_SUPPORT_SERVER_INVITE}>Server</a>
                             </li>
                             <li className={`nav-item w-75 m-1 ${isNavOpen ? ' mb-2' : ''}`}>
                                 <a href="https://github.com/WeismanGitHub/Population-Map-Discord-Bot">
