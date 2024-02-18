@@ -28,15 +28,13 @@ function getPaths(dir: string): string[] {
 
 export class CustomClient extends Client {
     private readonly commands: Collection<unknown, any>;
-    public readonly token: string;
 
     constructor(clientOptions: ClientOptions) {
         super(clientOptions);
 
-        this.token = config.discordToken;
         this.commands = new Collection();
 
-        this.login(this.token).then(async () => {
+        this.login(config.discordToken).then(async () => {
             this.loadEventListeners();
             this.loadCommands();
         });

@@ -7,7 +7,7 @@ import { resolve } from 'path';
 const app: Application = express();
 
 app.set('trust proxy', 1);
-app.use(express.static(resolve(__dirname, '../client/build')));
+app.use(express.static(resolve(__dirname, '../client')));
 app.use('/api/v1/', v1Router);
 
 app.use('/api/*', (): void => {
@@ -15,7 +15,7 @@ app.use('/api/*', (): void => {
 });
 
 app.get('/*', (_req, res): void => {
-    res.status(200).sendFile(resolve(__dirname, '../client/build/index.html'));
+    res.status(200).sendFile(resolve(__dirname, '../client/index.html'));
 });
 
 app.use((err: Error | CustomError, _req: Request, res: Response, _next: NextFunction): void => {
