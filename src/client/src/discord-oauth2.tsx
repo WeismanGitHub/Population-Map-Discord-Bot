@@ -3,7 +3,6 @@ import { ToastContainer, Toast } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import ky, { HTTPError } from 'ky';
 import NavBar from './nav-bar';
-import React from 'react';
 
 function generateState() {
     const randomNumber = Math.floor(Math.random() * 10);
@@ -36,7 +35,7 @@ export default function DiscordOAuth2() {
 
         if (code && state && localStorage.getItem('auth-state') === atob(decodeURIComponent(state))) {
             ky.post('/api/v1/auth/discord/oauth2', { json: { code } })
-                .then((res) => {
+                .then(() => {
                     setAuthorized(true);
                 })
                 .catch(async (res: HTTPError) => {

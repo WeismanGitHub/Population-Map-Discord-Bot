@@ -1,5 +1,5 @@
 import { ToastContainer, Toast } from 'react-bootstrap';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ky from 'ky';
 
 export default function NavBar() {
@@ -14,12 +14,12 @@ export default function NavBar() {
         }
 
         ky.post('/api/v1/auth/logout')
-            .then((res) => {
+            .then(() => {
                 localStorage.removeItem('loggedIn');
                 setLoggedIn(false);
                 setSuccess('Logged out!');
             })
-            .catch((err) => setError('Could not log out.'));
+            .catch(() => setError('Could not log out.'));
     }
 
     return (

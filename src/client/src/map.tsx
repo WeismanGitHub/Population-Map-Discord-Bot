@@ -1,7 +1,7 @@
+import { Chart as ChartJS, CategoryScale, Tooltip, Title, Legend } from 'chart.js';
 import { Chart as ReactChart } from 'react-chartjs-2';
 import * as ChartGeo from 'chartjs-chart-geo';
-import React, { useRef } from 'react';
-import { Chart as ChartJS, CategoryScale, Tooltip, Title, Legend } from 'chart.js';
+import { useRef } from 'react';
 
 ChartJS.register(
     Title,

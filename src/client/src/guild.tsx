@@ -1,7 +1,7 @@
 import { Chart as ChartJS, CategoryScale, Tooltip, Title, Legend } from 'chart.js';
 import { ToastContainer, Toast, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import * as ChartGeo from 'chartjs-chart-geo';
 import ky, { HTTPError } from 'ky';
 import NavBar from './nav-bar';
@@ -58,7 +58,7 @@ export default function Guild() {
                         `https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/topojson/${mapCode}.json`
                     )
                     ?.json()
-                    .catch((err) => {
+                    .catch(() => {
                         throw new Error('Could not get map.');
                     }),
                 ky

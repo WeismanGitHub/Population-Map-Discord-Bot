@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Carousel } from 'react-bootstrap';
 import NavBar from './nav-bar';
 import ky from 'ky';
