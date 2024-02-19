@@ -15,7 +15,7 @@ export default {
     guildIDs: null,
     async execute(interaction: CommandInteraction): Promise<void> {
         const attachment = new AttachmentBuilder(
-            resolve(__dirname, '../../../../images/WORLD2-example.jpg'),
+            resolve(__dirname, '../../../../../../images/WORLD2-example.jpg'),
             {
                 name: 'world-example.jpg',
             }
