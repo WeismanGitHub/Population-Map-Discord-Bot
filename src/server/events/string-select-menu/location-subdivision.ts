@@ -1,6 +1,7 @@
 import { ForbiddenError, InternalServerError, NotFoundError } from '../../errors';
 import { Guild, GuildLocation } from '../../db/models';
 import { InfoEmbed } from '../../utils/embeds';
+import iso31662 from '../../utils/countries';
 import {
     DiscordAPIError,
     Events,
@@ -81,8 +82,15 @@ export default {
             });
         }
 
+        const country = iso31662.getCountry(countryCode)
+        const subdivision = country.sub.find(sub => sub.code === subdivisionCode)
+
+        if (!subdivision) {
+            throw new InternalServerError("Could not find subdivision.")
+        }
+
         await interaction.update({
-            embeds: [new InfoEmbed('Selected a country and subdivision!')],
+            embeds: [new InfoEmbed(`Selected \`${subdivision.name}\`, \`${country.name}\`!`)],
             components: [],
         });
     },

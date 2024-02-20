@@ -1,6 +1,7 @@
 import { ForbiddenError, InternalServerError, NotFoundError } from '../../errors';
 import { Guild, GuildLocation, User } from '../../db/models';
 import { InfoEmbed } from '../../utils/embeds';
+import iso31662 from '../../utils/countries';
 import {
     ActionRowBuilder,
     ButtonBuilder,
@@ -101,8 +102,8 @@ export default {
         await interaction.update({
             embeds: [
                 new InfoEmbed(
-                    'Selected a country!',
-                    'You can also optionally choose your subdivision (state, region, prefecture, etc).'
+                    `Selected \`${iso31662.getCountry(countryCode).name}\`!`,
+                    'You can also optionally choose a subdivision (state, region, prefecture, etc).'
                 ),
             ],
             components: [row],
