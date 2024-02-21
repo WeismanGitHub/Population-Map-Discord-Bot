@@ -66,8 +66,8 @@ export class CustomClient extends Client {
             const command = this.commands.get(interaction.commandName);
 
             command.execute(interaction).catch((err: Error) => {
-                if (!(err instanceof CustomError)) console.log(err);
-
+                console.error(err.message);
+                
                 const embed =
                     err instanceof CustomError
                         ? new ErrorEmbed(err.message, err.statusCode)
@@ -100,6 +100,7 @@ export class CustomClient extends Client {
                     if (!res) return;
 
                     event.execute(res).catch((err: Error) => {
+                        console.error(err.message);
                         if (event.name !== Events.InteractionCreate) return;
 
                         const embed =
