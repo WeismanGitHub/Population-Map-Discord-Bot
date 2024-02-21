@@ -8,6 +8,10 @@ export default {
     once: false,
     check: async (guild: Guild) => guild,
     execute: async (guild: Guild) => {
+        await GuildModel.upsert({
+            guildID: guild.id,
+        });
+
         const channel = guild.systemChannel;
 
         if (!channel) return;
@@ -54,8 +58,6 @@ export default {
             components: [firstRow, linksRow],
         });
 
-        await GuildModel.upsert({
-            guildID: guild.id,
-        })
+        console.log(await GuildModel.findOne({ where: { guildID: guild.id } }));
     },
 };
