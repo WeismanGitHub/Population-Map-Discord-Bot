@@ -82,11 +82,11 @@ export default {
             });
         }
 
-        const country = iso31662.getCountry(countryCode)
-        const subdivision = country.sub.find(sub => sub.code === subdivisionCode)
+        const country = iso31662.getCountry(countryCode);
+        const subdivision = country.sub.find((sub) => sub.code === subdivisionCode);
 
         if (!subdivision) {
-            throw new InternalServerError("Could not find subdivision.")
+            throw new InternalServerError('Could not find subdivision.');
         }
 
         await interaction.update({
