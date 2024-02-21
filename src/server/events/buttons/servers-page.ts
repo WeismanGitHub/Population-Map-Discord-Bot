@@ -35,7 +35,7 @@ export default {
         );
 
         const guildEmbeds = guilds.map((guild) => new GuildEmbed(guild));
-        const noNextPage = interaction.client.guilds.cache.size - ((page + 1) * 10) == 0
+        const noNextPage = interaction.client.guilds.cache.size - (page + 1) * 10 == 0;
 
         const buttonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()

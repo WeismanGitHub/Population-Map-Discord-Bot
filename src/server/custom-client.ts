@@ -67,7 +67,7 @@ export class CustomClient extends Client {
 
             command.execute(interaction).catch((err: Error) => {
                 console.error(err.message);
-                
+
                 const embed =
                     err instanceof CustomError
                         ? new ErrorEmbed(err.message, err.statusCode)
