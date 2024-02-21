@@ -123,7 +123,7 @@ export default {
 
         if (!guild) {
             throw new NotFoundError(
-                'This server has not been set up. The server owner must use `/server-settings`.'
+                'This server has not been set up. The server owner must set up with `/server-settings`.'
             );
         }
 
