@@ -27,7 +27,7 @@
   <hr class="rounded">
   
   ## Server Owners Docs
-  Set a server's settings with `/server-settings`. Using `/server-settings` for the first time without any options selected will save the defaults. Before the server owner uses `/server-settings`, the map is unavailable.
+  Set a server's settings with `/server-settings`.
 
   #### Server Roles
   The `user-role` is assigned to a member when they set their location and is removed when their location is deleted. You can lock your server behind this role, essentially requiring people set their locations. You MUST place the `Population Map Bot` role above the `user-role` in your server's settings for it to work.

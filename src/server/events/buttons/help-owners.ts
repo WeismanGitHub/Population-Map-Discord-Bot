@@ -15,7 +15,7 @@ export default {
     },
     execute: async ({ interaction }: { interaction: ButtonInteraction; customID: CustomID<{}> }) => {
         const serverOwnerDocs =
-            "Set a server's settings with `/server-settings`. Using `/server-settings` for the first time without any options selected will save the defaults. Before the server owner uses `/server-settings`, the map is unavailable.";
+            "Set a server's settings with `/server-settings`.";
 
         const serverRoles =
             "The `user-role` is assigned to a member when they set their location and is removed when their location is deleted. You can lock your server behind this role, essentially requiring people set their locations.You MUST place the `Population Map Bot` role above the `user-role` in your server's settings for it to work.\n\nThe admin role permits a server owner to authorizes members with a certain role to be able to change any server setting. Select a role to become the admin role with the `admin-role` option. Only the owner is allowed to change the admin role.\n\nThe map role allows admins/owners to restrict map access to members with a specific role. Set the map role with the `map-role` option. Remove the map, admin, or user role with `remove-role`. `remove-role` does not delete the role from the server.";
