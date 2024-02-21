@@ -56,10 +56,6 @@ export default {
 
         await GuildModel.upsert({
             guildID: guild.id,
-            adminRoleID: null,
-            mapRoleID: null,
-            userRoleID: null,
-            visibility: 'public'
         })
     },
 };
