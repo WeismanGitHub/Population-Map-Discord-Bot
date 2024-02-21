@@ -1,4 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Events, Guild, PermissionFlagsBits } from 'discord.js';
+import { Guild as GuildModel } from '../db/models';
 import { InfoEmbed } from '../utils/embeds';
 import config from '../config';
 
@@ -52,5 +53,13 @@ export default {
             embeds: [embed],
             components: [firstRow, linksRow],
         });
+
+        await GuildModel.upsert({
+            guildID: guild.id,
+            adminRoleID: null,
+            mapRoleID: null,
+            userRoleID: null,
+            visibility: 'public'
+        })
     },
 };
