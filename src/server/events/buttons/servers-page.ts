@@ -33,7 +33,9 @@ export default {
         const guilds = new Collection(
             Array.from(interaction.client.guilds.cache).slice(page * 10, 10 + page * 10)
         );
+
         const guildEmbeds = guilds.map((guild) => new GuildEmbed(guild));
+        const noNextPage = interaction.client.guilds.cache.size - ((page + 1) * 10) == 0
 
         const buttonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
@@ -48,7 +50,7 @@ export default {
                 ),
             new ButtonBuilder()
                 .setLabel('⏩')
-                .setDisabled(guildEmbeds.length < 10)
+                .setDisabled(guildEmbeds.length < 10 || noNextPage)
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(
                     JSON.stringify({
