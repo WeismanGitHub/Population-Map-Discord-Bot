@@ -16,16 +16,12 @@
     <img src="https://raw.githubusercontent.com/WeismanGitHub/Population-Map-Discord-Bot/main/images/IT-example.jpg" alt="USA Example" style="width: 40%;min-width: 350px;height: auto;margin: 5px;" />
   </div>
 
-  <hr class="rounded">
-  
   ## User Docs
   You can delete your data with `/user-delete`. Your location should be automatically removed from a server map if you leave or are kicked/banned, but this will not work if the bot is offline. Use `/remove-location` if your location is not automatically removed.
 
   #### Location
   Add your location to a server map with the `/set-location` command. Use `/remove-location` anywhere to remove your location from a server map. Use `/view-location` to see your location in a server.
 
-  <hr class="rounded">
-  
   ## Server Owners Docs
   Set a server's settings with `/server-settings`.
 
@@ -47,4 +43,26 @@
   `map-role`: `null`
   <br/>
   `user-role`: `null`
+  
+  ## Developer Instructions
+  ### Commands
+  <div style="text-align: center;">
+    <div style="display: inline-block; text-align: left;">
+      <ul>
+        <li><code>npm run setup</code> installs the required packages</li>
+        <li><code>npm run build</code> builds the application</li>
+        <li><code>npm run dev</code> runs the application locally with nodemon</li>
+        <li><code>npm run commands</code> deploys commands to Discord</li>
+        <li><code>npm run prettier</code> reformats the code</li>
+        <li><code>fly deploy</code> deploys the application to Fly.io</li>
+      </ul>
+    </div>
+  </div>
+
+  ### Environment Variables
+  The top level directory and <code>/src/client</code> both require their own <code>.env</code> files.
+
+  Populate the client <code>.env</code> with the variables <code>VITE_BOT_INVITE</code>, <code>VITE_OAUTH_URL</code>, and <code>VITE_SUPPORT_SERVER_INVITE</code>.
+
+  Populate the top level <code>.env</code> with the variables in <code>/src/server/config.ts</code>.
 </div>
