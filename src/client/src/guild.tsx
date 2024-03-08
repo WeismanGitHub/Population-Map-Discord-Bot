@@ -159,7 +159,9 @@ export default function Guild() {
                     className="d-inline-block m-1"
                     bg={'danger'}
                 >
-                    <Toast.Header><strong className="me-auto">Something went wrong!</strong></Toast.Header>
+                    <Toast.Header>
+                        <strong className="me-auto">Something went wrong!</strong>
+                    </Toast.Header>
                     <Toast.Body>
                         <strong className="me-auto">{error}</strong>
                     </Toast.Body>
