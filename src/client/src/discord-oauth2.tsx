@@ -56,7 +56,7 @@ export default function DiscordOAuth2() {
     }
 
     return (
-        <>
+        <div className="overflow-y-hidden vh-100">
             <ToastContainer position="top-end">
                 <Toast
                     onClose={() => setError(null)}
@@ -71,17 +71,18 @@ export default function DiscordOAuth2() {
                 </Toast>
             </ToastContainer>
             <NavBar />
-            <div style={{ height: '100vh', width: '100%', display: 'flex', flexDirection: 'column' }}>
-                <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <a
-                        className="btn-custom btn-xl"
-                        /* @ts-ignore */
-                        href={import.meta.env.VITE_OAUTH_URL + `&state=${btoa(randomString)}`}
-                    >
-                        Login
-                    </a>
-                </div>
+            <div
+                className="d-flex justify-content-center align-items-center m-auto"
+                style={{ height: '96vh' }}
+            >
+                <a
+                    className="btn-custom btn-xl"
+                    /* @ts-ignore */
+                    href={import.meta.env.VITE_OAUTH_URL + `&state=${btoa(randomString)}`}
+                >
+                    Login
+                </a>
             </div>
-        </>
+        </div>
     );
 }
