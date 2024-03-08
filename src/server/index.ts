@@ -4,7 +4,7 @@ import { GatewayIntentBits } from 'discord.js';
 import sequelize from './db/sequelize';
 require('express-async-errors');
 import config from './config';
-import app from './app';
+import api from './api';
 
 (async function () {
     for (const entry of Object.entries(config)) {
@@ -29,8 +29,8 @@ import app from './app';
 
     client.setMaxListeners(15);
 
-    app.listen(config.appPort, (): void => console.log(`listening on port ${config.appPort}...`));
-    app.set('discordClient', client);
+    api.listen(config.appPort, (): void => console.log(`listening on port ${config.appPort}...`));
+    api.set('discordClient', client);
 
     console.log('connected to database...');
 })();
