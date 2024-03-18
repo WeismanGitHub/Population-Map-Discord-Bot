@@ -56,7 +56,5 @@ export default {
             embeds: [embed],
             components: [firstRow, linksRow],
         });
-
-        console.log(await GuildModel.findOne({ where: { guildID: guild.id } }));
     },
 };
