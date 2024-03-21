@@ -67,7 +67,7 @@ export default {
 
         await interaction.reply({
             ephemeral: true,
-            embeds: [new InfoEmbed('What letter does your country start with?')],
+            embeds: [new InfoEmbed("Which letter does your country's name begin with?")],
             components: [lettersRow1, lettersRow2],
         });
     },
