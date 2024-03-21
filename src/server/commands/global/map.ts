@@ -1,3 +1,4 @@
+import { InfoEmbed } from '../../utils/embeds';
 import alphabet from '../../utils/letters';
 import config from '../../config';
 import {
@@ -17,38 +18,45 @@ export default {
         .setDescription('Get the server map for the world, continents, or a specific country.'),
     guildIDs: null,
     async execute(interaction: CommandInteraction): Promise<void> {
-        const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+        const lettersRow1 = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId(
                     JSON.stringify({
                         type: 'country-letter',
-                        data: { commandType: 'map-country' },
+                        // customId needs to be unique so I added x: 0
+                        data: { commandType: 'map-country', x: 0 },
                     })
                 )
-                .setPlaceholder('What letter does your country start with?')
+                .setPlaceholder('A - L')
                 .addOptions(
                     alphabet
                         .slice(0, 13)
                         .map((letter) =>
-                            new StringSelectMenuOptionBuilder().setLabel(letter).setValue(letter)
+                            new StringSelectMenuOptionBuilder()
+                                .setLabel(letter)
+                                .setValue(letter)
                         )
                 )
         );
 
-        const buttonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
-            new ButtonBuilder()
-                .setLabel('A-M')
-                .setStyle(ButtonStyle.Primary)
-                .setCustomId('0')
-                .setDisabled(true),
-            new ButtonBuilder()
-                .setLabel('N-Z')
-                .setStyle(ButtonStyle.Primary)
+        const lettersRow2 = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+            new StringSelectMenuBuilder()
                 .setCustomId(
                     JSON.stringify({
-                        type: 'country-letter-page',
-                        data: { page: 1, commandType: 'map-country' },
+                        type: 'country-letter',
+                        // customId needs to be unique so I added x: 1
+                        data: { commandType: 'map-country', x: 1 },
                     })
+                )
+                .setPlaceholder('M - Z')
+                .addOptions(
+                    alphabet
+                        .slice(13)
+                        .map((letter) =>
+                            new StringSelectMenuOptionBuilder()
+                                .setLabel(letter)
+                                .setValue(letter)
+                        )
                 )
         );
 
@@ -65,7 +73,8 @@ export default {
 
         await interaction.reply({
             ephemeral: true,
-            components: [menuRow, buttonsRow, mapButtonsRow],
+            embeds: [new InfoEmbed('What letter does your country start with?')],
+            components: [lettersRow1, lettersRow2, mapButtonsRow],
         });
     },
 };
