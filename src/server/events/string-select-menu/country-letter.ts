@@ -84,6 +84,7 @@ export default {
               );
 
         await interaction.update({
+            embeds: [],
             components: mapButtonsRow ? [menuRow, buttonsRow, mapButtonsRow] : [menuRow, buttonsRow],
         });
     },
