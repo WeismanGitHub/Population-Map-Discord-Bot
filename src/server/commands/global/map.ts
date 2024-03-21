@@ -32,9 +32,7 @@ export default {
                     alphabet
                         .slice(0, 13)
                         .map((letter) =>
-                            new StringSelectMenuOptionBuilder()
-                                .setLabel(letter)
-                                .setValue(letter)
+                            new StringSelectMenuOptionBuilder().setLabel(letter).setValue(letter)
                         )
                 )
         );
@@ -53,9 +51,7 @@ export default {
                     alphabet
                         .slice(13)
                         .map((letter) =>
-                            new StringSelectMenuOptionBuilder()
-                                .setLabel(letter)
-                                .setValue(letter)
+                            new StringSelectMenuOptionBuilder().setLabel(letter).setValue(letter)
                         )
                 )
         );
