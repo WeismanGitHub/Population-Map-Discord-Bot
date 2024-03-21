@@ -7,9 +7,8 @@ import {
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
     ActionRowBuilder,
-    ButtonBuilder,
-    ButtonStyle,
 } from 'discord.js';
+import { InfoEmbed } from '../../utils/embeds';
 
 export default {
     data: new SlashCommandBuilder()
@@ -24,44 +23,52 @@ export default {
             throw new NotFoundError("This server hasn't been set up.");
         }
 
-        const menuRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+        const lettersRow1 = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId(
                     JSON.stringify({
                         type: 'country-letter',
-                        data: { commandType: 'location-country' },
+                        // customId needs to be unique so I added x: 0
+                        data: { commandType: 'location-country', x: 0 },
                     })
                 )
-                .setPlaceholder('What letter does your country start with?')
+                .setPlaceholder('A - L')
                 .addOptions(
                     alphabet
                         .slice(0, 13)
                         .map((letter) =>
-                            new StringSelectMenuOptionBuilder().setLabel(letter).setValue(letter)
+                            new StringSelectMenuOptionBuilder()
+                                .setLabel(letter)
+                                .setValue(letter)
                         )
                 )
         );
 
-        const buttonsRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
-            new ButtonBuilder()
-                .setLabel('A-M')
-                .setStyle(ButtonStyle.Primary)
-                .setCustomId('0')
-                .setDisabled(true),
-            new ButtonBuilder()
-                .setLabel('N-Z')
-                .setStyle(ButtonStyle.Primary)
+        const lettersRow2 = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+            new StringSelectMenuBuilder()
                 .setCustomId(
                     JSON.stringify({
-                        type: 'country-letter-page',
-                        data: { page: 1, commandType: 'location-country' },
+                        type: 'country-letter',
+                        // customId needs to be unique so I added x: 1
+                        data: { commandType: 'location-country', x: 1 },
                     })
+                )
+                .setPlaceholder('M - Z')
+                .addOptions(
+                    alphabet
+                        .slice(13)
+                        .map((letter) =>
+                            new StringSelectMenuOptionBuilder()
+                                .setLabel(letter)
+                                .setValue(letter)
+                        )
                 )
         );
 
         await interaction.reply({
             ephemeral: true,
-            components: [menuRow, buttonsRow],
+            embeds: [new InfoEmbed('What letter does your country start with?')],
+            components: [lettersRow1, lettersRow2],
         });
     },
 };
