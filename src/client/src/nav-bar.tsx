@@ -82,22 +82,34 @@ export default function NavBar() {
                         id="navbarNav"
                     >
                         <ul className="navbar-nav d-flex justify-content-center align-items-center">
-                            <li className={`nav-item w-75 m-1 ${isNavOpen ? ' mb-2' : ''}`}>
+                            <li className={`m-1 w-75 ${isNavOpen ? ' mb-2' : ''}`}>
                                 {/* @ts-ignore */}
-                                <a href={import.meta.env.VITE_BOT_INVITE}>Invite</a>
+                                <a className="nav-item w-100" href={import.meta.env.VITE_BOT_INVITE}>
+                                    Invite
+                                </a>
                             </li>
-                            <li className={`nav-item w-75 m-1 ${isNavOpen ? ' mb-2' : ''}`}>
+                            <li className={`m-1 w-75 ${isNavOpen ? ' mb-2' : ''}`}>
                                 {/* @ts-ignore */}
-                                <a href={import.meta.env.VITE_SUPPORT_SERVER_INVITE}>Server</a>
+                                <a
+                                    className="nav-item w-100"
+                                    href={import.meta.env.VITE_SUPPORT_SERVER_INVITE}
+                                >
+                                    Server
+                                </a>
                             </li>
-                            <li className={`nav-item w-75 m-1 ${isNavOpen ? ' mb-2' : ''}`}>
-                                <a href="https://github.com/WeismanGitHub/Population-Map-Discord-Bot">
+                            <li className={`m-1 w-75 ${isNavOpen ? ' mb-2' : ''}`}>
+                                <a
+                                    className="nav-item w-100"
+                                    href="https://github.com/WeismanGitHub/Population-Map-Discord-Bot"
+                                >
                                     GitHub
                                 </a>
                             </li>
                             {loggedIn && (
-                                <li className={`nav-item w-75 m-1 ${isNavOpen ? ' mb-2' : ''}`}>
-                                    <a onClick={logout}>Logout</a>
+                                <li className={`m-1 w-75 ${isNavOpen ? ' mb-2' : ''}`}>
+                                    <a className="nav-item w-100" onClick={logout}>
+                                        Logout
+                                    </a>
                                 </li>
                             )}
                         </ul>
