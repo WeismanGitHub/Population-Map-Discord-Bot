@@ -89,9 +89,9 @@ export default function NavBar() {
                                 </a>
                             </li>
                             <li className={`m-1 w-75 ${isNavOpen ? ' mb-2' : ''}`}>
-                                {/* @ts-ignore */}
                                 <a
                                     className="nav-item w-100"
+                                    /* @ts-ignore */
                                     href={import.meta.env.VITE_SUPPORT_SERVER_INVITE}
                                 >
                                     Server
