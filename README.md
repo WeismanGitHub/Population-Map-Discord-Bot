@@ -48,14 +48,17 @@
   ### Commands
   <div style="text-align: center;">
     <div style="display: inline-block; text-align: left;">
-      <ul>
-        <li><code>npm run setup</code> installs the required packages</li>
-        <li><code>npm run build</code> builds the application</li>
-        <li><code>npm run dev</code> runs the application locally with nodemon</li>
-        <li><code>npm run commands</code> deploys commands to Discord</li>
-        <li><code>npm run prettier</code> reformats the code</li>
-        <li><code>fly deploy</code> deploys the application to Fly.io</li>
-      </ul>
+        <code>npm run setup</code> installs the required packages
+        <br/>
+        <code>npm run build</code> builds the application
+        <br/>
+        <code>npm run dev</code> runs the application locally with nodemon
+        <br/>
+        <code>npm run commands</code> deploys commands to Discord
+        <br/>
+        <code>npm run prettier</code> reformats the code
+        <br/>
+        <code>fly deploy</code> deploys the application to Fly.io
     </div>
   </div>
 
