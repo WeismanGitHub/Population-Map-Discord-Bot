@@ -21,7 +21,13 @@ const limiter = rateLimit({
 
 const api: Application = express();
 
-api.use(helmet());
+api.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            "img-src": ["'self'", "raw.githubusercontent.com"],
+        },
+    }
+}));
 api.use(limiter);
 api.use(compression());
 api.use(express.urlencoded({ extended: true }));
