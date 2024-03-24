@@ -1,10 +1,43 @@
 import express, { Application, NextFunction, Request, Response } from 'express';
-import { CustomError, NotFoundError } from './errors';
+import { CustomError, NotFoundError, TooManyRequestsError } from './errors';
+import rateLimit from 'express-rate-limit';
+import fetchMetadata from 'fetch-metadata';
 import v1Router from './api/v1/routers';
+import compression from 'compression';
 require('express-async-errors');
 import { resolve } from 'path';
+import config from './config';
+import helmet from 'helmet';
+
+const limiter = rateLimit({
+    windowMs: config.limiterWindowMs,
+    max: config.limiterMax,
+    standardHeaders: true,
+    legacyHeaders: false,
+    handler: (_req, _res, _next, _options) => {
+        throw new TooManyRequestsError(config.limiterMessage);
+    },
+});
 
 const api: Application = express();
+
+api.use(helmet());
+api.use(limiter);
+api.use(compression());
+api.use(express.urlencoded({ extended: true }));
+api.use(express.json());
+api.use(
+    fetchMetadata({
+        allowedFetchSites: ['same-origin', 'same-site', 'none'],
+        disallowedNavigationRequests: ['frame', 'iframe'],
+        errorStatusCode: 403,
+        allowedPaths: [],
+        onError: (_req, res, _next, options) => {
+            res.statusCode = options.errorStatusCode;
+            res.end();
+        },
+    })
+);
 
 api.set('trust proxy', 1);
 api.use(express.static(resolve(__dirname, '../client')));
