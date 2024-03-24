@@ -24,7 +24,9 @@ const api: Application = express();
 api.use(helmet({
     contentSecurityPolicy: {
         directives: {
-            "img-src": ["'self'", "raw.githubusercontent.com"],
+            'img-src': ["'self'", "cdn.discordapp.com", "raw.githubusercontent.com", "data:"],
+            'default-src': ["'self'", "raw.githubusercontent.com"],
+            'script-src': ["'self'"]
         },
     }
 }));
