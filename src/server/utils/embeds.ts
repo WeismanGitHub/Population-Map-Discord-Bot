@@ -4,7 +4,7 @@ class CustomEmbed extends EmbedBuilder {
     constructor() {
         super();
 
-        this.setColor('#2d7dbc'); // Bluey
+        this.setColor('#2d7dbc'); // Blue
     }
 }
 
