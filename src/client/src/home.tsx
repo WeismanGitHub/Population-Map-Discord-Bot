@@ -24,7 +24,7 @@ export default function Home() {
             <div className="container">
                 <div className="row">
                     <div className="col-md-12 d-flex col-lg-6 flex-column justify-content-center align-items-center order-md-1 order-lg-2">
-                        <code className="m-1">Active in {res?.guildCount} Servers</code>
+                        <code className="m-1">Used by {res?.guildCount} Servers</code>
                         <Carousel interval={3000} className="carousel-dark">
                             <Carousel.Item>
                                 <img
