@@ -21,7 +21,7 @@ export default function Home() {
     return (
         <div style={{ textAlign: 'center', fontSize: 'x-large' }}>
             <NavBar />
-            <div className="container">
+            <div className="container mb-2">
                 <div className="row">
                     <div className="col-md-12 d-flex col-lg-6 flex-column justify-content-center align-items-center order-md-1 order-lg-2">
                         <code className="m-1">Used by {res?.guildCount} Servers</code>
