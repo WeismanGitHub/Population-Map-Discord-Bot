@@ -21,15 +21,17 @@ const limiter = rateLimit({
 
 const api: Application = express();
 
-api.use(helmet({
-    contentSecurityPolicy: {
-        directives: {
-            'img-src': ["'self'", "cdn.discordapp.com", "raw.githubusercontent.com", "data:"],
-            'default-src': ["'self'", "raw.githubusercontent.com"],
-            'script-src': ["'self'"]
+api.use(
+    helmet({
+        contentSecurityPolicy: {
+            directives: {
+                'img-src': ["'self'", 'cdn.discordapp.com', 'raw.githubusercontent.com', 'data:'],
+                'default-src': ["'self'", 'raw.githubusercontent.com'],
+                'script-src': ["'self'"],
+            },
         },
-    }
-}));
+    })
+);
 api.use(limiter);
 api.use(compression());
 api.use(express.urlencoded({ extended: true }));
