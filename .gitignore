@@ -3,3 +3,7 @@ dist
 node_modules
 db.sqlite
 logs
+
+guild-locations.json
+guilds.json
+users.json
