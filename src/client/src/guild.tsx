@@ -1,6 +1,6 @@
 import { Chart as ChartJS, CategoryScale, Tooltip, Title, Legend } from 'chart.js';
 import { ToastContainer, Toast, ListGroup, ListGroupItem } from 'react-bootstrap';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import * as ChartGeo from 'chartjs-chart-geo';
 import { useState, useEffect } from 'react';
 import NavBar from './nav-bar';
@@ -54,13 +54,16 @@ export default function Guild() {
         }
 
         (async () => {
+            setGeojson(null);
+
             try {
                 const [guildResponse, geojsonResponse, countriesResponse] = await Promise.all([
-                    axios.get<Guild>(`/api/v1/guilds/${guildID}?mapCode=${mapCode}`),
+                    // So it isn't fetched repeatedly.
+                    guild ? { data: guild } : axios.get<Guild>(`/api/v1/guilds/${guildID}?mapCode=${mapCode}`),
                     axios.get<Geojson>(
                         `https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/topojson/${mapCode}.json`
                     ),
-                    axios.get<Record<string, string>>(
+                    countryCodes ? { data: countryCodes }: axios.get<Record<string, string>>(
                         'https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/countries.json'
                     ),
                 ]);
@@ -78,7 +81,9 @@ export default function Guild() {
                     return setError('Invalid Map Code');
                 }
 
+                // @ts-ignore
                 setGuild(guildResponse.data);
+                // @ts-ignore
                 setCountryCodes(countriesResponse.data);
 
                 const locations: Record<string, number> = {};
@@ -104,6 +109,7 @@ export default function Guild() {
 
                     setGeojson(geojsonResponse.data);
                 } else if (mapCode === 'WORLD') {
+                    // @ts-ignore
                     guildResponse.data.locations.forEach((location) => {
                         const count = locations[location.countryCode];
                         locations[location.countryCode] = count >= 0 ? count + 1 : 1;
@@ -118,6 +124,7 @@ export default function Guild() {
 
                     setGeojson(geojsonResponse.data);
                 } else {
+                    // @ts-ignore
                     guildResponse.data.locations.forEach((location) => {
                         const count = locations[location.subdivisionCode!] ?? 0;
                         locations[location.subdivisionCode!] = count + 1;
@@ -148,7 +155,7 @@ export default function Guild() {
                 }
             }
         })();
-    }, []);
+    }, [mapCode]);
 
     return (
         <>
@@ -223,21 +230,21 @@ export default function Guild() {
                         <div className="col-lg-2 d-flex justify-content-center justify-content-lg-end mt-2 mt-lg-0">
                             <div style={{ width: '150px' }}>
                                 <div>
-                                    <a
+                                    <Link
                                         className="btn-custom mb-1"
                                         style={{ color: '#ffffff', width: '150px' }}
-                                        href={`/maps/${guildID}?mapCode=WORLD`}
+                                        to={`/maps/${guildID}?mapCode=WORLD`}
                                     >
                                         View World
-                                    </a>
+                                    </Link>
                                     <br />
-                                    <a
+                                    <Link
                                         className="btn-custom mb-1"
                                         style={{ color: '#ffffff', width: '150px' }}
-                                        href={`/maps/${guildID}?mapCode=CONTINENTS`}
+                                        to={`/maps/${guildID}?mapCode=CONTINENTS`}
                                     >
                                         View Continents
-                                    </a>
+                                    </Link>
                                 </div>
                                 <ListGroup
                                     className="flex-grow-1"
@@ -247,7 +254,7 @@ export default function Guild() {
                                         Object.entries(countryCodes).map(([name, code]) => {
                                             return (
                                                 <ListGroupItem key={code} className="btn-custom mb-1 me-1">
-                                                    <a href={`/maps/${guildID}?mapCode=${code}`}>{name}</a>
+                                                    <Link to={`/maps/${guildID}?mapCode=${code}`}>{name}</Link>
                                                 </ListGroupItem>
                                             );
                                         })}
