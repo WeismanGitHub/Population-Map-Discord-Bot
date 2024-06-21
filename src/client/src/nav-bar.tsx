@@ -1,4 +1,5 @@
 import { ToastContainer, Toast } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import ky from 'ky';
 
@@ -57,7 +58,7 @@ export default function NavBar() {
                 style={{ textAlign: 'center', fontSize: 'x-large' }}
             >
                 <div className="container-fluid">
-                    <a className="navbar-brand" href="/">
+                    <Link className="navbar-brand" to="/">
                         <img
                             src="/icon.svg"
                             width="50"
@@ -66,7 +67,7 @@ export default function NavBar() {
                             className="me-2 rounded-5 bg-white"
                         />
                         <span className="d-block d-sm-inline-block">Population Map Bot</span>
-                    </a>
+                    </Link>
                     <button
                         className="navbar-toggler"
                         type="button"
