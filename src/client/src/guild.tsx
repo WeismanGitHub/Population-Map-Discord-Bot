@@ -1,6 +1,6 @@
 import { Chart as ChartJS, CategoryScale, Tooltip, Title, Legend } from 'chart.js';
 import { ToastContainer, Toast, ListGroup, ListGroupItem } from 'react-bootstrap';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import * as ChartGeo from 'chartjs-chart-geo';
 import ky, { HTTPError } from 'ky';
@@ -219,21 +219,21 @@ export default function Guild() {
                         <div className="col-lg-2 d-flex justify-content-center justify-content-lg-end mt-2 mt-lg-0">
                             <div style={{ width: '150px' }}>
                                 <div>
-                                    <Link
+                                    <a
                                         className="btn-custom mb-1"
                                         style={{ color: '#ffffff', width: '150px' }}
-                                        to={`/maps/${guildID}?mapCode=WORLD`}
+                                        href={`/maps/${guildID}?mapCode=WORLD`}
                                     >
                                         View World
-                                    </Link>
+                                    </a>
                                     <br />
-                                    <Link
+                                    <a
                                         className="btn-custom mb-1"
                                         style={{ color: '#ffffff', width: '150px' }}
-                                        to={`/maps/${guildID}?mapCode=CONTINENTS`}
+                                        href={`/maps/${guildID}?mapCode=CONTINENTS`}
                                     >
                                         View Continents
-                                    </Link>
+                                    </a>
                                 </div>
                                 <ListGroup
                                     className="flex-grow-1"
@@ -243,7 +243,7 @@ export default function Guild() {
                                         Object.entries(countryCodes).map(([name, code]) => {
                                             return (
                                                 <ListGroupItem key={code} className="btn-custom mb-1 me-1">
-                                                    <Link to={`/maps/${guildID}?mapCode=${code}`}>{name}</Link>
+                                                    <a href={`/maps/${guildID}?mapCode=${code}`}>{name}</a>
                                                 </ListGroupItem>
                                             );
                                         })}
