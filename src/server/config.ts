@@ -48,7 +48,7 @@ const config: Configuration = {
     // Other
     githubURL: 'https://github.com/WeismanGitHub/Population-Density-Map-Discord-Bot',
     appPort: 5001,
-    sessionSecret: process.env.JWT_SECRET!,
+    sessionSecret: process.env.SESSION_SECRET!,
     mode: process.env.MODE as 'prod' | 'dev',
     websiteURL: process.env.WEBSITE_URL!, // Example: http://localhost:5001
     supportServerID: process.env.SUPPORT_SERVER_ID!,
