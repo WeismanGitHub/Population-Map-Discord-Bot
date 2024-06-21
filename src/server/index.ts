@@ -27,7 +27,6 @@ import api from './api';
         intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
     });
 
-
     api.listen(config.appPort, (): void => console.log(`listening on port ${config.appPort}...`));
     api.set('discordClient', client);
 
