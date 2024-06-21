@@ -9,7 +9,8 @@
     "disable": "fly scale count 0",
     "enable": "fly scale count 1",
     "prettier": "npx prettier --write src",
-    "setup": "cd src/server && npm i && cd ../client && npm i"
+    "setup": "cd src/server && npm i && cd ../client && npm i",
+    "deploy": "fly deploy --local-only"
   },
   "eslintConfig": {
     "extends": [
