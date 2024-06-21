@@ -14,7 +14,7 @@ ChartJS.register(
     ChartGeo.GeoFeature
 );
 
-export default function Map(props: { geojson: {}[]; projection: 'albers' | 'equalEarth' }) {
+export default function Map(props: { geojson: { features: [] }; projection: 'albers' | 'equalEarth' }) {
     const geojson = props.geojson;
     const chartRef = useRef();
 
@@ -24,11 +24,11 @@ export default function Map(props: { geojson: {}[]; projection: 'albers' | 'equa
             ref={chartRef}
             type="choropleth"
             data={{
-                labels: geojson.map((d: any) => d.properties.name),
+                labels: geojson.features.map((d: any) => d.properties.name),
                 datasets: [
                     {
-                        outline: geojson,
-                        data: geojson.map((d: any) => ({
+                        outline: geojson.features,
+                        data: geojson.features.map((d: any) => ({
                             feature: d,
                             value: d.count || 0,
                         })),

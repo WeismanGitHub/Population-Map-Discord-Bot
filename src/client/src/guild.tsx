@@ -1,10 +1,10 @@
 import { Chart as ChartJS, CategoryScale, Tooltip, Title, Legend } from 'chart.js';
 import { ToastContainer, Toast, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import * as ChartGeo from 'chartjs-chart-geo';
-import ky, { HTTPError } from 'ky';
+import { useState, useEffect } from 'react';
 import NavBar from './nav-bar';
+import axios from 'axios';
 import Map from './map';
 
 ChartJS.register(
@@ -18,26 +18,29 @@ ChartJS.register(
     ChartGeo.GeoFeature
 );
 
-interface GuildRes {
+interface Guild {
     locations: { countryCode: string; subdivisionCode: string | null }[];
     name: string;
     guildMemberCount: number;
     icon: string | null;
 }
 
-interface GeojsonRes {
-    features: {}[];
+// There are more properties, but I don't want to define them.
+interface Geojson {
+    features?: {
+        count: number;
+        properties: { isoCode: string };
+    }[];
     countryContinentMap?: { [key: string]: string };
+    objects?: object[];
+    [key: string]: any;
 }
 
 export default function Guild() {
     const [countryCodes, setCountryCodes] = useState<Record<string, string> | null>(null);
-    const [guildMemberCount, setGuildMemberCount] = useState(0);
+    const [guild, setGuild] = useState<Guild | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [icon, setIcon] = useState<string | null>(null);
-    const [membersOnMap, setMembersOnMap] = useState(0);
-    const [guildName, setGuildName] = useState('');
-    const [geojson, setGeojson] = useState(null);
+    const [geojson, setGeojson] = useState<Geojson | null>(null);
     const navigate = useNavigate();
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -50,103 +53,101 @@ export default function Guild() {
             return setError('Missing mapCode or guildID');
         }
 
-        (
-            Promise.all([
-                ky.get(`/api/v1/guilds/${guildID}?mapCode=${mapCode}`)?.json(),
-                ky
-                    .get(
+        (async () => {
+            try {
+                const [guildResponse, geojsonResponse, countriesResponse] = await Promise.all([
+                    axios.get<Guild>(`/api/v1/guilds/${guildID}?mapCode=${mapCode}`),
+                    axios.get<Geojson>(
                         `https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/topojson/${mapCode}.json`
-                    )
-                    ?.json()
-                    .catch(() => {
-                        throw new Error('Could not get map.');
-                    }),
-                ky
-                    .get(
+                    ),
+                    axios.get<Record<string, string>>(
                         'https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/countries.json'
-                    )
-                    .json(),
-            ]) as Promise<unknown> as Promise<[GuildRes, GeojsonRes, Record<string, string>]>
-        )
-            .then(([guildRes, geojsonRes, countryCodes]) => {
-                // @ts-ignore
-                geojsonRes.features = Object.values(geojsonRes.objects).map((feature) =>
+                    ),
+                ]);
+
+                if (!geojsonResponse.data.objects) {
+                    return setError('Broken GeoJSON')
+                }
+
+                const features = Object.values(geojsonResponse.data.objects).map((feature) => {
                     // @ts-ignore
-                    ChartGeo.topojson.feature(geojsonRes, feature)
-                );
+                    return ChartGeo.topojson.feature(geojsonResponse.data, feature)
+                });
 
-                if (!geojsonRes?.features) return setError('Invalid map code.');
+                if (!features.length) {
+                    return setError('Invalid Map Code');
+                }
 
-                setMembersOnMap(guildRes.locations.length);
-                setCountryCodes(countryCodes);
-                setGuildMemberCount(guildRes.guildMemberCount);
-                setIcon(guildRes.icon);
-                setGuildName(guildRes.name);
+                setGuild(guildResponse.data);
+                setCountryCodes(countriesResponse.data);
+
+                const locations: Record<string, number> = {};
+
 
                 if (mapCode === 'CONTINENTS') {
-                    guildRes.locations.forEach((location) => {
-                        geojsonRes.features.forEach((feature) => {
-                            if (
-                                // @ts-ignore
-                                feature.properties.isoCode !=
-                                // @ts-ignore
-                                geojsonRes?.countryContinentMap[location.countryCode]
-                            )
-                                return;
-                            // @ts-ignore
-                            feature.count = feature.count >= 0 ? feature.count + 1 : 1;
-                        });
-                    });
                     // @ts-ignore
-                    setGeojson(geojsonRes.features);
-                } else if (mapCode === 'WORLD') {
-                    const locations: Record<string, number> = {};
+                    guildResponse.data.locations.forEach((location) => {
+                        const code = geojsonResponse.data.countryContinentMap?.[location.countryCode];
 
-                    guildRes.locations.forEach((location) => {
-                        const count = locations[location.countryCode];
+                        if (!code) throw new Error("Invalid Code")
+
+                        const count = locations[code!];
+                        locations[code] = count >= 0 ? count + 1 : 1
+                    });
+                    
+                    // @ts-ignore
+                    geojsonResponse.data.features = features.map((feature) => {
                         // @ts-ignore
+                        feature.count = locations[feature?.properties?.isoCode] || 0;
+                        return feature;
+                    });
+
+                    setGeojson(geojsonResponse.data);
+                } else if (mapCode === 'WORLD') {
+                    guildResponse.data.locations.forEach((location) => {
+                        const count = locations[location.countryCode];
                         locations[location.countryCode] = count >= 0 ? count + 1 : 1;
                     });
 
-                    setGeojson(
+                    // @ts-ignore
+                    geojsonResponse.data.features = features.map((feature) => {
                         // @ts-ignore
-                        geojsonRes.features.map((feature) => {
-                            // @ts-ignore
-                            feature.count = locations[feature.properties.isoCode] || 0;
-                            return feature;
-                        })
-                    );
-                } else {
-                    const locations: Record<string, number> = {};
+                        feature.count = locations[feature?.properties?.isoCode] || 0;
+                        return feature;
+                    });
 
-                    guildRes.locations.forEach((location) => {
-                        const count = locations[location.subdivisionCode!];
-                        // @ts-ignore
-                        locations[location.subdivisionCode] = count >= 0 ? count + 1 : 1;
+                    setGeojson(geojsonResponse.data);
+                } else {
+                    guildResponse.data.locations.forEach((location) => {
+                        const count = locations[location.subdivisionCode!] ?? 0;
+                        locations[location.subdivisionCode!] = count + 1;
                     });
 
                     // @ts-ignore
-                    setGeojson(
+                    geojsonResponse.data.features = features.map((feature) => {
                         // @ts-ignore
-                        geojsonRes.features.map((feature) => {
-                            // @ts-ignore
-                            feature.count = locations[feature.properties.isoCode] ?? 0;
-                            return feature;
-                        })
-                    );
+                        feature.count = locations[feature?.properties?.isoCode] || 0;
+                        return feature;
+                    });
+
+                    setGeojson(geojsonResponse.data);
                 }
-            })
-            .catch(async (res: HTTPError) => {
+            } catch (err) {
                 setStatus('Something went wrong!');
-                const err: { error: string } = await res.response.json();
+                console.log(err);
 
-                setError(err.error || res.response.statusText || 'Something went wrong.');
+                if (axios.isAxiosError<{ error: string }>(err)) {
+                    setError(err.response?.data.error ?? 'Something went wrong.');
 
-                if (res.response.status === 401) {
-                    localStorage.removeItem('loggedIn');
-                    navigate(`/discord/oauth2?guildID=${guildID}&mapCode=${mapCode}`);
+                    if (err.status === 401) {
+                        localStorage.removeItem('loggedIn');
+                        navigate(`/discord/oauth2?guildID=${guildID}&mapCode=${mapCode}`);
+                    }
+                } else {
+                    setError('Something went wrong.');
                 }
-            });
+            }
+        })();
     }, []);
 
     return (
@@ -184,29 +185,32 @@ export default function Guild() {
                 </div>
             ) : (
                 <div className="container p-1">
-                    <div className="d-flex justify-content-center m-0 col-lg-10">
-                        <div style={{ fontSize: 'x-large', display: 'flex', marginBottom: '3px' }}>
-                            <img
-                                width={65}
-                                height={65}
-                                src={icon || '/discord.svg'}
-                                alt="server icon"
-                                style={{ borderRadius: '50%', marginRight: '2px' }}
-                            />
-                            <div>
-                                {guildName}
-                                <br />
-                                <div style={{ fontSize: 'medium', marginLeft: '8px' }}>
-                                    {membersOnMap} / {guildMemberCount} members{' '}
-                                    {`(${Math.round((membersOnMap / guildMemberCount) * 100)}%)`}
+                    {guild && (
+                        <div className="d-flex justify-content-center m-0 col-lg-10">
+                            <div style={{ fontSize: 'x-large', display: 'flex', marginBottom: '3px' }}>
+                                <img
+                                    width={65}
+                                    height={65}
+                                    src={guild?.icon || '/discord.svg'}
+                                    alt="server icon"
+                                    style={{ borderRadius: '50%', marginRight: '2px' }}
+                                />
+                                <div>
+                                    {guild.name}
+                                    <br />
+                                    <div style={{ fontSize: 'medium', marginLeft: '8px' }}>
+                                        {guild.locations.length} / {guild.guildMemberCount} members{' '}
+                                        {`(${Math.round((guild.locations.length / guild.guildMemberCount) * 100)}%)`}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    )}
                     <div className="row" style={{ height: '450px' }}>
                         <div className="col-lg-10">
                             <div style={{ maxHeight: '450px' }}>
                                 <Map
+                                    // @ts-ignore
                                     geojson={geojson}
                                     projection={
                                         mapCode === 'WORLD' || mapCode === 'CONTINENTS'
