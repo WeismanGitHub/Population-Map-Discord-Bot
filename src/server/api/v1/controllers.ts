@@ -1,18 +1,19 @@
-import { Guild, GuildLocation } from '../../../db/models';
-import { CustomClient } from '../../../custom-client';
+import { Guild, GuildLocation } from '../../db/models';
+import { CustomClient } from '../../custom-client';
 import { Request, Response } from 'express';
 import DiscordOauth2 from 'discord-oauth2';
+import config from '../../config';
 import {
     BadRequestError,
     ForbiddenError,
     InternalServerError,
     NotFoundError,
     UnauthorizedError,
-} from '../../../errors';
+} from '../../errors';
 
 require('express-async-errors');
 
-async function getGuildData(req: Request, res: Response): Promise<void> {
+async function getGuild(req: Request, res: Response): Promise<void> {
     const client: CustomClient = req.app.get('discordClient');
     const { accessToken, userID } = req.session;
     const mapCode = req.query.mapCode as 'CONTINENTS' | 'WORLD' | string;
@@ -97,4 +98,56 @@ async function getGuildData(req: Request, res: Response): Promise<void> {
     });
 }
 
-export { getGuildData };
+async function getBotInfo(req: Request, res: Response): Promise<void> {
+    const client: CustomClient = req.app.get('discordClient');
+
+    res.status(200).json({
+        guildCount: client.guilds.cache.size,
+    });
+}
+
+async function login(req: Request, res: Response): Promise<void> {
+    const oauth = new DiscordOauth2();
+    const { code } = req.body;
+
+    if (!code) {
+        throw new BadRequestError('Missing Code');
+    }
+
+    const accessToken = (
+        await oauth
+            .tokenRequest({
+                clientId: config.botID,
+                clientSecret: config.botSecret,
+
+                code: code,
+                scope: 'identify guilds',
+                grantType: 'authorization_code',
+                redirectUri: config.redirectURI,
+            })
+            .catch(() => {
+                throw new InternalServerError('Could not get user token');
+            })
+    ).access_token;
+
+    const userID = (
+        await oauth.getUser(accessToken).catch(() => {
+            throw new InternalServerError('Could not get user ID.');
+        })
+    ).id;
+
+    req.session.userID = userID;
+    req.session.accessToken = accessToken;
+
+    res.status(200).end();
+}
+
+function logout(req: Request, res: Response): void {
+    req.session.destroy((err) => {
+        if (err) throw new InternalServerError('Could not delete session and log you out.');
+
+        res.status(200).clearCookie('sessionID').end();
+    });
+}
+
+export { getGuild, getBotInfo, login, logout };

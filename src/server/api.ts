@@ -2,7 +2,7 @@ import express, { Application, NextFunction, Request, Response } from 'express';
 import { CustomError, NotFoundError, TooManyRequestsError } from './errors';
 import rateLimit from 'express-rate-limit';
 import fetchMetadata from 'fetch-metadata';
-import v1Router from './api/v1/routers';
+import v1Router from './api/v1/router';
 import compression from 'compression';
 require('express-async-errors');
 import { resolve } from 'path';
