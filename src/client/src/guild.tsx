@@ -2,6 +2,7 @@ import { Chart as ChartJS, CategoryScale, Tooltip, Title, Legend } from 'chart.j
 import { ToastContainer, Toast, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import * as ChartGeo from 'chartjs-chart-geo';
+import Spinner from 'react-bootstrap/Spinner';
 import { useState, useEffect } from 'react';
 import NavBar from './nav-bar';
 import axios from 'axios';
@@ -182,16 +183,16 @@ export default function Guild() {
             <NavBar />
             {!geojson ? (
                 <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        height: '94vh',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        fontSize: 'xx-large',
-                    }}
+                    className='d-flex justify-content-center align-items-center overflow-x-hidden w-100'
+                    style={{ height: '94vh' }}
                 >
-                    {status}
+                    {status === 'Loading...' ? (
+                        <Spinner animation="border" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </Spinner>
+                    ) : (
+                        status
+                    )}
                 </div>
             ) : (
                 <div className="container p-1">
@@ -210,7 +211,9 @@ export default function Guild() {
                                     <br />
                                     <div style={{ fontSize: 'medium', marginLeft: '8px' }}>
                                         {guild.locations.length} / {guild.guildMemberCount} members{' '}
-                                        {`(${Math.round((guild.locations.length / guild.guildMemberCount) * 100)}%)`}
+                                        {`(${Math.round(
+                                            (guild.locations.length / guild.guildMemberCount) * 100
+                                        )}%)`}
                                     </div>
                                 </div>
                             </div>
