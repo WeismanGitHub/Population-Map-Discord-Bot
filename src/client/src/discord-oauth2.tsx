@@ -1,8 +1,8 @@
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { ToastContainer, Toast } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
-import ky, { HTTPError } from 'ky';
 import NavBar from './nav-bar';
+import axios from 'axios';
 
 function generateState() {
     const randomNumber = Math.floor(Math.random() * 10);
@@ -34,13 +34,17 @@ export default function DiscordOAuth2() {
         }
 
         if (code && state && localStorage.getItem('auth-state') === atob(decodeURIComponent(state))) {
-            ky.post('/api/v1/auth/discord/oauth2', { json: { code } })
+            axios
+                .post('/api/v1/auth/discord/oauth2', { code })
                 .then(() => {
                     setAuthorized(true);
                 })
-                .catch(async (res: HTTPError) => {
-                    const err: { error: string } = await res.response.json();
-                    setError(err.error || res.response.statusText || 'Something went wrong.');
+                .catch(async (err: unknown) => {
+                    if (axios.isAxiosError<{ error: string }>(err) && err.response?.data) {
+                        setError(err.response.data.error || 'Something went wrong.');
+                    } else {
+                        setError('Something went wrong.');
+                    }
                 });
         } else {
             localStorage.setItem('auth-state', randomString);

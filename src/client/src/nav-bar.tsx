@@ -1,7 +1,7 @@
 import { ToastContainer, Toast } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import ky from 'ky';
+import axios from 'axios';
 
 export default function NavBar() {
     const [loggedIn, setLoggedIn] = useState(Boolean(localStorage.getItem('loggedIn')));
@@ -14,7 +14,8 @@ export default function NavBar() {
             return;
         }
 
-        ky.post('/api/v1/auth/logout')
+        axios
+            .post('/api/v1/auth/logout')
             .then(() => {
                 localStorage.removeItem('loggedIn');
                 setLoggedIn(false);

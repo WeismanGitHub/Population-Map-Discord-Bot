@@ -59,22 +59,26 @@ export default function Guild() {
             try {
                 const [guildResponse, geojsonResponse, countriesResponse] = await Promise.all([
                     // So it isn't fetched repeatedly.
-                    guild ? { data: guild } : axios.get<Guild>(`/api/v1/guilds/${guildID}?mapCode=${mapCode}`),
+                    guild
+                        ? { data: guild }
+                        : axios.get<Guild>(`/api/v1/guilds/${guildID}?mapCode=${mapCode}`),
                     axios.get<Geojson>(
                         `https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/topojson/${mapCode}.json`
                     ),
-                    countryCodes ? { data: countryCodes }: axios.get<Record<string, string>>(
-                        'https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/countries.json'
-                    ),
+                    countryCodes
+                        ? { data: countryCodes }
+                        : axios.get<Record<string, string>>(
+                              'https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/countries.json'
+                          ),
                 ]);
 
                 if (!geojsonResponse.data.objects) {
-                    return setError('Broken GeoJSON')
+                    return setError('Broken GeoJSON');
                 }
 
                 const features = Object.values(geojsonResponse.data.objects).map((feature) => {
                     // @ts-ignore
-                    return ChartGeo.topojson.feature(geojsonResponse.data, feature)
+                    return ChartGeo.topojson.feature(geojsonResponse.data, feature);
                 });
 
                 if (!features.length) {
@@ -88,18 +92,17 @@ export default function Guild() {
 
                 const locations: Record<string, number> = {};
 
-
                 if (mapCode === 'CONTINENTS') {
                     // @ts-ignore
                     guildResponse.data.locations.forEach((location) => {
                         const code = geojsonResponse.data.countryContinentMap?.[location.countryCode];
 
-                        if (!code) throw new Error("Invalid Code")
+                        if (!code) throw new Error('Invalid Code');
 
                         const count = locations[code!];
-                        locations[code] = count >= 0 ? count + 1 : 1
+                        locations[code] = count >= 0 ? count + 1 : 1;
                     });
-                    
+
                     // @ts-ignore
                     geojsonResponse.data.features = features.map((feature) => {
                         // @ts-ignore
@@ -254,7 +257,9 @@ export default function Guild() {
                                         Object.entries(countryCodes).map(([name, code]) => {
                                             return (
                                                 <ListGroupItem key={code} className="btn-custom mb-1 me-1">
-                                                    <Link to={`/maps/${guildID}?mapCode=${code}`}>{name}</Link>
+                                                    <Link to={`/maps/${guildID}?mapCode=${code}`}>
+                                                        {name}
+                                                    </Link>
                                                 </ListGroupItem>
                                             );
                                         })}

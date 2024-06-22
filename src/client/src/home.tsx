@@ -1,21 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Carousel } from 'react-bootstrap';
 import NavBar from './nav-bar';
-import ky from 'ky';
+import axios from 'axios';
 
-interface BotAPIRes {
+interface BotInfo {
     guildCount: number;
 }
 
 export default function Home() {
-    const [res, setRes] = useState<BotAPIRes>();
+    const [info, setInfo] = useState<BotInfo>();
 
     useEffect(() => {
-        ky.get('/api/v1/bot/')
-            .json()
-            .then((res) => {
-                setRes(res as BotAPIRes);
-            });
+        axios.get<BotInfo>('/api/v1/bot/').then((res) => setInfo(res.data));
     }, []);
 
     return (
@@ -24,7 +20,7 @@ export default function Home() {
             <div className="container mb-2">
                 <div className="row">
                     <div className="col-md-12 d-flex col-lg-6 flex-column justify-content-center align-items-center order-md-1 order-lg-2">
-                        <code className="m-1">Used by {res?.guildCount} Servers</code>
+                        <code className="m-1">Used by {info?.guildCount} Servers</code>
                         <Carousel interval={3000} className="carousel-dark">
                             <Carousel.Item>
                                 <img
