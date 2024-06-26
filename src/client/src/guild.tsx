@@ -4,9 +4,9 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import * as ChartGeo from 'chartjs-chart-geo';
 import Spinner from 'react-bootstrap/Spinner';
 import { useState, useEffect } from 'react';
+import PopulationMap from './map';
 import NavBar from './nav-bar';
 import axios from 'axios';
-import Map from './map';
 
 ChartJS.register(
     Title,
@@ -19,15 +19,20 @@ ChartJS.register(
     ChartGeo.GeoFeature
 );
 
+type Location = {
+    countryCode: string;
+    subdivisionCode: string | null;
+};
+
 interface Guild {
-    locations: { countryCode: string; subdivisionCode: string | null }[];
     name: string;
+    locations: Location[];
     guildMemberCount: number;
     icon: string | null;
 }
 
 // There are more properties, but I don't want to define them.
-interface Geojson {
+interface GeoJSON {
     features?: {
         count: number;
         properties: { isoCode: string };
@@ -37,11 +42,14 @@ interface Geojson {
     [key: string]: any;
 }
 
+const locationsCache = new Map<string, Location[]>();
+const geojsonCache = new Map<string, GeoJSON>();
+
 export default function Guild() {
     const [countryCodes, setCountryCodes] = useState<Record<string, string> | null>(null);
-    const [guild, setGuild] = useState<Guild | null>(null);
+    const [geojson, setGeojson] = useState<GeoJSON | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [geojson, setGeojson] = useState<Geojson | null>(null);
+    const [guild, setGuild] = useState<Guild | null>(null);
     const navigate = useNavigate();
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -58,18 +66,18 @@ export default function Guild() {
             setGeojson(null);
 
             try {
-                const [guildResponse, geojsonResponse, countriesResponse] = await Promise.all([
-                    // So it isn't fetched repeatedly.
-                    guild
-                        ? { data: guild }
+                const cacheCode = ['CONTINENTS', 'WORLD'].includes(mapCode) ? 'GLOBAL' : mapCode;
+                const cachedLocations = locationsCache.get(cacheCode);
+                const cachedGeojson = geojsonCache.get(mapCode);
+
+                const [guildResponse, geojsonResponse] = await Promise.all([
+                    cachedLocations && guild
+                        ? { data: { ...guild, locations: cachedLocations } }
                         : axios.get<Guild>(`/api/v1/guilds/${guildID}?mapCode=${mapCode}`),
-                    axios.get<Geojson>(
-                        `https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/topojson/${mapCode}.json`
-                    ),
-                    countryCodes
-                        ? { data: countryCodes }
-                        : axios.get<Record<string, string>>(
-                              'https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/countries.json'
+                    cachedGeojson
+                        ? { data: cachedGeojson }
+                        : axios.get<GeoJSON>(
+                              `https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/topojson/${mapCode}.json`
                           ),
                 ]);
 
@@ -86,12 +94,7 @@ export default function Guild() {
                     return setError('Invalid Map Code');
                 }
 
-                // @ts-ignore
-                setGuild(guildResponse.data);
-                // @ts-ignore
-                setCountryCodes(countriesResponse.data);
-
-                const locations: Record<string, number> = {};
+                const locationsMap: Record<string, number> = {};
 
                 if (mapCode === 'CONTINENTS') {
                     // @ts-ignore
@@ -100,49 +103,49 @@ export default function Guild() {
 
                         if (!code) throw new Error('Invalid Code');
 
-                        const count = locations[code!];
-                        locations[code] = count >= 0 ? count + 1 : 1;
+                        const count = locationsMap[code!];
+                        locationsMap[code] = count >= 0 ? count + 1 : 1;
                     });
 
                     // @ts-ignore
                     geojsonResponse.data.features = features.map((feature) => {
                         // @ts-ignore
-                        feature.count = locations[feature?.properties?.isoCode] || 0;
+                        feature.count = locationsMap[feature?.properties?.isoCode] || 0;
                         return feature;
                     });
-
-                    setGeojson(geojsonResponse.data);
                 } else if (mapCode === 'WORLD') {
                     // @ts-ignore
                     guildResponse.data.locations.forEach((location) => {
-                        const count = locations[location.countryCode];
-                        locations[location.countryCode] = count >= 0 ? count + 1 : 1;
+                        const count = locationsMap[location.countryCode];
+                        locationsMap[location.countryCode] = count >= 0 ? count + 1 : 1;
                     });
 
                     // @ts-ignore
                     geojsonResponse.data.features = features.map((feature) => {
                         // @ts-ignore
-                        feature.count = locations[feature?.properties?.isoCode] || 0;
+                        feature.count = locationsMap[feature?.properties?.isoCode] || 0;
                         return feature;
                     });
-
-                    setGeojson(geojsonResponse.data);
                 } else {
                     // @ts-ignore
                     guildResponse.data.locations.forEach((location) => {
-                        const count = locations[location.subdivisionCode!] ?? 0;
-                        locations[location.subdivisionCode!] = count + 1;
+                        const count = locationsMap[location.subdivisionCode!] ?? 0;
+                        locationsMap[location.subdivisionCode!] = count + 1;
                     });
 
                     // @ts-ignore
                     geojsonResponse.data.features = features.map((feature) => {
                         // @ts-ignore
-                        feature.count = locations[feature?.properties?.isoCode] || 0;
+                        feature.count = locationsMap[feature?.properties?.isoCode] || 0;
                         return feature;
                     });
-
-                    setGeojson(geojsonResponse.data);
                 }
+
+                locationsCache.set(cacheCode, guildResponse.data.locations!);
+                geojsonCache.set(mapCode, geojsonResponse.data);
+
+                setGeojson(geojsonResponse.data);
+                setGuild(guildResponse.data);
             } catch (err) {
                 setStatus('Something went wrong!');
                 console.log(err);
@@ -160,6 +163,17 @@ export default function Guild() {
             }
         })();
     }, [mapCode]);
+
+    useEffect(() => {
+        axios
+            .get<Record<string, string>>(
+                'https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/countries.json'
+            )
+            .then((res) => {
+                setCountryCodes(res.data);
+            })
+            .catch(() => setError('Could not fetch country codes.'));
+    }, []);
 
     return (
         <>
@@ -183,8 +197,8 @@ export default function Guild() {
             <NavBar />
             {!geojson ? (
                 <div
-                    className='d-flex justify-content-center align-items-center overflow-x-hidden w-100'
-                    style={{ height: '94vh' }}
+                    className="d-flex justify-content-center align-items-center overflow-hidden w-100 fs-3"
+                    style={{ height: '90vh' }}
                 >
                     {status === 'Loading...' ? (
                         <Spinner animation="border" role="status">
@@ -222,7 +236,7 @@ export default function Guild() {
                     <div className="row" style={{ height: '450px' }}>
                         <div className="col-lg-10">
                             <div style={{ maxHeight: '450px' }}>
-                                <Map
+                                <PopulationMap
                                     // @ts-ignore
                                     geojson={geojson}
                                     projection={
