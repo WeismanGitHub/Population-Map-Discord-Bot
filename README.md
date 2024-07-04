@@ -6,7 +6,7 @@
   The Population Map Bot is a dynamic map generator capable of visualizing population data on a global, continental, or country level. Maps are generated from self-reported locations provided by Discord server members, enabling users to explore population distributions with ease.
   <br/>
   <br/>
-  This bot generates a unique map for each Discord server that can be accessed with `/map`. Server members use `/set-location` to add their location to the map. A location can be any country and, optionally, a subdivision (state, region, prefecture, etc.) within that country. Server admins can also make it so only members who share their location can access the server.
+  Use `/map` to get the link to a server's map. Server members use `/set-location` to add their location to the map. A location can be any country and, optionally, a subdivision (state, province, etc.) within that country. Locations are anonymous, meaning no one can see what you set your location to. Server admins can also make it so only members who share their location can access the server.
   <br/>
   <br/>
   <div style="display: flex;justify-content: center;overflow-wrap: break-word;text-align: center;flex-wrap: wrap;">

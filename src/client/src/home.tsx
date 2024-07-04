@@ -76,11 +76,12 @@ export default function Home() {
                         distributions with ease.
                         <br />
                         <br />
-                        This bot generates a unique map for each Discord server that can be accessed with{' '}
-                        <code>/map</code>. Server members use <code>/set-location</code> to add their location
-                        to the map. A location can be any country and, optionally, a subdivision (state,
-                        region, prefecture, etc.) within that country. Server admins can also make it so only
-                        members who share their location can access the server.{' '}
+                        Use <code>/map</code> to get the link to a server's map. Server members use{' '}
+                        <code>/set-location</code> to add their location to the map. A location can be any
+                        country and, optionally, a subdivision (state, province, etc.) within that country.
+                        Locations are anonymous, meaning no one can see what you set your location to. Server
+                        admins can also make it so only members who share their location can access the
+                        server.{' '}
                         <a
                             className="link"
                             href={
