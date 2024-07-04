@@ -1,4 +1,4 @@
-import { country } from 'iso-3166-2';
+import iso31662 from '../../utils/countries';
 import config from '../../config';
 import {
     ActionRowBuilder,
@@ -42,7 +42,7 @@ export default {
         const mapButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(
             ...previousMapButtons,
             new ButtonBuilder()
-                .setLabel(`${country(interaction.values[0])?.name} Map`)
+                .setLabel(`${iso31662.getCountry(interaction.values[0]).name} Map`)
                 .setStyle(ButtonStyle.Link)
                 .setURL(`${config.websiteURL}/maps/${interaction.guildId}?mapCode=${interaction.values[0]}`)
         );
