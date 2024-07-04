@@ -21,7 +21,6 @@
         "express-session": "^1.18.0",
         "fetch-metadata": "^1.0.0",
         "helmet": "^7.1.0",
-        "iso-3166-2": "^1.0.0",
         "pg": "^8.11.3",
         "sequelize": "^6.37.1"
     }

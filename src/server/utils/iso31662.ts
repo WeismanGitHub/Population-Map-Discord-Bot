@@ -1,6 +1,6 @@
+// @ts-nocheck
 import { InternalServerError } from '../errors';
-import iso from 'iso-3166-2';
-
+import iso from '../../../../../iso-3166-2.json'; // I need to go up farther for the built file.
 // Bouvet Island BV
 // British Indian Ocean Territory IO
 // S.Georgia & S.Sandwich Islands GS
@@ -90,7 +90,7 @@ class ISO31662 {
     constructor() {
         const map: Record<string, Country[]> = {};
 
-        Object.entries(iso.data).map((data) => {
+        Object.entries(iso).map((data) => {
             if (ignoredCodes.includes(data[0])) return;
 
             const subdivisions = Object.entries(data[1].sub)
