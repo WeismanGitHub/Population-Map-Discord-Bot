@@ -1,6 +1,8 @@
 // @ts-nocheck
-import { InternalServerError } from '../errors';
 import iso from '../../../../../iso-3166-2.json'; // I need to go up farther for the built file.
+import { InternalServerError } from '../errors';
+
+// Missing Countries/Territories/Whatever
 // Bouvet Island BV
 // Bangladesh BD
 // British Indian Ocean Territory IO
@@ -28,36 +30,6 @@ import iso from '../../../../../iso-3166-2.json'; // I need to go up farther for
 // Antarctica AQ
 // Aruba AW
 // Kiribati KI
-const ignoredCodes = [
-    'BD',
-    'KI',
-    'AW',
-    'AQ',
-    'NF',
-    'NU',
-    'MC',
-    'YT',
-    'MV',
-    'MO',
-    'ZW',
-    'ZM',
-    'PN',
-    'VA',
-    'HK',
-    'HM',
-    'CW',
-    'CC',
-    'CX',
-    'FK',
-    'GI',
-    'MF',
-    'SX',
-    'ZA',
-    'GS',
-    'IO',
-    'BV',
-];
-
 class ISO31662 {
     public readonly countries: Record<CountryLetter, Country[]>;
     public readonly countryLetters = [
@@ -93,8 +65,6 @@ class ISO31662 {
         const map: Record<string, Country[]> = {};
 
         Object.entries(iso).map((data) => {
-            if (ignoredCodes.includes(data[0])) return;
-
             const subdivisions = Object.entries(data[1].sub)
                 .map((sub) => {
                     return { code: sub[0], ...sub[1] };
