@@ -59,7 +59,7 @@ class ISO31662 {
         'W',
         'Y',
         'Z',
-    ]
+    ];
 
     constructor() {
         const map: Record<string, Country[]> = {};
