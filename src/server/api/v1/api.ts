@@ -50,7 +50,7 @@ api.use(
 );
 
 api.set('trust proxy', 1);
-api.use(express.static(resolve(__dirname, '../client')));
+api.use(express.static(resolve(__dirname, '../../../client')));
 api.use('/api/v1/', v1Router);
 
 api.use('/api/*', (): void => {
@@ -58,7 +58,7 @@ api.use('/api/*', (): void => {
 });
 
 api.get('/*', (_req, res): void => {
-    res.status(200).sendFile(resolve(__dirname, '../client/index.html'));
+    res.status(200).sendFile(resolve(__dirname, '../../../client/index.html'));
 });
 
 api.use((err: Error | CustomError, _req: Request, res: Response, _next: NextFunction): void => {
