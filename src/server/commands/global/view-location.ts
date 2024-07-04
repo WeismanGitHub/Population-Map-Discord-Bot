@@ -2,7 +2,7 @@ import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
 import { InternalServerError, NotFoundError } from '../../errors';
 import { GuildLocation } from '../../db/models';
 import { InfoEmbed } from '../../utils/embeds';
-import iso31662 from '../../utils/countries';
+import iso31662 from '../../utils/iso31662';
 
 export default {
     data: new SlashCommandBuilder()

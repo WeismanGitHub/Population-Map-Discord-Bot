@@ -1,7 +1,7 @@
 import { ForbiddenError, InternalServerError, NotFoundError } from '../../errors';
 import { Guild, GuildLocation, User } from '../../db/models';
 import { InfoEmbed } from '../../utils/embeds';
-import iso31662 from '../../utils/countries';
+import iso31662 from '../../utils/iso31662';
 import {
     ActionRowBuilder,
     ButtonBuilder,

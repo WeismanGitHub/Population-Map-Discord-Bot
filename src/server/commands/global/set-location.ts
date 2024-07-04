@@ -1,6 +1,6 @@
 import { InfoEmbed } from '../../utils/embeds';
 import { NotFoundError } from '../../errors';
-import iso31662 from '../../utils/countries';
+import iso31662 from '../../utils/iso31662';
 import { Guild } from '../../db/models';
 import {
     SlashCommandBuilder,

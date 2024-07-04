@@ -1,4 +1,4 @@
-import iso31662 from '../../utils/countries';
+import iso31662 from '../../utils/iso31662';
 import {
     ActionRowBuilder,
     ButtonBuilder,

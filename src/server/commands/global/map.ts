@@ -1,5 +1,5 @@
 import { InfoEmbed } from '../../utils/embeds';
-import iso31662 from '../../utils/countries';
+import iso31662 from '../../utils/iso31662';
 import config from '../../config';
 import {
     SlashCommandBuilder,
