@@ -1,12 +1,12 @@
 import express, { Application, NextFunction, Request, Response } from 'express';
-import { CustomError, NotFoundError, TooManyRequestsError } from './errors';
+import { CustomError, NotFoundError, TooManyRequestsError } from '../../errors';
 import rateLimit from 'express-rate-limit';
 import fetchMetadata from 'fetch-metadata';
-import v1Router from './api/v1/router';
 import compression from 'compression';
+import v1Router from './router';
+import config from '../../config';
 require('express-async-errors');
 import { resolve } from 'path';
-import config from './config';
 import helmet from 'helmet';
 
 const limiter = rateLimit({

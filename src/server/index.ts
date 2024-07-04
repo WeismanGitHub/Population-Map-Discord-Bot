@@ -3,8 +3,8 @@ import { CustomClient } from './custom-client';
 import { GatewayIntentBits } from 'discord.js';
 import sequelize from './db/sequelize';
 require('express-async-errors');
+import api from './api/v1/api';
 import config from './config';
-import api from './api';
 
 (async function () {
     for (const entry of Object.entries(config)) {
