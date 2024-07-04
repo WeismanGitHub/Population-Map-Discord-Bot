@@ -2,6 +2,7 @@
 import { InternalServerError } from '../errors';
 import iso from '../../../../../iso-3166-2.json'; // I need to go up farther for the built file.
 // Bouvet Island BV
+// Bangladesh BD
 // British Indian Ocean Territory IO
 // S.Georgia & S.Sandwich Islands GS
 // South Africa ZA
@@ -28,6 +29,7 @@ import iso from '../../../../../iso-3166-2.json'; // I need to go up farther for
 // Aruba AW
 // Kiribati KI
 const ignoredCodes = [
+    'BD',
     'KI',
     'AW',
     'AQ',
