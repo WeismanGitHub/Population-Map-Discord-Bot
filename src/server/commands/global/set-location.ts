@@ -1,5 +1,6 @@
+import { InfoEmbed } from '../../utils/embeds';
 import { NotFoundError } from '../../errors';
-import alphabet from '../../utils/letters';
+import iso31662 from '../../utils/countries';
 import { Guild } from '../../db/models';
 import {
     SlashCommandBuilder,
@@ -8,7 +9,6 @@ import {
     StringSelectMenuOptionBuilder,
     ActionRowBuilder,
 } from 'discord.js';
-import { InfoEmbed } from '../../utils/embeds';
 
 export default {
     data: new SlashCommandBuilder()
@@ -34,7 +34,7 @@ export default {
                 )
                 .setPlaceholder('A - L')
                 .addOptions(
-                    alphabet
+                    iso31662.countryLetters
                         .slice(0, 13)
                         .map((letter) =>
                             new StringSelectMenuOptionBuilder().setLabel(letter).setValue(letter)
@@ -53,7 +53,7 @@ export default {
                 )
                 .setPlaceholder('M - Z')
                 .addOptions(
-                    alphabet
+                    iso31662.countryLetters
                         .slice(13)
                         .map((letter) =>
                             new StringSelectMenuOptionBuilder().setLabel(letter).setValue(letter)

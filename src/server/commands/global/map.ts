@@ -1,5 +1,5 @@
 import { InfoEmbed } from '../../utils/embeds';
-import alphabet from '../../utils/letters';
+import iso31662 from '../../utils/countries';
 import config from '../../config';
 import {
     SlashCommandBuilder,
@@ -29,7 +29,7 @@ export default {
                 )
                 .setPlaceholder('A - L')
                 .addOptions(
-                    alphabet
+                    iso31662.countryLetters
                         .slice(0, 13)
                         .map((letter) =>
                             new StringSelectMenuOptionBuilder().setLabel(letter).setValue(letter)
@@ -48,7 +48,7 @@ export default {
                 )
                 .setPlaceholder('M - Z')
                 .addOptions(
-                    alphabet
+                    iso31662.countryLetters
                         .slice(13)
                         .map((letter) =>
                             new StringSelectMenuOptionBuilder().setLabel(letter).setValue(letter)
