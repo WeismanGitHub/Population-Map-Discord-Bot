@@ -1,6 +1,61 @@
 import { InternalServerError } from '../errors';
 import iso from 'iso-3166-2';
 
+// Bouvet Island BV
+// British Indian Ocean Territory IO
+// S.Georgia & S.Sandwich Islands GS
+// South Africa ZA
+// St. Maarten SX
+// St. Martin MF
+// Gibraltar GI
+// Falkland Islands FK
+// Christmas Island CX
+// Cocos  Islands CC
+// Curaçao CW
+// Heard & McDonald Islands HM
+// Hong Kong HK
+// Vatican City VA
+// Pitcairn PN
+// Zambia ZM
+// Zimbabwe ZW
+// Macau MO
+// Maldives MV
+// Mayotte YT
+// Monaco MC
+// Niue NU
+// Norfolk Island NF
+// Antarctica AQ
+// Aruba AW
+// Kiribati KI
+const ignoredCodes = [
+    'KI',
+    'AW',
+    'AQ',
+    'NF',
+    'NU',
+    'MC',
+    'YT',
+    'MV',
+    'MO',
+    'ZW',
+    'ZM',
+    'PN',
+    'VA',
+    'HK',
+    'HM',
+    'CW',
+    'CC',
+    'CX',
+    'FK',
+    'GI',
+    'MF',
+    'SX',
+    'ZA',
+    'GS',
+    'IO',
+    'BV',
+];
+
 class ISO31662 {
     public readonly countries: Record<CountryLetter, Country[]>;
 
@@ -8,6 +63,8 @@ class ISO31662 {
         const map: Record<string, Country[]> = {};
 
         Object.entries(iso.data).map((data) => {
+            if (ignoredCodes.includes(data[0])) return;
+
             const subdivisions = Object.entries(data[1].sub)
                 .map((sub) => {
                     return { code: sub[0], ...sub[1] };
