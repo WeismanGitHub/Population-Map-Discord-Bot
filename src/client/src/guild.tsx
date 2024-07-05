@@ -153,7 +153,7 @@ export default function Guild() {
                 if (axios.isAxiosError<{ error: string }>(err)) {
                     setError(err.response?.data.error ?? 'Something went wrong.');
 
-                    if (err.status === 401) {
+                    if (err.response?.status === 401) {
                         localStorage.removeItem('loggedIn');
                         navigate(`/discord/oauth2?guildID=${guildID}&mapCode=${mapCode}`);
                     }
