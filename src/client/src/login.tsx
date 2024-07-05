@@ -15,7 +15,7 @@ function generateState() {
     return randomString;
 }
 
-export default function DiscordOAuth2() {
+export default function Login() {
     const [error, setError] = useState<string | null>(null);
     const [authorized, setAuthorized] = useState(false);
     const [searchParams] = useSearchParams();
