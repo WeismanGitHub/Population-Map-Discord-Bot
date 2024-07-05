@@ -35,7 +35,7 @@ export default function DiscordOAuth2() {
 
         if (code && state && localStorage.getItem('auth-state') === atob(decodeURIComponent(state))) {
             axios
-                .post('/api/v1/auth/discord/oauth2', { code })
+                .post('/api/v1/discord/oauth2', { code })
                 .then(() => {
                     setAuthorized(true);
                 })
