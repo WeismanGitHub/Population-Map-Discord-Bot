@@ -15,7 +15,7 @@ export default function NavBar() {
         }
 
         axios
-            .post('/api/v1/auth/logout')
+            .post('/api/v1/logout')
             .then(() => {
                 localStorage.removeItem('loggedIn');
                 setLoggedIn(false);
