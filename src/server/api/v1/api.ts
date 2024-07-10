@@ -28,8 +28,10 @@ api.use(
                 'img-src': ["'self'", 'cdn.discordapp.com', 'raw.githubusercontent.com', 'data:'],
                 'default-src': ["'self'", 'raw.githubusercontent.com'],
                 'script-src': ["'self'"],
+                'frame-ancestors': ['*']
             },
         },
+        xFrameOptions: false
     })
 );
 api.use(limiter);
