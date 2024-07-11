@@ -57,9 +57,9 @@ api.use((req, res, next) => {
                 res.end();
             },
         })(req, res, next);
+    } else {
+        next();
     }
-
-    next();
 });
 
 api.set('trust proxy', 1);
