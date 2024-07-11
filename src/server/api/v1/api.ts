@@ -35,12 +35,12 @@ api.use(
 
 api.use((req, res, next) => {
     if (req.path.toLowerCase() == '/example') {
-        res.removeHeader('X-Frame-Options')
-        res.removeHeader('Content-Security-Policy')
+        res.removeHeader('X-Frame-Options');
+        res.removeHeader('Content-Security-Policy');
     }
 
-    next()
-})
+    next();
+});
 api.use(limiter);
 api.use(compression());
 api.use(express.urlencoded({ extended: true }));
