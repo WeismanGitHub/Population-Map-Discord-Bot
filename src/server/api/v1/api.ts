@@ -45,18 +45,22 @@ api.use(limiter);
 api.use(compression());
 api.use(express.urlencoded({ extended: true }));
 api.use(express.json());
-api.use(
-    fetchMetadata({
-        allowedFetchSites: ['same-origin', 'same-site', 'none'],
-        disallowedNavigationRequests: ['frame', 'iframe'],
-        errorStatusCode: 403,
-        allowedPaths: [],
-        onError: (_req, res, _next, options) => {
-            res.statusCode = options.errorStatusCode;
-            res.end();
-        },
-    })
-);
+api.use((req, res, next) => {
+    if (req.path.toLowerCase() !== '/example') {
+        fetchMetadata({
+            allowedFetchSites: ['same-origin', 'same-site', 'none'],
+            disallowedNavigationRequests: ['frame', 'iframe'],
+            errorStatusCode: 403,
+            allowedPaths: [],
+            onError: (_req, res, _next, options) => {
+                res.statusCode = options.errorStatusCode;
+                res.end();
+            },
+        })(req, res, next);
+    }
+
+    next();
+});
 
 api.set('trust proxy', 1);
 api.use(express.static(resolve(__dirname, '../../../client')));
