@@ -28,12 +28,19 @@ api.use(
                 'img-src': ["'self'", 'cdn.discordapp.com', 'raw.githubusercontent.com', 'data:'],
                 'default-src': ["'self'", 'raw.githubusercontent.com'],
                 'script-src': ["'self'"],
-                'frame-ancestors': ['*']
             },
         },
-        xFrameOptions: false
     })
 );
+
+api.use((req, res, next) => {
+    if (req.path.toLowerCase() == '/example') {
+        res.removeHeader('X-Frame-Options')
+        res.removeHeader('Content-Security-Policy')
+    }
+
+    next()
+})
 api.use(limiter);
 api.use(compression());
 api.use(express.urlencoded({ extended: true }));
