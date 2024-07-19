@@ -10,7 +10,8 @@
     "enable": "fly scale count 1",
     "prettier": "npx prettier --write src",
     "setup": "cd src/server && npm i && cd ../client && npm i",
-    "deploy": "fly deploy --local-only"
+    "deploy": "fly deploy --local-only",
+    "validate": "cd src/server && tsc && cd ../.. && node src\\server\\dist\\server\\validate-countries.js"
   },
   "eslintConfig": {
     "extends": [
