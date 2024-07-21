@@ -2,6 +2,7 @@ import { InternalServerError } from './errors';
 import { CustomClient } from './custom-client';
 import { GatewayIntentBits } from 'discord.js';
 import sequelize from './db/sequelize';
+import EventEmitter from 'events';
 require('express-async-errors');
 import api from './api/v1/api';
 import config from './config';
@@ -26,6 +27,8 @@ import config from './config';
     const client = new CustomClient({
         intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
     });
+
+    EventEmitter.setMaxListeners(15);
 
     api.listen(config.appPort, (): void => console.log(`listening on port ${config.appPort}...`));
     api.set('discordClient', client);
