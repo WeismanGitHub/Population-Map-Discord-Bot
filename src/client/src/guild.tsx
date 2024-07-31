@@ -195,47 +195,37 @@ export default function Guild() {
             </ToastContainer>
 
             <NavBar />
-            {!geojson ? (
-                <div
-                    className="d-flex justify-content-center align-items-center overflow-hidden w-100 fs-3"
-                    style={{ height: '90vh' }}
-                >
-                    {status === 'Loading...' ? (
-                        <Spinner animation="border" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </Spinner>
-                    ) : (
-                        status
-                    )}
-                </div>
-            ) : (
-                <div className="container p-1">
-                    {guild && (
-                        <div className="d-flex justify-content-center m-0 col-lg-10">
-                            <div style={{ fontSize: 'x-large', display: 'flex', marginBottom: '3px' }}>
-                                <img
-                                    width={65}
-                                    height={65}
-                                    src={guild?.icon || '/discord.svg'}
-                                    alt="server icon"
-                                    style={{ borderRadius: '50%', marginRight: '2px' }}
-                                />
-                                <div>
-                                    {guild.name}
-                                    <br />
-                                    <div style={{ fontSize: 'medium', marginLeft: '8px' }}>
-                                        {guild.locations.length} / {guild.guildMemberCount} members{' '}
-                                        {`(${Math.round(
-                                            (guild.locations.length / guild.guildMemberCount) * 100
-                                        )}%)`}
-                                    </div>
+            <div className="full-height-minus-navbar p-2 pt-5 container-fluid w-100 flex-wrap m-0 d-flex justify-content-center align-content-center">
+                {guild && (
+                    <div className="d-flex justify-content-center m-0" style={{ height: '10%' }}>
+                        <div style={{ fontSize: 'x-large', display: 'flex', marginBottom: '3px' }}>
+                            <img
+                                width={65}
+                                height={65}
+                                src={guild?.icon || '/discord.svg'}
+                                alt="server icon"
+                                style={{ borderRadius: '50%', marginRight: '2px' }}
+                            />
+                            <div>
+                                <span className="ps-1">{guild.name}</span>
+                                <br />
+                                <div style={{ fontSize: 'medium', marginLeft: '8px' }}>
+                                    {guild.locations.length} / {guild.guildMemberCount} members{' '}
+                                    {`(${Math.round(
+                                        (guild.locations.length / guild.guildMemberCount) * 100
+                                    )}%)`}
                                 </div>
                             </div>
                         </div>
-                    )}
-                    <div className="row" style={{ height: '450px' }}>
-                        <div className="col-lg-10">
-                            <div style={{ maxHeight: '450px' }}>
+                    </div>
+                )}
+                <div className="row d-flex w-100 justify-content-center" style={{ height: '75%' }}>
+                    <div
+                        style={{ width: '80%' }}
+                        className="col-10 p-0 m-0 pt-2 flex-column align-items-center align-content-center"
+                    >
+                        {geojson ? (
+                            <div style={{ paddingLeft: '2.5%' }}>
                                 <PopulationMap
                                     // @ts-ignore
                                     geojson={geojson}
@@ -246,46 +236,54 @@ export default function Guild() {
                                     }
                                 />
                             </div>
-                        </div>
-                        <div className="col-lg-2 d-flex justify-content-center justify-content-lg-end mt-2 mt-lg-0">
-                            <div style={{ width: '150px' }}>
-                                <div>
-                                    <Link
-                                        className="btn-custom mb-1"
-                                        style={{ color: '#ffffff', width: '150px' }}
-                                        to={`/maps/${guildID}?mapCode=WORLD`}
-                                    >
-                                        View World
-                                    </Link>
-                                    <br />
-                                    <Link
-                                        className="btn-custom mb-1"
-                                        style={{ color: '#ffffff', width: '150px' }}
-                                        to={`/maps/${guildID}?mapCode=CONTINENTS`}
-                                    >
-                                        View Continents
-                                    </Link>
-                                </div>
-                                <ListGroup
-                                    className="flex-grow-1"
-                                    style={{ height: '362px', overflowY: 'auto', width: '150px' }}
-                                >
-                                    {countryCodes &&
-                                        Object.entries(countryCodes).map(([name, code]) => {
-                                            return (
-                                                <ListGroupItem key={code} className="btn-custom mb-1 me-1">
-                                                    <Link to={`/maps/${guildID}?mapCode=${code}`}>
-                                                        {name}
-                                                    </Link>
-                                                </ListGroupItem>
-                                            );
-                                        })}
-                                </ListGroup>
+                        ) : (
+                            <div className="d-flex h-100 w-100 justify-content-center align-items-center align-content-center fs-3">
+                                {status === 'Loading...' ? (
+                                    <Spinner animation="border" role="status">
+                                        <span className="visually-hidden">Loading...</span>
+                                    </Spinner>
+                                ) : (
+                                    status
+                                )}
                             </div>
+                        )}
+                    </div>
+                    <div
+                        className="col-2 p-0 m-0 d-flex justify-content-center align-items-center pt-2"
+                        style={{ width: '20%', minWidth: '175px' }}
+                    >
+                        <div style={{ width: '75%' }}>
+                            <div className="w-100 mb-1">
+                                <Link className="btn-custom mb-1 w-100" to={`/maps/${guildID}?mapCode=WORLD`}>
+                                    World
+                                </Link>
+                                <br />
+                                <Link
+                                    className="btn-custom mb-1 w-100"
+                                    to={`/maps/${guildID}?mapCode=CONTINENTS`}
+                                >
+                                    Continents
+                                </Link>
+                            </div>
+                            <ListGroup style={{ overflowY: 'auto', height: '50vh' }}>
+                                {countryCodes &&
+                                    Object.entries(countryCodes).map(([name, code]) => {
+                                        return (
+                                            <ListGroupItem key={code} className="btn-custom mb-1 me-1">
+                                                <Link
+                                                    style={{ color: '#dbdee1' }}
+                                                    to={`/maps/${guildID}?mapCode=${code}`}
+                                                >
+                                                    {name}
+                                                </Link>
+                                            </ListGroupItem>
+                                        );
+                                    })}
+                            </ListGroup>
                         </div>
                     </div>
                 </div>
-            )}
+            </div>
         </>
     );
 }
