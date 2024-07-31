@@ -14,7 +14,7 @@ export default {
     async execute(interaction: CommandInteraction): Promise<void> {
         const embed = new InfoEmbed(
             null,
-            "The Population Map Bot is a dynamic map generator capable of visualizing population data on a global, continental, or country level. Maps are generated from self-reported locations provided by Discord server members, enabling users to explore population distributions with ease.\n\nUse `/map` to get the link to a server's map. Server members use `/set-location` to add their location to the map. A location can be any country and, optionally, a subdivision (state, province, etc.) within that country. Locations are anonymous, meaning no one can see what you set your location to. Server admins can also make it so only members who share their location can access the server."
+            "The Population Map Bot is a dynamic map generator that visualizes your Discord server's population data on a global, continental, or country level. Maps are generated from self-reported locations provided by server members and are anonymous.\n\nServer members use `/set-location` to set their country and, optionally, a subdivision (state, province, etc.) within that country. Maps are generated through the website, and you can get a link to a server's map with `/map`. Server admins can also make it so only members who share their location can access the server."
         )
             .addFields({ name: 'Contact the Creator:', value: `<@${config.mainAccountID}>` })
             .setImage(

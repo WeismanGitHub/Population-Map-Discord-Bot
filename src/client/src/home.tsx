@@ -70,18 +70,15 @@ export default function Home() {
                     </div>
                     <div className="col-md-12 col-lg-6 order-md-2 order-lg-1">
                         <br />
-                        The Population Map Bot is a dynamic map generator capable of visualizing population
-                        data on a global, continental, or country level. Maps are generated from self-reported
-                        locations provided by Discord server members, enabling users to explore population
-                        distributions with ease.
+                        The Population Map Bot is a dynamic map generator that visualizes your Discord
+                        server's population data on a global, continental, or country level. Maps are
+                        generated from self-reported locations provided by server members and are anonymous.
                         <br />
                         <br />
-                        Use <code>/map</code> to get the link to a server's map. Server members use{' '}
-                        <code>/set-location</code> to add their location to the map. A location can be any
-                        country and, optionally, a subdivision (state, province, etc.) within that country.
-                        Locations are anonymous, meaning no one can see what you set your location to. Server
-                        admins can also make it so only members who share their location can access the
-                        server.{' '}
+                        Server members use `/set-location` to set their country and, optionally, a subdivision
+                        (state, province, etc.) within that country. Maps are generated through the website,
+                        and you can get a link to a server's map with `/map`. Server admins can also make it
+                        so only members who share their location can access the server.
                         <a
                             className="link"
                             href={
