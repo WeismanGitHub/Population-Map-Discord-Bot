@@ -197,7 +197,10 @@ export default function Guild() {
             <NavBar />
             <div className="full-height-minus-navbar p-2 pt-5 container-fluid w-100 flex-wrap m-0 d-flex justify-content-center align-content-center">
                 {guild && (
-                    <div className="d-flex justify-content-center m-0" style={{ height: '10%' }}>
+                    <div
+                        className="d-flex justify-content-center m-0"
+                        style={{ minHeight: '10%', height: 'fit-content' }}
+                    >
                         <div style={{ fontSize: 'x-large', display: 'flex', marginBottom: '3px' }}>
                             <img
                                 width={65}
