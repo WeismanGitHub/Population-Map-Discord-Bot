@@ -76,11 +76,6 @@ body {
     font-size: 48px;
 }
 
-.carousel {
-    border-radius: 5px;
-    overflow: hidden;
-}
-
 code {
     padding: 2.72px;
     background-color: #2b2d31;
@@ -115,4 +110,40 @@ code {
 .full-height-minus-navbar {
     margin-top: 100px;
     height: calc(100vh - 100px);
+}
+
+.example-image {
+    aspect-ratio: 2 / 1;
+    width: 100%;
+    height: auto;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    height: 100px;
+    width: 100px;
+    background-size: 100%, 100%;
+    border-radius: 50%;
+    background-image: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-control-next-icon:after {
+    filter: invert(1);
+    transform: scale(150%);
+    content: url(/arrow-right-circle-fill.svg);
+}
+
+.carousel-control-prev-icon:after {
+    filter: invert(1);
+    transform: scale(150%);
+    content: url(/arrow-left-circle-fill.svg);
+}
+
+.carousel-inner {
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0);
+    overflow: hidden;
 }
