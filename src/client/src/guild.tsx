@@ -195,7 +195,7 @@ export default function Guild() {
             </ToastContainer>
 
             <NavBar />
-            <div className="full-height-minus-navbar p-2 pt-5 container-fluid w-100 flex-wrap m-0 d-flex justify-content-center align-content-center">
+            <div className="p-1 container-fluid w-100 flex-wrap d-flex justify-content-center align-content-center mt-5">
                 {guild && (
                     <div
                         className="d-flex justify-content-center m-0"
