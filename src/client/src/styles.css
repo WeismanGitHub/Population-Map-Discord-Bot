@@ -31,23 +31,8 @@ body {
     color: #fff;
 }
 
-.nav-item {
-    background-color: #313338;
+.nav-link {
     color: #ffffff;
-    cursor: pointer;
-    padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
-    transition:
-        background-color 0.15s,
-        color 0.15s;
-    text-decoration: none;
-    display: inline-block;
-    text-align: center;
-    margin-right: 7px;
-}
-
-.nav-item:hover {
-    background-color: #2b2d31;
 }
 
 .btn-custom {

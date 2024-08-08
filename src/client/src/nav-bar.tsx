@@ -1,5 +1,4 @@
-import { ToastContainer, Toast, Modal, Button, Navbar } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { ToastContainer, Toast, Modal, Button, Navbar, Nav } from 'react-bootstrap';
 import { useState } from 'react';
 import axios from 'axios';
 
@@ -65,7 +64,7 @@ export default function NavBar() {
                 </Modal.Footer>
             </Modal>
 
-            <Navbar expand="md" className="bg-dark navbar-dark w-100">
+            <Navbar sticky="top" expand="md" className="bg-dark navbar-dark w-100">
                 <div className="container-fluid">
                     <Navbar.Brand href="/" className="justify-content-start">
                         <div className="w-100 d-flex d-sm-inline justify-content-center">
@@ -81,38 +80,24 @@ export default function NavBar() {
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" className="justify-content-end" />
                     <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-                        <ul className="navbar-nav">
-                            <li className="nav-item">
-                                {/* @ts-ignore */}
-                                <Link className="w-100" to={import.meta.env.VITE_BOT_INVITE}>
-                                    Invite
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link
-                                    className="w-100"
-                                    /* @ts-ignore */
-                                    to={import.meta.env.VITE_SUPPORT_SERVER_INVITE}
-                                >
-                                    Server
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link
-                                    className="w-100"
-                                    to="https://github.com/WeismanGitHub/Population-Map-Discord-Bot"
-                                >
-                                    GitHub
-                                </Link>
-                            </li>
-                            {loggedIn && (
-                                <li className="nav-item">
-                                    <a className="w-100" onClick={() => setShow(true)}>
-                                        Logout
-                                    </a>
-                                </li>
-                            )}
-                        </ul>
+                        <Nav className="fs-4">
+                            <Nav.Link
+                                /* @ts-ignore */
+                                href={import.meta.env.VITE_BOT_INVITE}
+                            >
+                                Invite
+                            </Nav.Link>
+                            <Nav.Link
+                                /* @ts-ignore */
+                                href={import.meta.env.VITE_SUPPORT_SERVER_INVITE}
+                            >
+                                Server
+                            </Nav.Link>
+                            <Nav.Link href="https://github.com/WeismanGitHub/Population-Map-Discord-Bot">
+                                GitHub
+                            </Nav.Link>
+                            {loggedIn && <Nav.Item onClick={() => setShow(true)}>Logout</Nav.Item>}
+                        </Nav>
                     </Navbar.Collapse>
                 </div>
             </Navbar>
