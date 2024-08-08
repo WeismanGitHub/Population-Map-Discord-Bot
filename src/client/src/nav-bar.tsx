@@ -52,7 +52,7 @@ export default function NavBar() {
 
             <Modal show={show} centered keyboard={true} onHide={() => setShow(false)} animation={false}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Are you sure you want to log out?</Modal.Title>
+                    <Modal.Title className="text-black">Are you sure you want to log out?</Modal.Title>
                 </Modal.Header>
                 <Modal.Footer>
                     <Button variant="danger" onClick={logout}>
@@ -96,7 +96,7 @@ export default function NavBar() {
                             <Nav.Link href="https://github.com/WeismanGitHub/Population-Map-Discord-Bot">
                                 GitHub
                             </Nav.Link>
-                            {loggedIn && <Nav.Item onClick={() => setShow(true)}>Logout</Nav.Item>}
+                            {loggedIn && <Nav.Link onClick={() => setShow(true)}>Logout</Nav.Link>}
                         </Nav>
                     </Navbar.Collapse>
                 </div>
