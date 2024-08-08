@@ -1,4 +1,4 @@
-import { ToastContainer, Toast } from 'react-bootstrap';
+import { ToastContainer, Toast, Modal, Button, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
@@ -7,13 +7,9 @@ export default function NavBar() {
     const [loggedIn, setLoggedIn] = useState(Boolean(localStorage.getItem('loggedIn')));
     const [success, setSuccess] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [isNavOpen, setIsNavOpen] = useState(false);
+    const [show, setShow] = useState(false);
 
     function logout() {
-        if (!window.confirm('Are you sure you want to logout?')) {
-            return;
-        }
-
         axios
             .post('/api/v1/logout')
             .then(() => {
@@ -54,70 +50,72 @@ export default function NavBar() {
                     <Toast.Body>{success}</Toast.Body>
                 </Toast>
             </ToastContainer>
-            <nav
-                className="navbar navbar-expand-md py-1 ps-2 pe-2 navbar-dark bg-dark"
-                style={{ textAlign: 'center', fontSize: 'x-large' }}
-            >
+
+            <Modal show={show} centered keyboard={true} onHide={() => setShow(false)} animation={false}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Are you sure you want to log out?</Modal.Title>
+                </Modal.Header>
+                <Modal.Footer>
+                    <Button variant="danger" onClick={logout}>
+                        Logout
+                    </Button>
+                    <Button variant="secondary" onClick={() => setShow(false)}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Navbar expand="md" className="bg-dark navbar-dark w-100">
                 <div className="container-fluid">
-                    <Link className="navbar-brand" to="/">
-                        <img
-                            src="/icon.svg"
-                            width="50"
-                            height="50"
-                            alt="icon"
-                            className="me-2 rounded-5 bg-white"
-                        />
+                    <Navbar.Brand href="/" className="justify-content-start">
+                        <div className="w-100 d-flex d-sm-inline justify-content-center">
+                            <img
+                                src="/icon.svg"
+                                width="50"
+                                height="50"
+                                alt="icon"
+                                className="rounded-5 bg-white me-2 ms-2 "
+                            />
+                        </div>
                         <span className="d-block d-sm-inline-block">Population Map Bot</span>
-                    </Link>
-                    <button
-                        className="navbar-toggler"
-                        type="button"
-                        onClick={() => setIsNavOpen(!isNavOpen)}
-                        aria-controls="navbarNav"
-                        aria-expanded={isNavOpen ? 'true' : 'false'}
-                        aria-label="Toggle navigation"
-                    >
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div
-                        className={`justify-content-end collapse navbar-collapse${isNavOpen ? ' show' : ''}`}
-                        id="navbarNav"
-                    >
-                        <ul className="navbar-nav d-flex justify-content-center align-items-center">
-                            <li className={`m-1 w-75 ${isNavOpen ? ' mb-2' : ''}`}>
+                    </Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" className="justify-content-end" />
+                    <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+                        <ul className="navbar-nav">
+                            <li className="nav-item">
                                 {/* @ts-ignore */}
-                                <a className="nav-item w-100" href={import.meta.env.VITE_BOT_INVITE}>
+                                <Link className="w-100" to={import.meta.env.VITE_BOT_INVITE}>
                                     Invite
-                                </a>
+                                </Link>
                             </li>
-                            <li className={`m-1 w-75 ${isNavOpen ? ' mb-2' : ''}`}>
-                                <a
-                                    className="nav-item w-100"
+                            <li className="nav-item">
+                                <Link
+                                    className="w-100"
                                     /* @ts-ignore */
-                                    href={import.meta.env.VITE_SUPPORT_SERVER_INVITE}
+                                    to={import.meta.env.VITE_SUPPORT_SERVER_INVITE}
                                 >
                                     Server
-                                </a>
+                                </Link>
                             </li>
-                            <li className={`m-1 w-75 ${isNavOpen ? ' mb-2' : ''}`}>
-                                <a
-                                    className="nav-item w-100"
-                                    href="https://github.com/WeismanGitHub/Population-Map-Discord-Bot"
+                            <li className="nav-item">
+                                <Link
+                                    className="w-100"
+                                    to="https://github.com/WeismanGitHub/Population-Map-Discord-Bot"
                                 >
                                     GitHub
-                                </a>
+                                </Link>
                             </li>
                             {loggedIn && (
-                                <li className={`m-1 w-75 ${isNavOpen ? ' mb-2' : ''}`}>
-                                    <a className="nav-item w-100" onClick={logout}>
+                                <li className="nav-item">
+                                    <a className="w-100" onClick={() => setShow(true)}>
                                         Logout
                                     </a>
                                 </li>
                             )}
                         </ul>
-                    </div>
+                    </Navbar.Collapse>
                 </div>
-            </nav>
+            </Navbar>
         </>
     );
 }

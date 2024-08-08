@@ -38,8 +38,8 @@ body {
     padding: 0.5rem 1rem;
     border-radius: 0.25rem;
     transition:
-        background-color 0.3s,
-        color 0.3s;
+        background-color 0.15s,
+        color 0.15s;
     text-decoration: none;
     display: inline-block;
     text-align: center;
@@ -107,11 +107,6 @@ code {
     background-color: #2b2d31;
 }
 
-.full-height-minus-navbar {
-    margin-top: 100px;
-    height: calc(100vh - 100px);
-}
-
 .example-image {
     aspect-ratio: 2 / 1;
     width: 100%;
@@ -146,4 +141,9 @@ code {
     border-radius: 5px;
     background-color: rgba(0, 0, 0, 0);
     overflow: hidden;
+}
+
+.full-height-minus-navbar {
+    margin-top: 100px;
+    height: calc(100vh - 100px);
 }
