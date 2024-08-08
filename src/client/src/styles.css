@@ -127,8 +127,3 @@ code {
     background-color: rgba(0, 0, 0, 0);
     overflow: hidden;
 }
-
-.full-height-minus-navbar {
-    margin-top: 100px;
-    height: calc(100vh - 100px);
-}
