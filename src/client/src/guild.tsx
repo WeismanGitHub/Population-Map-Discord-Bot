@@ -270,22 +270,48 @@ export default function Guild() {
                             </div>
                             <ListGroup style={{ overflowY: 'auto', height: '50vh' }}>
                                 {countryCodes &&
-                                    Object.entries(countryCodes).map(([name, code]) => {
-                                        return (
-                                            <ListGroupItem key={code} className="btn-custom mb-1 me-1">
-                                                <Link
-                                                    style={{ color: '#dbdee1' }}
-                                                    to={`/maps/${guildID}?mapCode=${code}`}
-                                                >
-                                                    {name}
-                                                </Link>
-                                            </ListGroupItem>
-                                        );
-                                    })}
+                                    Object.entries(countryCodes)
+                                        .sort()
+                                        .map(([name, code]) => {
+                                            return (
+                                                <ListGroupItem key={code} className="btn-custom mb-1 me-1">
+                                                    <Link
+                                                        style={{ color: '#dbdee1' }}
+                                                        to={`/maps/${guildID}?mapCode=${code}`}
+                                                    >
+                                                        {name}
+                                                    </Link>
+                                                </ListGroupItem>
+                                            );
+                                        })}
                             </ListGroup>
                         </div>
                     </div>
                 </div>
+                {geojson?.features && (
+                    <div className="d-flex flex-wrap mt-2 justify-content-center">
+                        {countryCodes &&
+                            geojson.features
+                                .filter((feature) => feature.count > 0)
+                                .sort((a, b) => b.count - a.count)
+                                .map((feature) => {
+                                    return (
+                                        <div
+                                            style={{ width: 'fit-content' }}
+                                            /* @ts-ignore */
+                                            key={feature.properties.name}
+                                            className="d-flex justify-content-between align-items-center mb-1 me-1 feature"
+                                        >
+                                            {/* @ts-ignore */}
+                                            <span>{feature.properties.name}</span>
+                                            <span className="ms-1 badge bg-primary rounded-pill">
+                                                {feature.count}
+                                            </span>
+                                        </div>
+                                    );
+                                })}
+                    </div>
+                )}
             </div>
         </>
     );

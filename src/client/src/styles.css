@@ -127,3 +127,14 @@ code {
     background-color: rgba(0, 0, 0, 0);
     overflow: hidden;
 }
+
+.feature {
+    border: none;
+    color: var(--discord-text);
+    background-color: var(--discord-dark);
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
