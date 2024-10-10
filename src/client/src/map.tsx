@@ -20,7 +20,7 @@ export default function Map(props: { geojson: { features: [] }; projection: 'alb
 
     return (
         <ReactChart
-            style={{ backgroundColor: 'white', borderRadius: '5px', maxHeight: '450px' }}
+            style={{ backgroundColor: 'white', borderRadius: '5px', maxHeight: window.outerHeight }}
             ref={chartRef}
             type="choropleth"
             data={{
