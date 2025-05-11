@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
+import { SlashCommandBuilder, ChatInputCommandInteraction, PermissionFlagsBits } from 'discord.js';
 import { ForbiddenError, NotFoundError } from '../../errors';
 import { InfoEmbed } from '../../utils/embeds';
 import { Guild } from '../../db/models';
@@ -7,7 +7,8 @@ export default {
     data: new SlashCommandBuilder()
         .setName('server-delete')
         .setDMPermission(false)
-        .setDescription('Delete the data of a server.'),
+        .setDescription('Delete the data of a server. Only available to the server owner.')
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     guildIDs: null,
     async execute(interaction: ChatInputCommandInteraction) {
         if (interaction.user.id !== interaction.guild?.ownerId) {
