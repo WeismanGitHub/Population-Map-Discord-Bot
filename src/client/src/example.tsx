@@ -19,10 +19,13 @@ export default function Example() {
     const chartRef = useRef();
     const [geojson, setGeojson] = useState(null);
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const mapCode = urlParams.get('mapCode') ?? 'WORLD';
+
     useEffect(() => {
         (async () => {
             const geojsonResponse = await axios.get(
-                `https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/topojson/WORLD.json`
+                `https://raw.githubusercontent.com/WeismanGitHub/Population-Density-Map-Discord-Bot/main/topojson/${mapCode}.json`
             );
 
             const features = Object.values(geojsonResponse.data.objects).map((feature) => {
